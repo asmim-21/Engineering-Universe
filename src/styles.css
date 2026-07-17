@@ -1,0 +1,1297 @@
+/* Software Engineering Universe — hand-drawn sketchnote styling.
+   No CSS framework: the whole look is paper, ink, wobbly borders, and marker colours. */
+
+:root {
+  --paper: #f7f4ed;
+  --paper-2: #fffdf7;
+  --ink: #24303a;
+  --ink-soft: #5b6a75;
+  --pencil: #b9b2a4;
+
+  --red: #b8232f;
+  --blue: #2563a8;
+  --green: #1f7a4d;
+  --yellow: #b8820b;
+  --orange: #d2601a;
+  --purple: #6b3fa0;
+
+  --planet-w: 300px;
+
+  --sticky: #fbe285;
+  --sticky-edge: #e9c95a;
+
+  --font-hand: 'Kalam', 'Comic Sans MS', cursive;
+  --font-title: 'Caveat', 'Kalam', cursive;
+
+  /* The wobbly "drawn by hand" border radius. */
+  --wobble: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  --wobble-2: 15px 225px 15px 255px / 255px 15px 225px 15px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-hand);
+  color: var(--ink);
+  background-color: var(--paper);
+  /* Faint paper grain, drawn with gradients so there are no image assets. */
+  background-image: radial-gradient(rgba(0, 0, 0, 0.022) 1px, transparent 1px),
+    radial-gradient(rgba(0, 0, 0, 0.018) 1px, transparent 1px);
+  background-size: 22px 22px, 34px 34px;
+  background-position: 0 0, 11px 17px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------- shared sketch primitives ---------- */
+
+.sketch-box {
+  background: var(--paper-2);
+  border: 2.5px solid var(--ink);
+  border-radius: var(--wobble);
+  box-shadow: 2px 3px 0 rgba(36, 48, 58, 0.09);
+}
+
+.sketch-box.alt {
+  border-radius: var(--wobble-2);
+}
+
+.underline {
+  position: relative;
+  display: inline-block;
+}
+
+.underline::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  bottom: -5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+  transform: rotate(-0.6deg);
+}
+
+.hand-title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.4px;
+}
+
+/* Colour helpers */
+.c-red { color: var(--red); }
+.c-blue { color: var(--blue); }
+.c-green { color: var(--green); }
+.c-yellow { color: var(--yellow); }
+.c-orange { color: var(--orange); }
+.c-purple { color: var(--purple); }
+.c-ink { color: var(--ink); }
+
+/* ---------- app shell ---------- */
+
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.page {
+  flex: 1;
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 22px 24px 96px;
+}
+
+/* ---------- homepage ---------- */
+
+.page.home {
+  padding-bottom: 12px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr) 232px;
+  gap: 20px;
+  align-items: start;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.side-left {
+  padding-top: 4px;
+}
+
+.side-right {
+  padding-top: 34px;
+}
+
+/* The map: six regions orbiting the planet, exactly as laid out in the sketch.
+     r1  kicker  r2
+     r6  planet  r3
+     r5  people  r4                                                        */
+.map {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(300px, 1.28fr) minmax(200px, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    'r1 kicker r2'
+    'r6 planet r3'
+    'r5 people r4';
+  gap: 16px 28px;
+  align-items: center;
+  justify-items: center;
+  padding: 4px 0 10px;
+}
+
+.home-kicker {
+  position: relative;
+  align-self: start;
+  margin: 6px 0 0;
+  font-family: var(--font-title);
+  font-size: clamp(1.5rem, 2.4vw, 2.15rem);
+  text-align: center;
+  line-height: 1.15;
+}
+
+.home-kicker em {
+  font-style: normal;
+  color: var(--red);
+  border-bottom: 3px solid var(--red);
+}
+
+/* the little red dashes flanking the kicker in the sketch */
+.kicker-dash {
+  position: absolute;
+  top: 6px;
+  width: 34px;
+  height: 30px;
+}
+
+.kicker-dash::before,
+.kicker-dash::after {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 2.6px;
+  border-radius: 2px;
+  background: var(--red);
+}
+
+.kicker-dash.left {
+  right: 100%;
+  margin-right: 4px;
+}
+
+.kicker-dash.right {
+  left: 100%;
+  margin-left: 4px;
+}
+
+.kicker-dash::before {
+  top: 2px;
+  transform: rotate(-32deg);
+}
+
+.kicker-dash::after {
+  top: 17px;
+  transform: rotate(28deg);
+}
+
+.kicker-dash.right::before {
+  transform: rotate(32deg);
+}
+
+.kicker-dash.right::after {
+  transform: rotate(-28deg);
+}
+
+/* ---------- the planet ---------- */
+
+.planet-wrap {
+  position: relative;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 18px 0;
+}
+
+.planet {
+  position: relative;
+  z-index: 2;
+  width: min(var(--planet-w), 100%);
+  aspect-ratio: 1 / 0.94;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 4% 6%;
+  border: 3px solid var(--ink);
+  border-radius: 52% 48% 50% 50% / 50% 52% 48% 50%;
+  background: radial-gradient(circle at 34% 26%, #ffffff 0%, #eef4fa 44%, #dde8f2 100%);
+  box-shadow: inset -12px -14px 30px rgba(37, 99, 168, 0.13), 3px 5px 0 rgba(36, 48, 58, 0.1);
+}
+
+/* Crater. The title fills the circle's inscribed box, so this has to live in
+   the empty cap above it — anything lower lands on the text. */
+.planet::after {
+  content: '';
+  position: absolute;
+  top: 7%;
+  right: 21%;
+  width: 13%;
+  height: 8%;
+  border: 2.4px solid var(--ink);
+  border-radius: 50%;
+  opacity: 0.45;
+  transform: rotate(-14deg);
+}
+
+/* the orbit ring around the planet */
+.planet-wrap::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: min(calc(var(--planet-w) * 1.3), 130%);
+  height: min(calc(var(--planet-w) * 0.62), 62%);
+  transform: translate(-50%, -46%) rotate(-13deg);
+  border: 2.5px solid var(--ink);
+  border-radius: 50%;
+  opacity: 0.45;
+}
+
+.planet h1 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: calc(var(--planet-w) * 0.125);
+  line-height: 0.99;
+  letter-spacing: 1px;
+}
+
+.planet h1 span {
+  display: block;
+}
+
+.planet h1 .accent {
+  color: var(--red);
+}
+
+.planet p {
+  margin: 12px 0 0;
+  font-size: calc(var(--planet-w) * 0.048);
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+/* Curved arrows from the planet out to the six regions. Absolutely positioned
+   over the whole map, but declared before the planet and the regions, so both
+   paint on top and the arrow tails tuck neatly behind the planet. */
+.arrows {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.72;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* ---------- topic regions ---------- */
+
+.region {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  border-radius: 12px;
+  text-align: left;
+  transition: transform 0.14s ease;
+}
+
+.region.col-right {
+  padding-left: 24px;
+}
+
+.region:hover,
+.region:focus-visible {
+  transform: translateY(-3px);
+  outline: none;
+}
+
+.region-head {
+  display: flex;
+  align-items: center;
+}
+
+.region-num {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  /* tucked against the ellipse edge, the way it sits in the sketch */
+  margin-right: -9px;
+  border-radius: 50%;
+  background: currentColor;
+  border: 2px solid currentColor;
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  -webkit-text-fill-color: var(--paper-2);
+}
+
+.num-glyph {
+  display: block;
+  transform: translateX(-0.1em);
+}
+
+/* The hand-drawn ellipse circling each title. The generous padding is what
+   keeps the text corners inside the ring — an ellipse only contains a box
+   when its semi-axes are ~1.4x the box's half-width and half-height. */
+.region-title {
+  position: relative;
+  display: inline-block;
+  padding: 15px 28px;
+  transform: rotate(var(--tilt, -1.4deg));
+}
+
+.region-ellipse {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.region-title-text {
+  position: relative;
+  display: block;
+  font-family: var(--font-title);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.06;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+/* Titles break where the sketch breaks them: two lines, so the ring stays a
+   wide ellipse instead of wrapping into a circle. */
+.region-title-text > span {
+  display: block;
+  white-space: nowrap;
+}
+
+.region-items {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: 4px;
+  color: var(--ink);
+  font-size: 0.93rem;
+}
+
+.region-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.region-item svg {
+  flex: none;
+  color: currentColor;
+}
+
+.region-item > span {
+  color: var(--ink);
+}
+
+.region-tagline {
+  padding-left: 4px;
+  font-size: 0.92rem;
+  font-style: italic;
+  line-height: 1.3;
+  max-width: 24ch;
+}
+
+/* ---------- side panels ---------- */
+
+.panel {
+  padding: 16px 16px 18px;
+}
+
+.panel h2 {
+  margin: 0 0 14px;
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ink);
+}
+
+.panel h2 .underline::after {
+  height: 4px;
+}
+
+.panel-dashed {
+  background: transparent;
+  border: 2.5px dashed var(--ink);
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.mindset-item {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.mindset-item:last-child {
+  margin-bottom: 0;
+}
+
+.mindset-icon {
+  flex: none;
+  margin-top: 2px;
+  opacity: 0.85;
+}
+
+.mindset-body h3 {
+  display: inline-block;
+  margin: 0 0 3px;
+  font-size: 1rem;
+  padding: 1px 7px;
+  border-radius: 4px;
+}
+
+.mindset-body p {
+  margin: 0;
+  font-size: 0.87rem;
+  color: var(--ink-soft);
+  line-height: 1.35;
+}
+
+.hl-yellow { background: rgba(251, 226, 133, 0.9); }
+.hl-green { background: rgba(31, 122, 77, 0.22); }
+.hl-purple { background: rgba(107, 63, 160, 0.18); }
+
+.toolkit-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toolkit-list li {
+  margin-bottom: 9px;
+}
+
+.toolkit-btn {
+  width: 100%;
+  text-align: left;
+  padding: 6px 9px;
+  border-radius: 8px;
+  font-size: 0.97rem;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  transition: background 0.12s ease;
+}
+
+.toolkit-btn:hover,
+.toolkit-btn:focus-visible {
+  background: rgba(36, 48, 58, 0.08);
+  outline: none;
+}
+
+.toolkit-btn svg {
+  flex: none;
+  opacity: 0.8;
+}
+
+.panel-foot {
+  margin: 16px 0 0;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: center;
+  line-height: 1.45;
+}
+
+/* ---------- sticky notes & cards ---------- */
+
+.sticky {
+  position: relative;
+  background: var(--sticky);
+  border: 1.5px solid var(--sticky-edge);
+  padding: 18px 16px 16px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  box-shadow: 2px 3px 0 rgba(36, 48, 58, 0.12);
+}
+
+.sticky-l {
+  transform: rotate(-1.4deg);
+}
+
+.sticky-r {
+  transform: rotate(1.4deg);
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 58px;
+  height: 17px;
+  background: rgba(170, 168, 158, 0.65);
+  border: 1px solid rgba(36, 48, 58, 0.22);
+}
+
+.sticky-mark {
+  color: var(--yellow);
+  -webkit-text-stroke: 0.6px var(--ink);
+  margin-right: 3px;
+}
+
+.sticky-heart {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink-soft);
+}
+
+.cursor-mark {
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  transform: rotate(6deg);
+}
+
+.note-card {
+  position: relative;
+  padding: 13px 15px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.note-tilt-l {
+  transform: rotate(-0.6deg);
+}
+
+.note-star {
+  color: var(--red);
+  margin-right: 4px;
+  font-size: 1rem;
+}
+
+/* the red scribbled underline used on key phrases */
+.scribble {
+  position: relative;
+  display: inline-block;
+}
+
+.scribble::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  bottom: -4px;
+  height: 4px;
+  background: var(--red);
+  border-radius: 50%;
+  transform: rotate(-1deg);
+  opacity: 0.85;
+}
+
+.people-card {
+  width: min(240px, 100%);
+  padding-top: 20px;
+  text-align: center;
+  transform: rotate(0.4deg);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.smiley {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--yellow);
+  -webkit-text-stroke: 0.7px var(--ink);
+  font-size: 1.2rem;
+}
+
+/* "Ready? Start exploring!" — a red dashed cloud */
+.ready {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 20px 16px;
+  text-align: center;
+  font-family: var(--font-title);
+  font-size: 1.35rem;
+  color: var(--ink);
+  border: 2.5px dashed var(--red);
+  border-radius: 58% 42% 55% 45% / 52% 58% 42% 48%;
+  transform: rotate(-1.2deg);
+}
+
+.ready-arrow {
+  position: absolute;
+  right: -6px;
+  bottom: -12px;
+  color: var(--red);
+  font-size: 1.2rem;
+  transform: rotate(28deg);
+}
+
+/* ---------- decorations ---------- */
+
+.decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.decor-item {
+  position: absolute;
+  line-height: 0;
+}
+
+.rocket {
+  top: 15%;
+  left: 57%;
+  transform: rotate(42deg);
+}
+
+.planet-a {
+  top: 25%;
+  left: 63%;
+}
+
+.planet-b {
+  top: 44%;
+  left: 31.5%;
+}
+
+.planet-c {
+  top: 57%;
+  left: 67%;
+}
+
+.dash-a {
+  top: 22%;
+  left: 45%;
+}
+
+.dash-b {
+  top: 71%;
+  left: 45%;
+}
+
+/* ---------- tips bar ---------- */
+
+.tips {
+  max-width: 1500px;
+  margin: 10px auto 26px;
+  padding: 11px 22px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 22px;
+  font-size: 0.92rem;
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper-2);
+}
+
+.tip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tip-glyph {
+  display: inline-flex;
+  line-height: 0;
+}
+
+.tip-div {
+  width: 2px;
+  height: 18px;
+  background: var(--pencil);
+  border-radius: 2px;
+}
+
+.underline-blue {
+  border-bottom: 2.5px solid var(--blue);
+}
+
+.underline-orange {
+  border-bottom: 2.5px solid var(--orange);
+  color: var(--orange);
+}
+
+/* ---------- topic canvas (layer 2) ---------- */
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 0.95rem;
+}
+
+.back-btn {
+  padding: 4px 14px;
+  border: 2.5px solid var(--ink);
+  border-radius: var(--wobble);
+  background: var(--paper-2);
+}
+
+.back-btn:hover {
+  border-radius: var(--wobble-2);
+}
+
+.canvas-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.canvas-head h1 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: clamp(2.2rem, 4.6vw, 3.2rem);
+}
+
+.canvas-focus {
+  max-width: 62ch;
+  margin: 0 0 4px;
+  font-size: 1rem;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.true-lesson {
+  margin: 14px 0 26px;
+  padding: 12px 16px;
+  background: rgba(251, 226, 133, 0.45);
+  border-left: 5px solid var(--yellow);
+  font-size: 0.98rem;
+  line-height: 1.5;
+  max-width: 90ch;
+}
+
+.true-lesson b {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  letter-spacing: 0.5px;
+}
+
+.clusters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 26px;
+  margin-bottom: 30px;
+}
+
+.cluster {
+  padding: 18px 20px 20px;
+}
+
+.cluster h2 {
+  margin: 0 0 4px;
+  font-family: var(--font-title);
+  font-size: 1.6rem;
+}
+
+.cluster-note {
+  margin: 0 0 14px;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.concept-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 13px;
+  margin-bottom: 10px;
+  border: 2.5px solid currentColor;
+  border-radius: var(--wobble);
+  background: var(--paper-2);
+  transition: transform 0.13s ease, box-shadow 0.13s ease;
+}
+
+.concept-btn:hover,
+.concept-btn:focus-visible {
+  transform: translate(-1px, -2px);
+  box-shadow: 3px 4px 0 rgba(36, 48, 58, 0.16);
+  border-radius: var(--wobble-2);
+  outline: none;
+}
+
+.concept-btn h3 {
+  margin: 0 0 3px;
+  font-family: var(--font-title);
+  font-size: 1.3rem;
+}
+
+.concept-btn p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.canvas-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  padding-top: 22px;
+  border-top: 2px dashed var(--pencil);
+}
+
+.canvas-nav .label {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.chip {
+  padding: 3px 12px;
+  border: 2px solid currentColor;
+  border-radius: var(--wobble);
+  font-size: 0.9rem;
+  background: var(--paper-2);
+}
+
+.chip:hover {
+  border-radius: var(--wobble-2);
+}
+
+.chip[aria-current='page'] {
+  background: currentColor;
+}
+
+.chip[aria-current='page'] span {
+  color: var(--paper-2);
+}
+
+/* ---------- popup (layer 3) ---------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(36, 48, 58, 0.42);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 4vh 16px;
+  overflow-y: auto;
+}
+
+.popup {
+  position: relative;
+  width: min(880px, 100%);
+  padding: 30px 30px 34px;
+  background: var(--paper-2);
+  border: 3px solid var(--ink);
+  border-radius: 6px;
+  box-shadow: 6px 8px 0 rgba(36, 48, 58, 0.28);
+  transform: rotate(-0.25deg);
+}
+
+.popup::before {
+  /* pinned tape */
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1.5deg);
+  width: 96px;
+  height: 22px;
+  background: rgba(203, 190, 160, 0.75);
+  border: 1px solid rgba(36, 48, 58, 0.2);
+}
+
+.popup-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: 2.5px solid var(--ink);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  line-height: 1;
+  background: var(--paper-2);
+}
+
+.popup-close:hover {
+  background: var(--ink);
+  color: var(--paper-2);
+}
+
+.popup-eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 2px;
+}
+
+.popup h2 {
+  margin: 0 0 4px;
+  font-family: var(--font-title);
+  font-size: clamp(1.9rem, 4vw, 2.5rem);
+  padding-right: 40px;
+}
+
+.popup-blurb {
+  margin: 0 0 20px;
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.part {
+  margin-bottom: 24px;
+}
+
+.part-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 9px;
+}
+
+.part-num {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+
+.part-head h3 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 1.35rem;
+}
+
+.part p {
+  margin: 0 0 9px;
+  line-height: 1.6;
+  font-size: 0.98rem;
+}
+
+.mistakes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mistakes li {
+  position: relative;
+  padding: 3px 0 3px 26px;
+  line-height: 1.5;
+  font-size: 0.96rem;
+}
+
+.mistakes li::before {
+  content: '✗';
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  color: var(--red);
+  font-weight: 700;
+}
+
+.reflection {
+  padding: 14px 16px;
+  background: rgba(251, 226, 133, 0.4);
+  border: 2px dashed var(--yellow);
+  border-radius: 6px;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+/* Visual models drawn inside popups */
+.visual {
+  padding: 16px 16px 14px;
+  border: 2.5px solid var(--ink);
+  border-radius: var(--wobble);
+  background: var(--paper);
+}
+
+.visual-title {
+  margin: 0 0 12px;
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+}
+
+.visual-purpose {
+  margin: 12px 0 0;
+  font-size: 0.86rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.step {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 12px;
+  border: 2px solid var(--ink);
+  border-radius: var(--wobble);
+  background: var(--paper-2);
+  font-size: 0.94rem;
+  line-height: 1.4;
+}
+
+.step-n {
+  flex: none;
+  font-family: var(--font-title);
+  font-weight: 700;
+  color: currentColor;
+  min-width: 14px;
+}
+
+.step-arrow {
+  align-self: center;
+  margin: -3px 0 -3px 22px;
+  color: var(--ink-soft);
+  line-height: 1;
+  font-size: 0.9rem;
+}
+
+/* pyramid */
+.pyramid {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 6px;
+}
+
+.pyramid .step {
+  justify-content: center;
+  text-align: center;
+}
+
+.pyramid .step:nth-child(1) { width: 100%; }
+.pyramid .step:nth-child(2) { width: 76%; }
+.pyramid .step:nth-child(3) { width: 52%; }
+
+/* ladder */
+.ladder {
+  position: relative;
+  padding-left: 26px;
+}
+
+.ladder::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 8px;
+  bottom: 8px;
+  width: 2.5px;
+  background: var(--ink-soft);
+  opacity: 0.5;
+}
+
+.ladder .step {
+  position: relative;
+}
+
+.ladder .step::before {
+  content: '';
+  position: absolute;
+  left: -19px;
+  top: 50%;
+  width: 17px;
+  height: 2.5px;
+  background: var(--ink-soft);
+  opacity: 0.5;
+}
+
+/* two-column compare */
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.column h4 {
+  margin: 0 0 8px;
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+}
+
+.column ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.compare-block {
+  margin-bottom: 12px;
+}
+
+.compare-block:last-child {
+  margin-bottom: 0;
+}
+
+.compare-label {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-size: 0.8rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.compare-quote {
+  margin: 0;
+  padding: 10px 13px;
+  border-left: 4px solid currentColor;
+  background: var(--paper-2);
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+/* ---------- responsive ---------- */
+
+/* Below the full sketch width the rails unstack beside the map... */
+@media (max-width: 1180px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-grid > .side {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+    align-items: start;
+    padding-top: 0;
+  }
+
+  .side-right {
+    order: 3;
+  }
+}
+
+/* ...and on a phone the orbit becomes a single readable column. The arrows and
+   floating decorations only make sense in the two-dimensional layout. */
+@media (max-width: 860px) {
+  .map {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'kicker' 'planet' 'r1' 'r2' 'r3' 'r4' 'r5' 'r6' 'people';
+    gap: 26px;
+  }
+
+  .region {
+    max-width: 420px;
+  }
+
+  .arrows,
+  .decor,
+  .kicker-dash {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 16px 14px 70px;
+  }
+
+  .tips {
+    border-radius: 22px;
+  }
+
+  .tip-div {
+    display: none;
+  }
+
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .popup {
+    padding: 26px 18px 28px;
+  }
+
+  .pyramid .step:nth-child(2),
+  .pyramid .step:nth-child(3) {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
