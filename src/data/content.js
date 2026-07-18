@@ -11,12 +11,12 @@
 //   - New topic:  copy an existing file in ./topics/, edit it, and add it to
 //     the list below. Order here decides its number and homepage position.
 
-import howSoftwareGetsBuilt from './topics/how-software-gets-built.js'
-import howModernApplicationsWork from './topics/how-modern-applications-work.js'
-import solvingProblemsLikeAnEngineer from './topics/solving-problems-like-an-engineer.js'
-import buildingReliableSoftware from './topics/building-reliable-software.js'
-import gettingSoftwareToProduction from './topics/getting-software-to-production.js'
-import beingAnEffectiveEngineer from './topics/being-an-effective-engineer.js'
+import howSoftwareGetsBuilt from './topics/01-how-software-gets-built.js'
+import howModernApplicationsWork from './topics/02-how-modern-applications-work.js'
+import solvingProblemsLikeAnEngineer from './topics/03-solving-problems-like-an-engineer.js'
+import buildingReliableSoftware from './topics/04-building-reliable-software.js'
+import gettingSoftwareToProduction from './topics/05-getting-software-to-production.js'
+import beingAnEffectiveEngineer from './topics/06-being-an-effective-engineer.js'
 
 export { toolkit } from './toolkit.js'
 import { toolkit } from './toolkit.js'
