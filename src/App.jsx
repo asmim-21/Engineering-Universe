@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import { topicById, allPopups } from './data/content.js'
 import { useRoute, navigate } from './router.js'
+import TopBar from './components/TopBar.jsx'
 import Home from './components/Home.jsx'
 import TopicCanvas from './components/TopicCanvas.jsx'
 import Popup from './components/Popup.jsx'
+import Toolkit from './components/Toolkit.jsx'
 
 export default function App() {
   const route = useRoute()
@@ -23,13 +25,16 @@ export default function App() {
         : 'Software Engineering Universe'
   }, [topic, popup])
 
-  const closePopup = () => navigate(topic ? `/topic/${topic.id}` : '/')
+  const closeOverlay = () => navigate(topic ? `/topic/${topic.id}` : '/')
 
   return (
     <div className="app">
+      <TopBar />
+
       {topic ? <TopicCanvas topic={topic} /> : <Home />}
 
-      {popup && <Popup popup={popup} onClose={closePopup} />}
+      {popup && <Popup popup={popup} siblings={topic?.popups} onClose={closeOverlay} />}
+      {route.toolkit && <Toolkit onClose={closeOverlay} />}
     </div>
   )
 }

@@ -1,281 +1,153 @@
+// TO ADD A POPUP: append an object to `popups` below. TO ADD A TOPIC: copy
+// this file, edit it, and list it in ../content.js — its position there sets
+// its number and homepage slot.
 export default {
-  id: "how-software-gets-built",
-  title: "How Software Gets Built",
-  number: 1,
-  color: "red",
-  tagline: "From idea to value",
-  focus: "Software delivery, SDLC, Agile, roles, environments, and the journey from idea to value.",
-  trueLesson:
-    "Software engineering is much more than coding. It is the coordinated process of delivering reliable value to users over time.",
-
-  // Layer 2: Topic Canvas Structure
-  sections: [
-    {
-      title: "THE SOFTWARE DEVELOPMENT LIFECYCLE",
-      position: "left-top",
-      items: [
-        "Requirements",
-        "Design",
-        "Development",
-        "Test",
-        "Deploy",
-        "Operate & Improve",
-      ],
-      note: "It's a cycle, not a line!",
-    },
-    {
-      title: "THE SOFTWARE DEVELOPMENT LIFECYCLE",
-      position: "center",
-      type: "flow",
-      steps: [
-        { num: 1, label: "REQUIREMENTS", desc: "Understand the problem and what we need to achieve." },
-        { num: 2, label: "DESIGN", desc: "Plan the solution. Architecture, data, interfaces, UX." },
-        { num: 3, label: "DEVELOP", desc: "Write code. Build the solution in small, meaningful pieces." },
-        { num: 4, label: "TEST", desc: "Check it works. Find bugs early. Gain confidence." },
-        { num: 5, label: "DEPLOY", desc: "Release to users safely and reliably." },
-        { num: 6, label: "OPERATE & IMPROVE", desc: "Monitor, learn from feedback and data. Make it better over time." },
-      ],
-      note: "SDLC isn't always linear. We iterate, learn and adapt.",
-    },
-    {
-      title: "ROLES (EXAMPLES)",
-      position: "left-bottom",
-      roles: [
-        { icon: "👤", title: "Product Owner", desc: "Understands the problem and what value looks like." },
-        { icon: "👨‍💻", title: "Developer", desc: "Writes code and builds solutions." },
-        { icon: "🧪", title: "QA Engineer", desc: "Challenges the solution and finds bugs early." },
-        { icon: "🎨", title: "Designer", desc: "Creates clear, useful and usable experiences." },
-        { icon: "🔧", title: "DevOps Engineer", desc: "Gets software to production safely and reliably." },
-        { icon: "👥", title: "Everyone", desc: "Communicates, collaborates and owns quality." },
-      ],
-    },
-    {
-      title: "ENVIRONMENTS",
-      position: "right-top",
-      environments: [
-        { num: 1, label: "Local", desc: "You work here" },
-        { num: 2, label: "Dev", desc: "Team integrates here" },
-        { num: 3, label: "UAT", desc: "Test like production" },
-        { num: 4, label: "Production", desc: "Live users are here" },
-      ],
-      tagline: "Promote with confidence, never by accident.",
-    },
-    {
-      title: "WHY DOES IT EXIST?",
-      position: "right-bottom",
-      benefits: [
-        "✓ Brings structure to complex work.",
-        "✓ Reduces risk and surprises.",
-        "✓ Improves quality and consistency.",
-        "✓ Helps teams collaborate.",
-        "✓ Ensures we deliver real value.",
-      ],
-    },
-    {
-      title: "COMMON PITFALLS",
-      position: "bottom",
-      pitfalls: [
-        "✕ Skipping or rushing steps.",
-        "✕ Building the wrong thing.",
-        "✕ Testing too late.",
-        "✕ Poor communication.",
-        "✕ Treating deployment as the finish line.",
-      ],
-    },
-    {
-      title: "THINK ABOUT...",
-      position: "right-edge",
-      prompts: [
-        "Pick a feature from an app you use every day.",
-        "How do you think it moved through this lifecycle?",
-        "What might have been the hardest step? Why?",
-      ],
-    },
-  ],
-
-  agileSection: {
-    title: "AGILE MINDSET",
-    note: "Iterating. Collaborating. Learning.",
-    mindset: [
-      "Plan → Do → Inspect → Adapt",
-      "Collaborate closely",
-      "Respond to change",
-      "Deliver value continuously",
-    ],
-  },
-
-  // Layer 3: Popup Deep Dives (6 popups per topic)
+  id: 'built',
+  title: 'How Software Gets Built',
+  tone: 'c1',
+  blurb: 'Software delivery, SDLC, Agile, roles, environments, and the journey from idea to value.',
+  tags: ['SDLC', 'Agile', 'Roles', 'Environments'],
   popups: [
     {
-      id: "sdlc",
-      title: "Software Development Lifecycle",
-      blurb: "End-to-end journey from idea to value and ongoing improvement.",
-      concept: [
-        "The SDLC is a mental model for how software moves from an idea to something users can rely on. It is rarely perfectly linear, but it gives you a map of the major stages involved.",
-        "Each stage exists because skipping it creates risk. If requirements are unclear, the team may build the wrong thing. If design is skipped, the solution may not fit the system. If testing is weak, users find defects. If maintenance is ignored, systems degrade over time.",
+      id: 'sdlc',
+      title: 'Software Development Lifecycle',
+      blurb: 'End-to-end software journey from idea to value and ongoing improvement.',
+      concept:
+        'The SDLC is a mental model for how software moves from an idea to something users can rely on. It is not always a perfectly linear process, but it gives a map of the major stages involved. Each stage exists because skipping it creates risk. If requirements are unclear, the team may build the wrong thing. If design is skipped, the solution may not fit the system. If testing is weak, users find defects. If maintenance is ignored, systems degrade over time.',
+      points: [
+        '**Requirements:** understand the problem, users, constraints, and success criteria.',
+        '**Design:** decide how the solution will work and what systems, data, and interfaces are involved.',
+        '**Development:** implement the solution in code and configuration.',
+        '**Testing:** verify behaviour, identify defects, and build confidence.',
+        '**Deployment:** release the solution into an environment where users or testers can access it.',
+        '**Maintenance:** monitor, support, fix, improve, patch, and adapt the system after release.'
       ],
       visual: {
-        kind: "flow",
-        title: "SDLC Flow",
-        steps: [
-          "Idea",
-          "Requirements",
-          "Design",
-          "Development",
-          "Testing",
-          "Deployment",
-          "Maintenance & Improvement",
-        ],
-        purpose: "Shows that coding is only one stage in a larger delivery lifecycle.",
+        kind: 'flow',
+        label: 'SDLC flow — shows that coding is only one stage in a larger delivery lifecycle.',
+        steps: ['Idea', 'Requirements', 'Design', 'Development', 'Testing', 'Deployment', 'Maintenance and improvement']
       },
-      mistakes: [
-        "Treating the SDLC as paperwork rather than risk reduction.",
-        "Believing the work ends at deployment.",
-        "Jumping straight to development because it feels productive.",
-      ],
-      reflection:
-        "Pick a feature you have built. Which SDLC stage did you spend the least time on, and what risk did that create?",
+      mistakes: ['Software engineering equals coding', 'A feature is finished forever once released'],
+      reflection: 'Is software done when it is deployed?'
     },
     {
-      id: "agile-mindset",
-      title: "Agile Mindset",
-      blurb: "Iterative delivery, feedback, collaboration, and adapting as learning happens.",
-      concept: [
-        "Agile is a response to uncertainty. Requirements are rarely perfect at the start, users often discover what they really need only after seeing an early version, and priorities change.",
-        "Do not over-focus on ceremonies. The core behaviour is iteration: build a small useful piece, validate it, learn, and adjust.",
+      id: 'agile',
+      title: 'Agile Mindset',
+      blurb: 'Iterative delivery, feedback, collaboration, and adapting as learning happens.',
+      concept:
+        'Agile is a response to uncertainty. Requirements are rarely perfect at the start. Users may discover what they really need only after seeing an early version. Business priorities can change. Agile delivery helps teams deliver value in smaller increments and learn as they go. Do not over-focus on ceremonies.',
+      points: [
+        '**Backlog:** a prioritised list of work.',
+        '**Sprint or iteration:** a focused period of delivery.',
+        '**Stand-up:** a short coordination point, not a status performance.',
+        '**Review or demo:** show what was built and gather feedback.',
+        '**Retrospective:** improve the way the team works.',
+        'The core behaviour is iteration: build a small useful piece, validate it, learn, and adjust.'
       ],
       visual: {
-        kind: "loop",
-        title: "The Iteration Loop",
-        steps: [
-          "Build a small useful piece",
-          "Validate it",
-          "Learn",
-          "Adjust",
-        ],
-        purpose: "Agile is a learning cycle, not a meeting schedule.",
+        kind: 'flow',
+        label: 'The core behaviour is iteration.',
+        steps: ['Build a small useful piece', 'Validate it', 'Learn', 'Adjust']
       },
-      mistakes: [
-        "Thinking Agile means no planning.",
-        "Treating stand-up as a status performance rather than a coordination point.",
-        "Measuring ceremonies instead of delivered value.",
-      ],
-      reflection:
-        "Name one assumption in your current task that could be tested with a smaller first version.",
+      mistakes: ['Agile means no planning'],
+      reflection: 'Which ceremony would you miss most if the team dropped it, and what would break?'
     },
     {
-      id: "software-roles",
-      title: "Software Roles",
-      blurb: "How different roles contribute and why software is a team sport.",
-      concept: [
-        "Software is delivered by teams, not lone heroes. Different people bring different perspectives, and knowing who does what tells you who to talk to and why.",
+      id: 'roles',
+      title: 'Software Roles',
+      blurb: 'How different roles contribute to delivery and why software is a team sport.',
+      concept:
+        'Software is delivered by teams, not lone heroes. Different people contribute different perspectives. You need to understand enough about common roles to know who you may interact with and why those interactions matter.',
+      points: [
+        '**Product Owner:** owns priorities and trade-off decisions.',
+        '**Business Analyst:** clarifies requirements, business processes, and acceptance criteria.',
+        '**Developer:** designs, builds, tests, and fixes software.',
+        '**Tester or QA:** validates behaviour and identifies quality gaps.',
+        '**Architect:** guides system structure and technical direction.',
+        '**SRE:** focuses on reliability, observability, operations, incident response, and production readiness.',
+        '**Stakeholder:** has an interest in the outcome or impact of the system.',
+        '**End User:** uses the product and experiences the value or pain.'
       ],
       visual: {
-        kind: "list",
-        title: "Who You Will Work With",
-        steps: [
-          "Product Owner — owns priorities and trade-off decisions",
-          "Business Analyst — clarifies requirements and acceptance criteria",
-          "Developer — designs, builds, tests, and fixes software",
-          "Tester/QA — validates behaviour and identifies quality gaps",
-          "Architect — guides system structure and technical direction",
-          "SRE — reliability, observability, operations, incident response",
-          "Stakeholder — has an interest in the outcome or impact",
-          "End User — experiences the value or the pain",
-        ],
-        purpose: "Knowing the roles tells you who to ask, and what to ask them.",
+        kind: 'flow',
+        label: 'Who is affected by a product?',
+        steps: ['Business stakeholders', 'End users', 'Engineering', 'Support', 'Operations', 'Security / compliance']
       },
-      mistakes: [
-        "Assuming the Product Owner has already thought of everything.",
-        "Treating QA as the only people responsible for quality.",
-        "Never speaking to the people who actually use the software.",
-      ],
-      reflection:
-        "For your current task, who approves priorities, who supports it after release, and who is impacted if it fails?",
+      mistakes: ["Testing is only the tester's job"],
+      reflection: 'For a product idea of your choice: who can approve priorities, who uses it, who supports it, and who might be impacted if it fails?'
     },
     {
-      id: "environments",
-      title: "Environments",
-      blurb: "Why Local, Dev, UAT, and Production exist and how they reduce risk.",
-      concept: [
-        "Code does not simply move from a laptop to users. Environments are separated so software is validated progressively, and so mistakes are cheap where they should be cheap.",
-        "A bug in Dev is a learning opportunity. A bug in Prod may affect customers, colleagues, revenue, or trust.",
+      id: 'envs',
+      title: 'Environments',
+      blurb: 'Why Dev, Test/UAT, and Production exist and how they reduce delivery risk.',
+      concept:
+        'It is easy to assume code simply moves from a laptop to users. Environments are separated to reduce risk. Development is where engineers can build and experiment. Test or UAT is where the solution is validated. Production is where real users and real business processes operate.',
+      points: [
+        '**Development (Dev):** used for building, experimenting, and early testing. Frequent change is normal.',
+        '**Test/UAT:** used to validate functionality, requirements, integrations, and user acceptance. It should be more stable than Dev.',
+        '**Production (Prod):** the live environment. Real data, real users, real business impact. Changes require more care.',
+        'A bug in Dev is a learning opportunity. A bug in Prod may affect customers, colleagues, revenue, or trust.'
       ],
       visual: {
-        kind: "flow",
-        title: "Software Environments",
-        steps: [
-          "Development (Dev)",
-          "Test / UAT",
-          "Production (Prod)",
-        ],
-        purpose: "Introduces environment separation and why production requires extra care.",
+        kind: 'flow',
+        label: 'Software environments — introduces environment separation and why production requires extra care.',
+        steps: ['Development (Dev)', 'Test / UAT', 'Production (Prod)']
       },
-      mistakes: [
-        "Thinking production is just another environment.",
-        "Testing only on your own machine and assuming it will behave the same everywhere.",
-        "Experimenting with real data because it is 'more realistic'.",
-      ],
-      reflection:
-        "What is the riskiest thing you could do in Dev today? Would the same action be acceptable in Prod?",
+      mistakes: ['Production is just another environment'],
+      reflection: 'What is allowed to be broken in each environment, and what is not?'
     },
     {
-      id: "feature-journey",
-      title: "Feature Journey",
-      blurb: "How an idea moves through clarification, design, build, test, release, feedback.",
-      concept: [
-        "A visible feature travels a long way before it reaches users, and it does not stop there. Delivery is ongoing: a feature may be released, monitored, adjusted, fixed, improved, or removed.",
+      id: 'journey',
+      title: 'Feature Journey',
+      blurb: 'How an idea moves through clarification, design, build, test, release, feedback, and improvement.',
+      concept:
+        'Take a simple feature such as "allow users to update their profile". Start from the request and follow how it becomes requirements, then design, development, testing, deployment, feedback, and further improvement. The key point is that delivery is ongoing. A feature may be released, monitored, adjusted, fixed, improved, or even removed.',
+      points: [
+        'User or stakeholder identifies a need.',
+        'Team clarifies requirements and success criteria.',
+        'Engineers design a solution.',
+        'Developers implement and test locally.',
+        'Feature is deployed to Dev.',
+        'Feature is validated in Test/UAT.',
+        'Feature is released to Production.',
+        'Users provide feedback.',
+        'Team improves or fixes the feature based on learning.'
       ],
       visual: {
-        kind: "flow",
-        title: "Feature Journey",
-        steps: [
-          "Feature request",
-          "Clarifying questions",
-          "Requirements",
-          "Design choices",
-          "Development",
-          "Dev environment",
-          "Test/UAT environment",
-          "Production",
-          "Feedback and iteration",
-        ],
-        purpose: "Shows how a feature travels from idea to users.",
+        kind: 'flow',
+        label: 'Feature journey — shows how a feature travels from idea to users.',
+        steps: ['Feature request', 'Clarifying questions', 'Requirements', 'Design choices', 'Development', 'Dev environment', 'Test/UAT environment', 'Production', 'Feedback and iteration']
       },
-      mistakes: [
-        "Believing a feature is finished forever once released.",
-        "Skipping clarifying questions and building the wrong thing well.",
-        "Forgetting that feedback is part of the design, not a complaint.",
-      ],
-      reflection:
-        "Take 'users want to update their profile details' and map each stage. What breaks if you skip stage two?",
+      mistakes: ['A feature is finished forever once released'],
+      reflection: 'Map one feature request through every stage. What could go wrong if each stage were skipped?'
     },
     {
-      id: "common-pitfalls",
-      title: "Common Pitfalls",
-      blurb: "Building the wrong thing, skipping steps, poor communication, ignoring quality.",
-      concept: [
-        "Most early-career mistakes are not about syntax. They are about starting before understanding, working silently, and treating quality as someone else's stage.",
+      id: 'pitfalls',
+      title: 'Common Pitfalls',
+      blurb: 'Beginner mistakes such as building the wrong thing, skipping steps, poor communication, and ignoring quality.',
+      concept:
+        'Software engineering is the discipline of creating software that solves real problems for real users. It includes designing, building, testing, deploying, maintaining, monitoring, and improving systems. The code is important, but it is only one part of the work. In a university assignment, success is often measured by whether the program runs and meets the marking criteria. In industry, success is measured by whether the software continues to solve the problem safely, reliably, and maintainably for users over time.',
+      points: [
+        'Software is usually a long-lived product or service, not a one-off submission.',
+        'Real users may rely on the system for important work.',
+        'A feature that works once is not enough; it must keep working and be understandable by others.',
+        'Maintenance, support, and improvement are normal parts of engineering, not afterthoughts.',
+        'Coding focuses on implementation. Engineering focuses on the full outcome.',
+        'Coding can happen in isolation; engineering usually happens in teams.'
       ],
       visual: {
-        kind: "list",
-        title: "Misconceptions Worth Unlearning",
-        steps: [
-          "Software engineering equals coding",
-          "Agile means no planning",
-          "Testing is only the tester's job",
-          "Production is just another environment",
-          "A feature is finished forever once released",
-        ],
-        purpose: "Naming the trap makes it easier to avoid.",
+        kind: 'flow',
+        label: 'Coding vs engineering.',
+        steps: ['What code do I write?', 'What problem are we solving?', 'What are the constraints?', 'What could go wrong?', 'How will we know it worked?']
       },
       mistakes: [
-        "Measuring progress in lines of code rather than validated outcomes.",
-        "Going quiet when stuck instead of surfacing the blocker early.",
-        "Optimising for 'it works on my machine'.",
+        'Software engineering equals coding',
+        'Agile means no planning',
+        "Testing is only the tester's job",
+        'Production is just another environment',
+        'A feature is finished forever once released'
       ],
-      reflection:
-        "Which of these five misconceptions did you believe last month? What changed your mind?",
-    },
-  ],
+      reflection: 'Name one thing that happens before coding and one thing that happens after deployment.'
+    }
+  ]
 }

@@ -1,40 +1,12 @@
-const emojiMap = {
-  'arrow-pointer': '👉',
-  'arrows-rotate': '🔄',
-  'bookmark': '🔖',
-  'bug': '🐛',
-  'chart-line': '📈',
-  'circle-question': '❓',
-  'cloud': '☁️',
-  'code': '💻',
-  'code-branch': '🌳',
-  'comments': '💬',
-  'database': '🗄️',
-  'desktop': '🖥️',
-  'face-smile': '😊',
-  'file-lines': '📄',
-  'flask': '🧪',
-  'gears': '⚙️',
-  'heart': '❤️',
-  'lightbulb': '💡',
-  'magnifying-glass': '🔍',
-  'moon': '🌙',
-  'mountain': '⛰️',
-  'people-group': '👥',
-  'puzzle-piece': '🧩',
-  'right-left': '↔️',
-  'rocket': '🚀',
-  'shield-halved': '🛡️',
-  'sitemap': '🗺️',
-  'square-check': '✅',
-  'stairs': '👣',
-  'star': '⭐',
-  'user': '👤',
-  'users': '👥',
-  'wand-magic-sparkles': '✨'
-}
+// Thin wrapper around Font Awesome (loaded via CDN in index.html).
+// Usage: <Icon name="rocket" /> or <Icon name="star" variant="regular" />
 
-export default function Icon({ name, className = '', style }) {
-  const emoji = emojiMap[name] || '❌'
-  return <span className={className} style={style} aria-hidden="true">{emoji}</span>
+export default function Icon({ name, variant = 'solid', className = '', style }) {
+  return (
+    <i
+      className={`fa-${variant} fa-${name} ${className}`.trim()}
+      style={style}
+      aria-hidden="true"
+    />
+  )
 }

@@ -1,111 +1,77 @@
-import { useEffect, useRef } from 'react'
+import { navigate } from '../router.js'
+import { useSheet } from './useSheet.js'
 import VisualModel from './VisualModel.jsx'
+import Icon from './Icon.jsx'
 
-const PARTS = ['Concept', 'Visual Model', 'Common Mistakes', 'Reflection / Challenge']
+// "**Label:**" in point/step text renders as bold, everything else as
+// plain text — a tiny markdown-lite so data files stay plain strings.
+export function renderRich(text) {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 === 1 ? <strong key={i}>{part}</strong> : part))
+}
 
-export default function Popup({ popup, onClose }) {
-  const cardRef = useRef(null)
-  const closeRef = useRef(null)
-
-  useEffect(() => {
-    closeRef.current?.focus()
-
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose()
-      if (e.key !== 'Tab') return
-
-      // Keep focus inside the sheet while it is open.
-      const focusables = cardRef.current?.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      )
-      if (!focusables?.length) return
-      const first = focusables[0]
-      const last = focusables[focusables.length - 1]
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault()
-        last.focus()
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault()
-        first.focus()
-      }
-    }
-
-    document.addEventListener('keydown', onKey)
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prevOverflow
-    }
-  }, [onClose])
-
-  const colorClass = `c-${popup.color || 'ink'}`
-  const paragraphs = Array.isArray(popup.concept) ? popup.concept : [popup.concept]
+export default function Popup({ popup, siblings, onClose }) {
+  const { sheetRef, closeRef } = useSheet(onClose)
+  const tone = popup.tone ? `var(--${popup.tone})` : 'var(--ink)'
+  const style = { '--tone': tone }
+  const jumpTargets = siblings?.filter((s) => s.id !== popup.id) ?? []
 
   return (
-    <div
-      className="overlay"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose()
-      }}
-    >
-      <div
-        className="popup"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="popup-title"
-        ref={cardRef}
-      >
-        <button className="popup-close" onClick={onClose} aria-label="Close" ref={closeRef}>
-          ✕
+    <div className="overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="sheet" style={style} role="dialog" aria-modal="true" aria-label={popup.title} ref={sheetRef}>
+        <div className="sheet-tape" />
+        <button className="sheet-close" onClick={onClose} aria-label="Close" ref={closeRef}>
+          <Icon name="xmark" />
         </button>
 
-        <p className="popup-eyebrow">
-          {popup.isToolkit ? 'Your Toolkit' : 'Deep dive'}
-        </p>
-        <h2 id="popup-title" className={colorClass}>
-          {popup.title}
-        </h2>
-        <p className="popup-blurb">{popup.blurb}</p>
+        <div className="sheet-kicker">{popup.isToolkit ? 'Your toolkit' : 'Sketch card'}</div>
+        <h2>{popup.title}</h2>
+        <div className="sheet-purpose">{popup.blurb}</div>
 
-        <section className="part">
-          <div className="part-head">
-            <span className="part-num">1</span>
-            <h3 className={colorClass}>{PARTS[0]}</h3>
-          </div>
-          {paragraphs.map((p) => (
-            <p key={p}>{p}</p>
-          ))}
+        <section className="sheet-part">
+          <div className="sheet-part-head">1 · Concept</div>
+          <p>{popup.concept}</p>
+          {popup.points?.length > 0 && (
+            <ul className="points-list">
+              {popup.points.map((point) => (
+                <li key={point}>{renderRich(point)}</li>
+              ))}
+            </ul>
+          )}
         </section>
 
-        <section className="part">
-          <div className="part-head">
-            <span className="part-num">2</span>
-            <h3 className={colorClass}>{PARTS[1]}</h3>
-          </div>
-          <VisualModel visual={popup.visual} colorClass={colorClass} />
+        <section className="sheet-part">
+          <div className="sheet-part-head">2 · Visual model</div>
+          <VisualModel visual={popup.visual} tone={tone} />
         </section>
 
-        <section className="part">
-          <div className="part-head">
-            <span className="part-num">3</span>
-            <h3 className={colorClass}>{PARTS[2]}</h3>
+        {popup.mistakes?.length > 0 && (
+          <section className="sheet-part">
+            <div className="sheet-part-head">3 · Common mistakes</div>
+            <div className="mistakes-list">
+              {popup.mistakes.map((m) => (
+                <span key={m}>{m}</span>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="sheet-part">
+          <div className="sheet-part-head">{popup.mistakes?.length > 0 ? 4 : 3} · Reflection</div>
+          <div className="reflection">
+            <div className="reflection-text">{popup.reflection}</div>
           </div>
-          <ul className="mistakes">
-            {popup.mistakes.map((m) => (
-              <li key={m}>{m}</li>
+        </section>
+
+        {jumpTargets.length > 0 && (
+          <div className="jump-nav">
+            <span className="jump-nav-label">More in this region</span>
+            {jumpTargets.map((s) => (
+              <button key={s.id} onClick={() => navigate(`/topic/${popup.topicId}/${s.id}`)}>
+                {s.title}
+              </button>
             ))}
-          </ul>
-        </section>
-
-        <section className="part" style={{ marginBottom: 0 }}>
-          <div className="part-head">
-            <span className="part-num">4</span>
-            <h3 className={colorClass}>{PARTS[3]}</h3>
           </div>
-          <div className="reflection">{popup.reflection}</div>
-        </section>
+        )}
       </div>
     </div>
   )

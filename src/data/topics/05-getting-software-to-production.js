@@ -1,262 +1,137 @@
 export default {
-  id: "getting-software-to-production",
-  title: "Getting Software to Production",
-  number: 5,
-  color: "orange",
-  tagline: "Deploy with confidence, not hope.",
-  focus: "Version control, CI/CD, hosting, containerization, observability, and incident response.",
-  trueLesson:
-    "Deployment is not the end of software engineering; it is the beginning of operating real systems for real users. Every choice you make about deployment affects reliability, scalability, and your ability to respond to problems.",
-
-  sections: [
-    {
-      title: "VERSION CONTROL ESSENTIALS",
-      vcs: [
-        "🔀 Branches isolate work",
-        "📝 Commits tell the story",
-        "🔍 Pull requests invite review",
-        "✅ Merges integrate safely",
-        "⏮️ History lets you revert",
-      ],
-    },
-    {
-      title: "CI/CD PIPELINE",
-      pipeline: [
-        { stage: 1, label: "Commit", desc: "Push code to version control" },
-        { stage: 2, label: "Build", desc: "Compile, lint, type-check" },
-        { stage: 3, label: "Test", desc: "Run automated tests" },
-        { stage: 4, label: "Deploy", desc: "Release to production" },
-        { stage: 5, label: "Monitor", desc: "Watch for issues" },
-      ],
-    },
-    {
-      title: "HOSTING MODELS",
-      models: [
-        { model: "VPS", cost: "$", control: "Full", complexity: "High", uptime: "Your job" },
-        { model: "PaaS", cost: "$$", control: "Some", complexity: "Medium", uptime: "Shared" },
-        { model: "Serverless", cost: "$$$", control: "Little", complexity: "Low", uptime: "Provider" },
-      ],
-    },
-    {
-      title: "CONTAINERIZATION",
-      containers: [
-        "📦 Package: Code + dependencies + config",
-        "🔄 Consistency: Runs the same everywhere",
-        "🚀 Isolation: Multiple apps on one machine",
-        "📈 Scalability: Spin up more containers as needed",
-        "🎯 Observability: Easier to track and log",
-      ],
-    },
-    {
-      title: "OBSERVABILITY TRIO",
-      observability: [
-        { signal: "📊 Metrics", examples: "CPU, memory, requests/sec, latency" },
-        { signal: "📋 Logs", examples: "Events, errors, user actions" },
-        { signal: "🔗 Traces", examples: "Request flow across services" },
-      ],
-    },
-    {
-      title: "INCIDENT RESPONSE",
-      incident: [
-        "🚨 Detect: Alerts, user reports, anomalies",
-        "🛑 Triage: Severity, scope, owner",
-        "🔧 Mitigate: Quick fix to stop the bleeding",
-        "📊 Investigate: Root cause analysis",
-        "✅ Resolve: Permanent fix",
-        "📈 Learn: Postmortem and prevention",
-      ],
-    },
-  ],
-
+  id: 'production',
+  title: 'Getting Software to Production',
+  tone: 'c5',
+  blurb: 'Git, pull requests, CI/CD, hosting, containers, monitoring, alerts, and incidents.',
+  tags: ['Git', 'CI/CD', 'Containers', 'Monitoring'],
   popups: [
     {
-      id: "git-pull-requests",
-      title: "Git & Pull Requests",
-      blurb: "Using version control to manage work, integrate changes safely, and maintain history.",
-      concept: [
-        "Git is not just backup. Branches let you work on multiple features in parallel. Commits tell the story of why changes were made. Pull requests invite review and catch mistakes before they reach production.",
+      id: 'git',
+      title: 'Git & Pull Requests',
+      blurb: 'Collaborative change management with branches, reviews, and approval gates.',
+      concept:
+        'It is common to understand writing code but not how that code reaches users. Professional teams use controlled workflows, so changes are reviewed, built, tested, deployed, and monitored. Changes usually start on a branch, are reviewed through a pull request, pass automated checks, and then are deployed through a pipeline into one or more environments.',
+      points: [
+        'Developer creates a branch.',
+        'Developer makes a change.',
+        'Pull request is opened.',
+        'Review and automated checks run.',
+        'Build creates deployable artefact.',
+        'Tests validate behaviour.',
+        'Deployment moves the artefact into an environment.',
+        'Monitoring confirms whether the system behaves as expected.'
       ],
       visual: {
-        kind: "flow",
-        title: "PR Workflow",
-        steps: [
-          "Create a branch from main",
-          "Make commits with clear messages",
-          "Push to version control",
-          "Open a pull request",
-          "Get review feedback",
-          "Address feedback, update branch",
-          "Merge to main when approved",
-        ],
-        purpose: "PRs enforce review and history, making rollback and debugging easier.",
+        kind: 'flow',
+        label: 'From developer machine to production.',
+        steps: ['Developer branch', 'Pull request', 'Review and automated checks', 'Build', 'Tests', 'Deployment', 'Monitoring']
       },
-      mistakes: [
-        "Committing directly to main without review.",
-        "Writing commit messages that describe what, not why.",
-        "Merging without understanding the changes.",
-        "Not knowing how to revert a bad commit.",
-      ],
-      reflection:
-        "Write a commit message for a change you just made. Would someone reading it next year understand why you made this change?",
+      mistakes: ['Deployment is just copying files'],
+      reflection: 'Take one code change and map it from branch to pull request, build, test, image, deploy, monitor. What could go wrong at each stage?'
     },
     {
-      id: "ci-cd-pipeline",
-      title: "CI/CD Pipeline",
-      blurb: "Automating the steps from code to production to reduce errors and speed up delivery.",
-      concept: [
-        "CI/CD means code is automatically tested, built, and deployed whenever a change is merged. This removes manual steps and catches problems early.",
-        "A fast CI/CD pipeline is an investment that pays dividends in developer experience and reliability.",
+      id: 'cicd',
+      title: 'CI/CD Pipeline',
+      blurb: 'Automated build, test, package, deploy, and recovery flow.',
+      concept:
+        'CI/CD is automation around building, testing, and deploying software. The key value is repeatability. If deployment relies on manual steps and memory, it becomes risky and inconsistent. A pipeline can build a container image, test it, store it, and deploy it into environments.',
+      points: [
+        '**Continuous Integration:** changes are integrated and checked frequently.',
+        '**Continuous Delivery or Deployment:** software can be released through automated, repeatable steps.',
+        '**Build:** create the deployable artefact.',
+        '**Test:** validate the artefact.',
+        '**Deploy:** release the artefact to an environment.',
+        '**Rollback or recovery:** prepare for things going wrong.'
       ],
       visual: {
-        kind: "flow",
-        title: "Pipeline Stages",
-        steps: [
-          "Code committed",
-          "Lint & type-check",
-          "Build artifact",
-          "Run unit tests",
-          "Run integration tests",
-          "Deploy to staging",
-          "Run smoke tests",
-          "Deploy to production",
-        ],
-        purpose: "Automation catches mistakes faster than human review alone.",
+        kind: 'flow',
+        label: 'CI/CD flow — connects engineering work to production operation.',
+        steps: ['Developer branch', 'Pull request', 'Build pipeline', 'Automated tests', 'Container image', 'Deployment', 'Running application', 'Monitoring']
       },
-      mistakes: [
-        "Running tests manually instead of automatically.",
-        "Skipping tests to go faster.",
-        "Deploying without running the full pipeline.",
-        "Broken builds that no one fixes.",
-      ],
-      reflection:
-        "If you could automate one step in your current workflow, what would it be? What would it take to automate it?",
+      mistakes: ['Deployment is just copying files', 'DevOps means developers do operations alone'],
+      reflection: 'Which stage of the pipeline would catch each kind of mistake?'
     },
     {
-      id: "hosting-models",
-      title: "Hosting Models",
-      blurb: "Choosing between VPS, PaaS, Serverless based on control, cost, and complexity.",
-      concept: [
-        "There is no universal best. VPS gives you control but requires ops expertise. PaaS balances flexibility and convenience. Serverless is simple but can be expensive and limits flexibility.",
+      id: 'hosting',
+      title: 'Hosting Models',
+      blurb: 'On-premises, cloud, and hybrid ways software can run.',
+      concept:
+        'Before discussing cloud architecture, answer this: where does the application live when users use it? On premises means the organisation owns or directly manages infrastructure. Cloud means infrastructure and services are provided by a cloud provider. Hybrid means both models are used together, which is common in large enterprises.',
+      points: [
+        '**On-Premises:** company-managed infrastructure, physical or virtual servers, more direct responsibility for hardware and platform.',
+        '**Cloud:** rented or managed infrastructure and services, with elastic capacity and provider-managed capabilities.',
+        '**Hybrid:** some systems remain on premises while others run in cloud; integration and networking become important.'
       ],
       visual: {
-        kind: "columns",
-        title: "Hosting Trade-offs",
-        left: {
-          heading: "VPS / IaaS",
-          items: [
-            "Full control",
-            "Low cost at scale",
-            "High operational burden",
-            "You patch, update, monitor",
-          ],
-        },
-        right: {
-          heading: "PaaS / Serverless",
-          items: [
-            "Limited control",
-            "High cost at scale",
-            "Low operational burden",
-            "Provider handles updates",
-          ],
-        },
-        purpose:
-          "Choose based on your constraints: if you have ops expertise, VPS. If you have budget, PaaS.",
+        kind: 'flow',
+        label: 'Hosting models — introduces where software can run before discussing architecture.',
+        steps: ['On-Premises', 'Cloud', 'Hybrid']
       },
-      mistakes: [
-        "Choosing serverless for a workload that needs persistent connections.",
-        "Choosing VPS when you do not have time for operations.",
-        "Not reading the fine print on cost and limits.",
-      ],
-      reflection:
-        "For an app you know, what hosting model does it use? Would a different model suit it better?",
+      mistakes: ['Cloud means no one manages anything'],
+      reflection: 'Which model might be easier to scale, which may have legacy constraints, and which requires integration across environments?'
     },
     {
-      id: "containers-explained",
-      title: "Containers",
-      blurb: "Lightweight virtual machines that package code, dependencies, and configuration.",
-      concept: [
-        "Docker containers solve the 'it works on my machine' problem. A container runs the same way on your laptop, on a test server, and in production because it carries its entire environment.",
+      id: 'containers',
+      title: 'Containers Explained',
+      blurb: 'The difference between application code, image, and running container.',
+      concept:
+        'The progression at a high level is physical servers, then virtual machines, then containers. Containers help package an application with its dependencies, so it behaves more consistently across environments. They reduce the classic "works on my machine" problem.',
+      points: [
+        '**Physical server:** one or more applications run on actual hardware.',
+        '**Virtual machine:** software-defined machine running on shared hardware.',
+        '**Container:** lightweight packaged runtime for an application and its dependencies.',
+        '**Container image:** blueprint or packaged artefact.',
+        '**Running container:** an instance created from that image.'
       ],
       visual: {
-        kind: "list",
-        title: "Container Concepts",
-        steps: [
-          "Image: A template (like a class in OOP)",
-          "Container: A running instance (like an object)",
-          "Registry: A library of images (like npm, Maven, PyPI)",
-          "Orchestration: Tools that manage many containers (like Kubernetes)",
-        ],
-        purpose: "Containers make deployment predictable and scalable.",
+        kind: 'flow',
+        label: 'Container lifecycle — clarifies image versus container.',
+        steps: ['Application code', 'Dependencies', 'Container image', 'Running container', 'Deployed environment']
       },
-      mistakes: [
-        "Putting the entire OS in a container instead of just your app.",
-        "Using the latest tag in production.",
-        "Not scanning containers for vulnerabilities.",
-        "Treating containers as a silver bullet for operational problems.",
-      ],
-      reflection:
-        "If you containerized your app today, what would go in the Dockerfile? What would not?",
+      mistakes: ['Containers are the same as virtual machines', 'A container image is the running application'],
+      reflection: 'Explain image versus container in your own words using an analogy: recipe vs cake, blueprint vs house, class vs object.'
     },
     {
-      id: "monitoring-alerting",
-      title: "Monitoring & Alerting",
-      blurb: "Collecting metrics, logs, and traces to see what is happening in production.",
-      concept: [
-        "You cannot improve what you do not measure. Monitoring gives you visibility; alerting gives you early warning.",
+      id: 'monitoring',
+      title: 'Monitoring & Alerting',
+      blurb: 'Signals that show whether production systems are healthy.',
+      concept:
+        'Once software is in production, engineers need signals to know whether it is healthy. Monitoring is how teams observe systems after release. You do not need deep observability theory, but production systems require ongoing attention.',
+      points: [
+        '**Metrics:** numbers that describe system behaviour, such as errors, latency, traffic, and resource usage.',
+        '**Logs:** event records that help explain what happened.',
+        '**Dashboards:** visual summaries of system health.',
+        '**Alerts:** notifications triggered when something may require action.',
+        '**Incident:** a production issue that needs coordinated investigation and response.'
       ],
       visual: {
-        kind: "list",
-        title: "Observable Systems",
-        steps: [
-          "Metrics: CPU, memory, requests/sec, error rate, latency",
-          "Logs: What happened, when, and why",
-          "Traces: How a request flowed through your system",
-          "Alerts: Notify on-call when thresholds are crossed",
-          "Dashboards: Visual summary of system health",
-        ],
-        purpose:
-          "Monitoring is not spying; it is listening to your system tell you it is struggling.",
+        kind: 'flow',
+        label: 'Monitoring flow — shows how teams know what is happening after release.',
+        steps: ['Running application', 'Metrics and logs', 'Dashboard', 'Alert', 'Engineer investigation', 'Resolution and learning']
       },
-      mistakes: [
-        "Monitoring only after an incident.",
-        "Setting alert thresholds too low (alert fatigue) or too high (missing real problems).",
-        "Logging everything without context.",
-        "Not correlating metrics and logs.",
-      ],
-      reflection:
-        "For a system you know, what would you monitor first? What alerts would tell you 'this is about to break'?",
+      mistakes: ['Monitoring is only needed if something goes wrong'],
+      reflection: 'How do you know the system is healthy right now, without a user telling you?'
     },
     {
-      id: "incident-response",
-      title: "Incident Response",
-      blurb: "When something breaks, the process of detecting, mitigating, resolving, and learning.",
-      concept: [
-        "Incidents are inevitable. What separates good teams from others is how they respond. Speed to mitigation matters most. Quality of resolution and learning prevents next time.",
+      id: 'incident',
+      title: 'Incident Response',
+      blurb: 'Coordinated investigation, mitigation, communication, resolution, and learning when production fails.',
+      concept:
+        'An incident is a production issue that needs coordinated investigation and response. Take a scenario: production error rate increases after a deployment. Work out what signals would show the problem, what the team should check first, and what learning should happen afterwards.',
+      points: [
+        'Alerts notify the team when something may require action.',
+        'Engineer investigation follows the evidence: metrics, logs, dashboards, recent changes.',
+        'Resolution and learning close the loop.',
+        'Root cause thinking asks why the system allowed it to happen.',
+        'Prevention: tests, monitoring, validation, documentation, or process changes.'
       ],
       visual: {
-        kind: "flow",
-        title: "Incident Lifecycle",
-        steps: [
-          "Detect (alerts, reports, anomalies)",
-          "Declare incident",
-          "Notify on-call and stakeholders",
-          "Triage (assess severity and scope)",
-          "Mitigate (stop the bleeding)",
-          "Investigate (root cause)",
-          "Resolve (permanent fix)",
-          "Postmortem (learn and improve)",
-        ],
-        purpose:
-          "Structure reduces panic. Process ensures we learn from every incident.",
+        kind: 'flow',
+        label: 'Monitoring and incident investigation flow.',
+        steps: ['Alert', 'Engineer investigation', 'Check recent changes', 'Mitigate', 'Resolution and learning', 'Prevent recurrence']
       },
-      mistakes: [
-        "Not having an incident playbook.",
-        "Spending too long investigating while the problem is ongoing.",
-        "Never doing a postmortem.",
-        "Blaming individuals instead of fixing systems.",
-      ],
-      reflection:
-        "If production went down right now, who would you page? What is the first thing you would do? Do you have a runbook?",
-    },
-  ],
+      mistakes: ['Monitoring is only needed if something goes wrong', 'Cloud means no one manages anything'],
+      reflection: 'Production error rate increases after a deployment. What would you check first, and what should be learned afterwards?'
+    }
+  ]
 }
