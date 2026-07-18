@@ -37,12 +37,15 @@ Requires Node 18+.
 
 ## Stack
 
-React 18 + Vite, and nothing else. No router, no UI framework, no icon package:
+React 18 + Vite, and nothing else. No router, no UI framework, no npm icon package:
 
 - The hand-drawn look is plain CSS — wobbly `border-radius`, gradient paper grain, marker
-  colours. The rings circling the topic titles are inline SVG ellipses rather than
-  `border-radius`, so they always enclose a title however many lines it wraps to.
-- Icons are inline SVG in [src/components/Icons.jsx](src/components/Icons.jsx).
+  colours.
+- Icons are [Font Awesome](https://fontawesome.com/search?ic=free) (free, solid style),
+  loaded from a CDN in [index.html](index.html) and rendered by the tiny wrapper in
+  [src/components/Icon.jsx](src/components/Icon.jsx). To use an icon, find its name in the
+  Font Awesome catalog and write `<Icon name="database" />` (or `icon: 'database'` in the
+  content data).
 - Routing is ~30 lines of hash routing in [src/router.js](src/router.js).
 - Fonts are Caveat and Kalam from Google Fonts, loaded in [index.html](index.html).
 
@@ -57,28 +60,45 @@ push to the default branch. Enable Pages in the project settings and the site ap
 
 To host it anywhere else, run `npm run build` and serve `dist/` as static files.
 
-## Editing the content
+## Adding content
 
-All 39 popups, the six topics, and the homepage notes live in one file:
-[src/data/content.js](src/data/content.js). Adding or rewording a concept means editing that
-file — no component changes needed.
+All content is data, no component changes needed. It lives in `src/data/`:
 
-A topic looks like this:
+```
+src/data/
+  content.js       assembles everything; topic order here = topic numbering
+  toolkit.js       the 3 global toolkit popups
+  topics/          one file per topic (title, homepage bullets, clusters, popups)
+```
+
+### Add a popup to an existing topic
+
+1. Open the topic's file in `src/data/topics/`.
+2. Add an object to its `popups` array. Every popup uses the same four-part template:
 
 ```js
 {
-  id: 'how-software-gets-built',
-  num: 1,
-  title: 'How Software Gets Built',
-  color: 'red',            // red | blue | green | yellow | orange | purple
-  tagline: '...',          // italic line under the region on the homepage
-  focus: '...',            // the concept focus line on the canvas
-  trueLesson: '...',       // the highlighted TRUE LESSON callout
-  orbit: [{ label, icon }] // the four bullets on the homepage region
-  clusters: [...],         // canvas groupings, each listing popup ids
-  popups: [...]            // the six Layer 3 deep dives
+  id: 'my-new-concept',            // used in the URL: #/topic/<topic>/<this>
+  title: 'My New Concept',
+  blurb: 'One line shown on the canvas card.',
+  concept: ['Paragraph one.', 'Paragraph two.'],
+  visual: { kind: 'flow', title: '...', steps: ['...'], purpose: '...' },
+  mistakes: ['...', '...'],
+  reflection: 'A prompt that makes learners apply the concept.'
 }
 ```
+
+3. Reference its `id` from one of the topic's `clusters` so it appears on the canvas.
+
+### Add a whole new topic
+
+1. Copy any file in `src/data/topics/` and edit it (`id`, `title`, `color`, `orbit`,
+   `clusters`, `popups`).
+2. Import it in [src/data/content.js](src/data/content.js) and add it to the `topics` array.
+   Its position in that array sets its number. The homepage map has six slots; topics beyond
+   six are reachable from the topic-to-topic navigation on every canvas.
+
+### Visual models
 
 A popup declares its visual model by `kind`, and
 [src/components/VisualModel.jsx](src/components/VisualModel.jsx) draws it in CSS:
@@ -90,15 +110,21 @@ A popup declares its visual model by `kind`, and
 | `ladder` | Rungs climbing a vertical rail |
 | `pyramid` | Widest tier at the bottom |
 | `list` | Diamond-bulleted points |
-| `columns` | Two columns, e.g. safe vs risky |
-| `compare` | A weak vs strong example pair |
+| `columns` | Two columns, e.g. safe vs risky (`left`/`right` with `heading` + `items`) |
+| `compare` | A weak vs strong example pair (`weak`/`strong` strings) |
 
-`icon` names come from the set in [src/components/Icons.jsx](src/components/Icons.jsx) — add a
-new path to that file to add a new icon.
+To add a new kind, add a `case` to the `switch` in `VisualModel.jsx` and style it in
+`styles.css`.
+
+### Icons
+
+`icon` values are Font Awesome names — browse
+[fontawesome.com/search?ic=free](https://fontawesome.com/search?ic=free), copy the name
+(e.g. `database`, `code-branch`), done.
 
 ## Homepage layout
 
-The map is a 3×3 CSS grid mirroring the sketch, which is worth knowing before moving anything:
+The map is a 3×3 CSS grid mirroring the sketch:
 
 ```
  1        kicker        2
@@ -106,11 +132,13 @@ The map is a 3×3 CSS grid mirroring the sketch, which is worth knowing before m
  5    people card       4
 ```
 
-That leaves empty corridors between the columns, and the floating decorations (rocket, stars,
-small planets in [src/components/Decorations.jsx](src/components/Decorations.jsx)) are
-positioned in those gaps so they never land on text. If you resize the planet or the columns,
-re-check those positions. Below 860px the grid collapses to one column and the decorations and
-arrows are hidden.
+The six slots are assigned to topics by array order in
+[src/components/Home.jsx](src/components/Home.jsx). The doodles (rocket, stars, planets,
+and the short arrows pointing at the regions) are emoji and Font Awesome icons placed by
+the `PLANET_DOODLES` array at the top of that file. They are anchored to the planet's own
+box with pixel offsets, so they hug the planet and can never drift onto the surrounding
+text — edit positions there, no drawing code involved. Below 860px the grid collapses to
+one column and the arrows are hidden.
 
 ## Routes
 

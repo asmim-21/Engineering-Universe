@@ -1,7 +1,6 @@
 import { topics, toolkit, safetyBoundary } from '../data/content.js'
 import { navigate } from '../router.js'
-
-const TOOLKIT_GLYPHS = ['↺', '⧉', '≡']
+import Icon from './Icon.jsx'
 
 export default function TopicCanvas({ topic }) {
   const popupById = Object.fromEntries(topic.popups.map((p) => [p.id, p]))
@@ -62,14 +61,13 @@ export default function TopicCanvas({ topic }) {
 
       <div className="canvas-nav">
         <span className="label">Toolkit:</span>
-        {toolkit.map((item, i) => (
+        {toolkit.map((item) => (
           <button
             key={item.id}
             className="chip c-ink"
             onClick={() => navigate(`/topic/${topic.id}/${item.id}`)}
           >
-            <span aria-hidden="true">{TOOLKIT_GLYPHS[i]} </span>
-            <span>{item.title}</span>
+            <Icon name={item.icon} /> <span>{item.title}</span>
           </button>
         ))}
       </div>
