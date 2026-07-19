@@ -9,129 +9,251 @@ export default {
       id: 'pyramid',
       title: 'Testing Pyramid',
       blurb: 'Unit, integration, and end-to-end tests as different levels of confidence.',
-      concept:
-        'Testing gives confidence that software behaves as expected and helps prevent defects from reaching users. Tests do not prove software is perfect, but they reduce risk and make change safer. Testing is an engineering feedback mechanism, not a boring task at the end.',
-      points: [
-        '**Unit tests** check small pieces of logic.',
-        '**Integration tests** check components working together.',
-        '**End-to-end tests** check a user-like flow through the system.',
-        'Manual testing may still be useful for exploration and user experience.',
-        'Automated tests help teams make changes repeatedly with confidence.'
-      ],
+      whatIs: {
+        text: 'Tests give confidence that software behaves as expected and make change safer.',
+        ensures: [
+          '**Unit:** small pieces of logic',
+          '**Integration:** components working together',
+          '**End-to-end:** a full user-like flow',
+          'Automated tests let you change with confidence'
+        ]
+      },
       visual: {
         kind: 'pyramid',
         label: 'Testing pyramid — shows different testing scopes and why teams usually need more than one type.',
-        steps: ['Unit tests', 'Integration tests', 'End-to-end tests']
+        steps: [
+          { icon: 'cube', label: 'Unit tests', desc: 'Check small pieces of logic.' },
+          { icon: 'puzzle-piece', label: 'Integration tests', desc: 'Check components working together.' },
+          { icon: 'route', label: 'End-to-end tests', desc: 'Check a full user-like flow.' }
+        ]
       },
-      mistakes: ["Testing is only QA's job"],
-      reflection: 'What tests would give us confidence that recurring bookings work?'
+      misconceptions: [
+        { wrong: "Testing is only QA's job.", right: 'Everyone writes and cares about tests.' },
+        { wrong: 'Tests prove software is perfect.', right: 'Tests reduce risk; they do not prove perfection.' }
+      ],
+      takeaways: [
+        'Different levels give different confidence.',
+        'Automation makes repeated change safe.',
+        'Testing is feedback, not a chore at the end.'
+      ],
+      reflection: 'What tests would give us confidence that recurring bookings work?',
+      checks: [
+        'What does a unit test check?',
+        'What does end-to-end cover?',
+        'Why use more than one type of test?',
+        'What tests would prove recurring bookings work?'
+      ]
     },
     {
       id: 'debug',
       title: 'Debugging Process',
       blurb: 'Reproduce, gather evidence, form hypotheses, test carefully, fix, verify, and learn.',
-      concept:
-        'Debugging is not guessing. It is a structured investigation. Reproduce the issue, gather evidence, identify what changed, form hypotheses, test them, and verify the fix.',
-      points: [
-        'Understand the expected behaviour.',
-        'Understand the actual behaviour.',
-        'Reproduce the issue if possible.',
-        'Check recent changes.',
-        'Read logs and errors.',
-        'Identify possible causes.',
-        'Test one hypothesis at a time.',
-        'Fix and verify.'
-      ],
+      whatIs: {
+        text: 'Debugging is a structured investigation, not guessing: reproduce, gather evidence, test, fix, verify.',
+        ensures: [
+          'Compare expected vs actual behaviour',
+          'Reproduce the issue',
+          'Check recent changes and logs',
+          'Test one hypothesis at a time'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'Bug investigation flow — teaches debugging as a process rather than panic or random edits.',
-        steps: ['Issue reported', 'Reproduce', 'Gather evidence', 'Form hypotheses', 'Test hypotheses', 'Fix', 'Verify', 'Prevent recurrence']
+        loop: false,
+        steps: [
+          { icon: 'bug', label: 'Issue reported', desc: 'Someone hits a problem.' },
+          { icon: 'rotate', label: 'Reproduce', desc: 'Make it happen on demand.' },
+          { icon: 'magnifying-glass', label: 'Gather evidence', desc: 'Read logs, inputs, and changes.' },
+          { icon: 'lightbulb', label: 'Form hypotheses', desc: 'List possible causes.' },
+          { icon: 'flask', label: 'Test hypotheses', desc: 'Check one idea at a time.' },
+          { icon: 'wrench', label: 'Fix', desc: 'Correct the real cause.' },
+          { icon: 'circle-check', label: 'Verify', desc: 'Confirm the fix works.' },
+          { icon: 'shield-halved', label: 'Prevent recurrence', desc: 'Stop it happening again.' }
+        ]
       },
-      mistakes: ['Debugging is mostly intuition'],
-      reflection: '"Desk bookings disappear overnight." What systems may be involved, and what are three possible hypotheses?'
+      misconceptions: [
+        { wrong: 'Debugging is mostly intuition.', right: 'It is evidence and one hypothesis at a time.' },
+        { wrong: 'Fixing the symptom ends the job.', right: 'Verify, then prevent recurrence.' }
+      ],
+      takeaways: [
+        'Reproduce before you fix.',
+        'Change one thing at a time.',
+        'Evidence beats guessing.'
+      ],
+      reflection: '"Desk bookings disappear overnight." What systems may be involved, and what are three possible hypotheses?',
+      checks: [
+        'What do you check first?',
+        'Why reproduce the issue?',
+        'Why test one hypothesis at a time?',
+        'What comes after the fix?'
+      ]
     },
     {
       id: 'logs',
       title: 'Reading Logs',
       blurb: 'Using errors, timestamps, traces, and system events as clues.',
-      concept:
-        'Error messages and logs are clues. Reading them carefully is a core skill. Logs are event records that help explain what happened, and metrics are numbers that describe system behaviour such as errors, latency, traffic, and resource usage.',
-      points: [
-        '**Logs:** event records that help explain what happened.',
-        '**Metrics:** numbers that describe system behaviour, such as errors, latency, traffic, and resource usage.',
-        'Read logs or error messages carefully before escalating.',
-        'Logs or metrics may be produced at every step of a request.',
-        'Check recent changes alongside the logs.'
-      ],
+      whatIs: {
+        text: 'Logs and metrics are clues — reading them carefully is a core debugging skill.',
+        ensures: [
+          '**Logs:** event records of what happened',
+          '**Metrics:** numbers like errors, latency, traffic',
+          'Read them carefully before escalating',
+          'Check recent changes alongside them'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'Logs as evidence in an investigation.',
-        steps: ['Issue reported', 'Read logs and errors', 'Gather evidence', 'Identify possible causes', 'Test one hypothesis at a time']
+        loop: false,
+        steps: [
+          { icon: 'bug', label: 'Issue reported', desc: 'A problem surfaces.' },
+          { icon: 'file-lines', label: 'Read logs and errors', desc: 'Study the event records.' },
+          { icon: 'magnifying-glass', label: 'Gather evidence', desc: 'Collect the relevant clues.' },
+          { icon: 'lightbulb', label: 'Identify possible causes', desc: 'Narrow down what could be wrong.' },
+          { icon: 'flask', label: 'Test one hypothesis at a time', desc: 'Isolate to confirm the cause.' }
+        ]
       },
-      mistakes: ['Logs are only useful for senior engineers'],
-      reflection: 'Given a set of error messages: what do they tell you, and what do they not tell you?'
+      misconceptions: [
+        { wrong: 'Logs are only useful for senior engineers.', right: 'Anyone can read logs to find clues.' },
+        { wrong: 'Logs tell you everything.', right: 'They show what happened, not always why.' }
+      ],
+      takeaways: [
+        'Read the error before escalating.',
+        'Logs and metrics are evidence.',
+        'Correlate logs with recent changes.'
+      ],
+      reflection: 'Given a set of error messages: what do they tell you, and what do they not tell you?',
+      checks: [
+        'What do logs tell you?',
+        'What do metrics tell you?',
+        'What do they not tell you?',
+        'What would you check alongside logs?'
+      ]
     },
     {
       id: 'review',
       title: 'Code Review Lens',
       blurb: 'Reviewing for correctness, readability, maintainability, testing, risk, and consistency.',
-      concept:
-        'Code reviews are not just gatekeeping. They improve quality, share knowledge, catch defects, and align the team on maintainability. A reviewer is not only asking "does it work?" but also "will we understand this later?" Treat code review feedback as normal engineering collaboration, not personal criticism.',
-      points: [
-        '**Correctness:** does the code do what it should?',
-        '**Readability:** can another engineer understand it?',
-        '**Maintainability:** is it easy to change later?',
-        '**Testing:** is there enough evidence the behaviour works?',
-        '**Risk:** could this change break something important?',
-        '**Consistency:** does it follow team patterns?'
-      ],
+      whatIs: {
+        text: 'Reviews improve quality, share knowledge, and catch defects — collaboration, not criticism.',
+        ensures: [
+          '**Correctness:** does it do what it should?',
+          '**Readability & maintainability:** can we understand and change it?',
+          '**Testing & risk:** is there proof, and what could break?',
+          '**Consistency:** does it follow team patterns?'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'Code review lens — a practical checklist for reviewing code.',
-        steps: ['Correctness', 'Readability', 'Maintainability', 'Testing', 'Risk', 'Consistency']
+        loop: false,
+        steps: [
+          { icon: 'circle-check', label: 'Correctness', desc: 'Does it do what it should?' },
+          { icon: 'book-open', label: 'Readability', desc: 'Can others understand it?' },
+          { icon: 'screwdriver-wrench', label: 'Maintainability', desc: 'Is it easy to change later?' },
+          { icon: 'flask', label: 'Testing', desc: 'Is there proof it works?' },
+          { icon: 'triangle-exclamation', label: 'Risk', desc: 'Could this break something?' },
+          { icon: 'ruler', label: 'Consistency', desc: 'Does it follow team patterns?' }
+        ]
       },
-      mistakes: ['Code review is about proving someone wrong'],
-      reflection: 'Review a small change and comment on naming, validation, error handling, tests, and risk — constructively.'
+      misconceptions: [
+        { wrong: 'Code review is about proving someone wrong.', right: 'It is shared ownership of quality.' },
+        { wrong: '"It works" is enough to approve.', right: 'Also ask "will we understand this later?"' }
+      ],
+      takeaways: [
+        'Review for the reader, not just the runtime.',
+        'Feedback is collaboration.',
+        'Naming, tests, and risk all matter.'
+      ],
+      reflection: 'Review a small change and comment on naming, validation, error handling, tests, and risk — constructively.',
+      checks: [
+        'What does a reviewer look for?',
+        'Why review for readability?',
+        'How should you give feedback?',
+        'What risks might a change carry?'
+      ]
     },
     {
       id: 'rca',
       title: 'Root Cause Analysis',
       blurb: 'Distinguishing symptoms, immediate causes, root causes, and prevention.',
-      concept:
-        'Fixing the symptom may not fix the underlying problem. Ask why the issue occurred and what would prevent recurrence. For example, if bookings disappear overnight, the immediate bug might be a cleanup job, but the root cause could include missing tests, unclear ownership, or unsafe assumptions in data retention logic.',
-      points: [
-        '**Symptom:** what users see.',
-        '**Immediate cause:** what directly caused the behaviour.',
-        '**Root cause:** why the system allowed it to happen.',
-        '**Prevention:** tests, monitoring, validation, documentation, or process changes.'
-      ],
+      whatIs: {
+        text: 'Fixing the symptom is not enough — ask why it happened and what prevents recurrence.',
+        ensures: [
+          '**Symptom:** what users see',
+          '**Immediate cause:** what directly triggered it',
+          '**Root cause:** why the system allowed it',
+          '**Prevention:** tests, monitoring, or process changes'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'From symptom to prevention.',
-        steps: ['Symptom', 'Immediate cause', 'Root cause', 'Prevention']
+        loop: false,
+        steps: [
+          { icon: 'eye', label: 'Symptom', desc: 'What users actually see.' },
+          { icon: 'bolt', label: 'Immediate cause', desc: 'What directly triggered it.' },
+          { icon: 'magnifying-glass', label: 'Root cause', desc: 'Why the system allowed it.' },
+          { icon: 'shield-halved', label: 'Prevention', desc: 'What stops it recurring.' }
+        ]
       },
-      mistakes: ['If a bug is fixed, the work is done'],
-      reflection: 'What is the difference between fixing a bug and preventing a bug from happening again?'
+      misconceptions: [
+        { wrong: 'If a bug is fixed, the work is done.', right: 'Prevent it from happening again.' },
+        { wrong: 'The first cause you find is the root cause.', right: 'Keep asking why until you reach the system reason.' }
+      ],
+      takeaways: [
+        'Symptom, immediate cause, root cause, prevention.',
+        'The real fix stops recurrence.',
+        'Ask "why" more than once.'
+      ],
+      reflection: 'What is the difference between fixing a bug and preventing a bug from happening again?',
+      checks: [
+        'Symptom vs root cause?',
+        'What is prevention?',
+        'Why is fixing the symptom not enough?',
+        'Give an example of a root cause.'
+      ]
     },
     {
       id: 'prevention',
       title: 'Prevention Mindset',
       blurb: 'Reducing recurrence through tests, monitoring, validation, documentation, or process changes.',
-      concept:
-        'Quality is not a final checkbox. It is built through testing, review, investigation, maintainability, and learning from failures. Prevention is the last step of every investigation, not an optional extra.',
-      points: [
-        'Prevention: tests, monitoring, validation, documentation, or process changes.',
-        'Automated tests help teams make changes repeatedly with confidence.',
-        'Reviewing for risk asks whether a change could break something important.',
-        'Verify the fix, then prevent recurrence.'
-      ],
+      whatIs: {
+        text: 'Quality is built through testing, review, and learning — prevention is the last step of every fix.',
+        ensures: [
+          'Add tests, monitoring, or validation',
+          'Automate so change stays safe',
+          'Ask if a change could break something',
+          'Verify the fix, then prevent recurrence'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'Prevent recurrence.',
-        steps: ['Fix', 'Verify', 'Prevent recurrence']
+        loop: false,
+        steps: [
+          { icon: 'wrench', label: 'Fix', desc: 'Correct the underlying issue.' },
+          { icon: 'circle-check', label: 'Verify', desc: 'Confirm it actually works.' },
+          { icon: 'shield-halved', label: 'Prevent recurrence', desc: 'Add tests, monitoring, or guards.' }
+        ]
       },
-      mistakes: ['If a bug is fixed, the work is done', "Testing is only QA's job"],
-      reflection: 'Pick a bug you have seen. What one change would stop it happening again?'
+      misconceptions: [
+        { wrong: 'If a bug is fixed, the work is done.', right: 'Add a guard so it cannot return.' },
+        { wrong: "Testing is only QA's job.", right: 'Prevention is everyone\'s responsibility.' }
+      ],
+      takeaways: [
+        'Prevention closes every investigation.',
+        'Automated tests make change repeatable.',
+        'Learn from failures.'
+      ],
+      reflection: 'Pick a bug you have seen. What one change would stop it happening again?',
+      checks: [
+        'What is prevention?',
+        'How do tests prevent regressions?',
+        'What one change would stop a past bug?',
+        'Why is quality not a final checkbox?'
+      ]
     }
   ]
 }

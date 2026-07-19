@@ -1,13 +1,12 @@
 import { navigate } from '../router.js'
 import Icon from './Icon.jsx'
+import logo from '../logo.png'
 
 export default function TopBar() {
   return (
     <div className="top-bar">
       <button className="brand" onClick={() => navigate('/')}>
-        <span className="brand-mark">
-          <Icon name="star" />
-        </span>
+        <img className="brand-logo" src={logo} alt="" />
         <span className="brand-name">Software Engineering Universe</span>
       </button>
       <span className="spacer" />

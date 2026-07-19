@@ -3,7 +3,8 @@ import { navigate } from '../router.js'
 const PREVIEW_COUNT = 3
 
 export default function ConceptCard({ topic, popup }) {
-  const steps = popup.visual?.steps ?? []
+  // Steps may be plain strings or { label, ... } objects.
+  const steps = (popup.visual?.steps ?? []).map((s) => (typeof s === 'string' ? s : s.label))
   const preview = steps.slice(0, PREVIEW_COUNT)
   const remaining = steps.length - preview.length
 

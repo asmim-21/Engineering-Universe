@@ -9,129 +9,254 @@ export default {
       id: 'comms',
       title: 'Communication Skills',
       blurb: 'Clear, audience-aware communication that separates facts, assumptions, unknowns, and next steps.',
-      concept:
-        'Engineering communication should reduce ambiguity. Write and speak in a way that helps others understand context, decisions, risks, and next steps. Good communication is not about using impressive technical language. It is about being precise, concise, and audience aware.',
-      points: [
-        'State the context before details.',
-        'Separate facts from assumptions.',
-        'Be clear about what is known and unknown.',
-        'Use examples when explaining abstract ideas.',
-        'Adapt depth to the audience.',
-        'Confirm decisions and next steps in writing when needed.'
-      ],
+      whatIs: {
+        text: 'Good engineering communication reduces ambiguity — precise, concise, and aware of the audience.',
+        ensures: [
+          'State context before details',
+          'Separate facts from assumptions',
+          'Be clear on knowns and unknowns',
+          'Adapt depth to the audience'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'Engineering communication loop — communication is part of delivery, not separate from it.',
-        steps: ['Problem', 'Investigate', 'Research', 'Document', 'Discuss', 'Build', 'Share outcome']
+        steps: [
+          { icon: 'circle-question', label: 'Problem', desc: 'Start from what needs solving.' },
+          { icon: 'magnifying-glass', label: 'Investigate', desc: 'Dig into the details.' },
+          { icon: 'book', label: 'Research', desc: 'Find trusted information.' },
+          { icon: 'file-lines', label: 'Document', desc: 'Write down what you learn.' },
+          { icon: 'comments', label: 'Discuss', desc: 'Align with others.' },
+          { icon: 'hammer', label: 'Build', desc: 'Do the work.' },
+          { icon: 'share-nodes', label: 'Share outcome', desc: 'Tell people the result.' }
+        ]
       },
-      mistakes: ['Good engineers only need technical skill'],
-      reflection: 'Explain the same technical decision twice: once to an engineer, once to a stakeholder.'
+      misconceptions: [
+        { wrong: 'Good engineers only need technical skill.', right: 'Clarity and collaboration create impact too.' },
+        { wrong: 'Impressive jargon signals expertise.', right: 'Precise, plain language communicates better.' }
+      ],
+      takeaways: [
+        'Communication is part of delivery.',
+        'Context first, details second.',
+        'Match the message to the audience.'
+      ],
+      reflection: 'Explain the same technical decision twice: once to an engineer, once to a stakeholder.',
+      checks: [
+        'Why state context first?',
+        'Facts vs assumptions?',
+        'How do you adapt for a stakeholder?',
+        'What should you confirm in writing?'
+      ]
     },
     {
       id: 'docs',
       title: 'Documentation',
       blurb: 'Useful requirements, design notes, runbooks, handover notes, and decision records.',
-      concept:
-        'Documentation should help future readers understand what exists, why it exists, how to use it, how to change it, or how to support it. Poor documentation becomes stale notes. Good documentation supports delivery and operations.',
-      points: [
-        '**Requirements document:** what needs to be achieved and how success will be judged.',
-        '**Design note:** proposed approach, options considered, trade-offs, risks, and impacted systems.',
-        '**Runbook:** how to operate or troubleshoot a system.',
-        '**Handover note:** what changed, what remains, and what someone else needs to know.',
-        '**Decision record:** what decision was made and why.'
-      ],
+      whatIs: {
+        text: 'Good docs help future readers understand what exists, why, and how to use, change, or support it.',
+        ensures: [
+          '**Requirements & design notes:** what and how',
+          '**Runbook:** how to operate or troubleshoot',
+          '**Handover note:** what changed and what remains',
+          '**Decision record:** what was decided and why'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'What good documentation answers.',
-        steps: ['What exists', 'Why it exists', 'How to use it', 'How to change it', 'How to support it']
+        loop: false,
+        steps: [
+          { icon: 'box', label: 'What exists', desc: "The thing you're describing." },
+          { icon: 'circle-question', label: 'Why it exists', desc: 'The reason behind it.' },
+          { icon: 'book-open', label: 'How to use it', desc: 'Steps to operate it.' },
+          { icon: 'screwdriver-wrench', label: 'How to change it', desc: 'How to modify it safely.' },
+          { icon: 'headset', label: 'How to support it', desc: 'How to keep it running.' }
+        ]
       },
-      mistakes: ['Documentation is admin work'],
-      reflection: 'Improve the note "Fixed booking bug" with context, cause, change, validation, and follow-up actions.'
+      misconceptions: [
+        { wrong: 'Documentation is admin work.', right: 'It supports delivery and operations.' },
+        { wrong: 'Any note counts as documentation.', right: 'Good docs answer what, why, and how.' }
+      ],
+      takeaways: [
+        'Write for the next reader.',
+        'Good docs answer what, why, and how.',
+        'Stale notes are worse than none.'
+      ],
+      reflection: 'Improve the note "Fixed booking bug" with context, cause, change, validation, and follow-up actions.',
+      checks: [
+        'What should good docs answer?',
+        'What is a runbook?',
+        'What goes in a handover note?',
+        'Improve "Fixed booking bug".'
+      ]
     },
     {
       id: 'stake',
       title: 'Stakeholder Thinking',
       blurb: 'Understanding users, constraints, trade-offs, risk, time, cost, reliability, and success measures.',
-      concept:
-        'Technical work exists inside a business or user context. Stakeholders may care about cost, risk, time, usability, compliance, reliability, or operational impact. An effective engineer does not blindly implement a request. They clarify the outcome, identify trade-offs, and communicate consequences.',
-      points: [
-        'Ask who needs the feature.',
-        'Ask what problem it solves.',
-        'Ask what happens if it is not built.',
-        'Ask what constraints exist.',
-        'Ask how success will be measured.',
-        'Ask who must be informed or consulted.'
-      ],
+      whatIs: {
+        text: 'Technical work sits in a business context — clarify the outcome, trade-offs, and consequences.',
+        ensures: [
+          'Ask who needs it and what problem it solves',
+          'Ask what happens if it is not built',
+          'Ask what constraints exist',
+          'Ask how success will be measured'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'Turning a request into requirements.',
-        steps: ['Vague request', 'Clarifying questions', 'Constraints and trade-offs', 'Success measures', 'Possible requirements']
+        loop: false,
+        steps: [
+          { icon: 'comment-dots', label: 'Vague request', desc: 'A fuzzy ask arrives.' },
+          { icon: 'circle-question', label: 'Clarifying questions', desc: "Pin down what's meant." },
+          { icon: 'scale-balanced', label: 'Constraints and trade-offs', desc: 'Weigh cost, risk, and time.' },
+          { icon: 'bullseye', label: 'Success measures', desc: "Decide how you'll judge it." },
+          { icon: 'list-check', label: 'Possible requirements', desc: 'Turn it into concrete work.' }
+        ]
       },
-      mistakes: ['Stakeholders always know exactly what they want'],
-      reflection: 'Turn "Make desk booking better" into clarifying questions. How might different stakeholders mean different things by "better"?'
+      misconceptions: [
+        { wrong: 'Stakeholders always know exactly what they want.', right: 'They often need help turning wants into requirements.' },
+        { wrong: 'Just build the request as stated.', right: 'Clarify outcomes and surface trade-offs first.' }
+      ],
+      takeaways: [
+        'Requests are not requirements.',
+        'Different stakeholders mean different things.',
+        'Clarify success before building.'
+      ],
+      reflection: 'Turn "Make desk booking better" into clarifying questions. How might different stakeholders mean different things by "better"?',
+      checks: [
+        'Turn a vague request into questions.',
+        'Why ask "what if we do not build it?"',
+        'What might "better" mean to different people?',
+        'How is success measured?'
+      ]
     },
     {
       id: 'ai',
       title: 'Responsible AI Usage',
       blurb: 'Using AI as an assistant while validating outputs against trusted sources, system context, tests, and reviews.',
-      concept:
-        'AI tools can help engineers learn, explore options, summarise unfamiliar concepts, draft code, generate test ideas, and improve documentation. But outputs can be wrong, incomplete, insecure, or inappropriate for the system context. Treat AI as an assistant, not an authority. You must review, test, and understand any generated output.',
-      points: [
-        '**Good uses:** explain unfamiliar code, generate first-draft documentation, suggest test cases, summarise logs, compare design options, brainstorm questions.',
-        '**Risks:** hallucinated APIs, incorrect assumptions, insecure code, outdated guidance, missing company context, overconfidence.',
-        '**Validation:** read the output, compare with official docs, test locally, ask a human when risk is high, and never paste sensitive information into tools unless approved.'
-      ],
+      whatIs: {
+        text: 'Treat AI as an assistant, not an authority — it accelerates work but you must verify the output.',
+        ensures: [
+          '**Good uses:** explain code, draft docs, suggest tests',
+          '**Risks:** hallucinated APIs, insecure or outdated code',
+          'Validate against trusted sources and context',
+          'Never paste sensitive data unless approved'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'Responsible AI usage — frames AI as a productivity tool that still requires engineering judgement.',
-        steps: ['Use AI to accelerate exploration', 'Validate against trusted sources and system context', 'Test the output', 'Document assumptions', 'Ask for review when risk is high']
+        loop: false,
+        steps: [
+          { icon: 'robot', label: 'Use AI to accelerate exploration', desc: 'Draft and explore faster.' },
+          { icon: 'magnifying-glass', label: 'Validate against trusted sources', desc: 'Check it against reality and context.' },
+          { icon: 'flask', label: 'Test the output', desc: "Run it, don't just trust it." },
+          { icon: 'file-lines', label: 'Document assumptions', desc: 'Record what you assumed.' },
+          { icon: 'user-check', label: 'Ask for review when risk is high', desc: 'Get a human when it matters.' }
+        ]
       },
-      mistakes: ['AI output can be copied without understanding'],
-      reflection: 'Take an AI-suggested solution. What must be verified before trusting it — for security, correctness, and system context?'
+      misconceptions: [
+        { wrong: 'AI output can be copied without understanding.', right: 'Review, test, and understand anything generated.' },
+        { wrong: 'AI is always right.', right: 'It can be wrong, insecure, or missing context.' }
+      ],
+      takeaways: [
+        'AI accelerates; judgement decides.',
+        'Verify against docs and tests.',
+        'Guard sensitive information.'
+      ],
+      reflection: 'Take an AI-suggested solution. What must be verified before trusting it — for security, correctness, and system context?',
+      checks: [
+        'What must you verify in AI output?',
+        'Good uses of AI here?',
+        'What are the risks?',
+        'When must a human review?'
+      ]
     },
     {
       id: 'escalate',
       title: 'Effective Escalation',
       blurb: 'High-quality help requests with context, evidence, hypothesis, and a specific ask.',
-      concept:
-        'A strong engineer keeps learning, investigates independently, and escalates clearly when needed. Escalation should include context, what was tried, evidence found, hypothesis, and the specific question. This makes it easier for others to help and demonstrates ownership.',
-      points: [
-        '**Context:** what are you working on?',
-        '**Goal:** what are you trying to achieve?',
-        '**Attempts:** what have you already tried?',
-        '**Evidence:** what did you observe?',
-        '**Hypothesis:** what do you think is happening?',
-        '**Question:** what specific help do you need?'
-      ],
+      whatIs: {
+        text: 'A strong escalation includes context, attempts, evidence, hypothesis, and a specific question.',
+        ensures: [
+          '**Context & goal:** what and why',
+          '**Attempts:** what you already tried',
+          '**Evidence:** what you observed',
+          '**Hypothesis & question:** your best guess and the ask'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'Effective escalation format — a reusable help-seeking template.',
-        steps: ['Context', 'What I tried', 'What I found', 'My hypothesis', 'Specific question']
+        loop: false,
+        steps: [
+          { icon: 'circle-info', label: 'Context', desc: "What you're working on." },
+          { icon: 'list-check', label: 'What I tried', desc: 'Your attempts so far.' },
+          { icon: 'magnifying-glass', label: 'What I found', desc: 'The evidence gathered.' },
+          { icon: 'lightbulb', label: 'My hypothesis', desc: 'What you think is happening.' },
+          { icon: 'circle-question', label: 'Specific question', desc: 'The exact help you need.' }
+        ]
       },
-      mistakes: ['Asking for help means failing'],
-      reflection: 'Write a help request using the format. Review it for clarity, evidence, and specificity.'
+      misconceptions: [
+        { wrong: 'Asking for help means failing.', right: 'A clear, evidenced ask shows ownership.' },
+        { wrong: 'Dump everything and hope.', right: 'Structure the ask so it is easy to answer.' }
+      ],
+      takeaways: [
+        'Escalate with evidence, not just symptoms.',
+        'A specific ask gets a specific answer.',
+        'Good escalation demonstrates ownership.'
+      ],
+      reflection: 'Write a help request using the format. Review it for clarity, evidence, and specificity.',
+      checks: [
+        'What five parts make a good escalation?',
+        'Why include what you tried?',
+        'How does this differ from "it broke"?',
+        'Write a help request using the format.'
+      ]
     },
     {
       id: 'learning',
       title: 'Continuous Learning',
       blurb: 'Building habits that help engineers keep improving after each task, bug, release, and review.',
-      concept:
-        'Technical skill matters, but engineers create impact through clarity, collaboration, judgement, and learning. The independent learning loop gives you a repeatable process for learning unfamiliar technical material — and it works the same way whether the unknown is a language, a system, or a process.',
-      points: [
-        'Identify what is unknown.',
-        'Research using trusted sources.',
-        'Experiment safely in a non-production environment.',
-        'Form a hypothesis.',
-        'Validate or adjust the hypothesis.',
-        'Apply the learning.'
-      ],
+      whatIs: {
+        text: 'The independent learning loop is a repeatable way to learn any unfamiliar language, system, or process.',
+        ensures: [
+          'Identify what is unknown',
+          'Research trusted sources',
+          'Experiment safely, then hypothesise',
+          'Validate, adjust, and apply'
+        ]
+      },
       visual: {
         kind: 'flow',
         label: 'Independent learning loop.',
-        steps: ['Identify what is unknown', 'Research using trusted sources', 'Experiment safely', 'Form a hypothesis', 'Validate or adjust', 'Apply the learning']
+        steps: [
+          { icon: 'magnifying-glass', label: 'Identify what is unknown', desc: 'Name the gap in your knowledge.' },
+          { icon: 'book', label: 'Research using trusted sources', desc: 'Gather from credible places.' },
+          { icon: 'flask', label: 'Experiment safely', desc: "Try it where it can't hurt." },
+          { icon: 'lightbulb', label: 'Form a hypothesis', desc: 'Make an educated guess.' },
+          { icon: 'clipboard-check', label: 'Validate or adjust', desc: 'Check and refine.' },
+          { icon: 'rocket', label: 'Apply the learning', desc: 'Put it to real use.' }
+        ]
       },
-      mistakes: ['Good engineers only need technical skill', 'Asking for help means failing'],
-      reflection: 'Write one principle you will use when you next feel stuck on a task.'
+      misconceptions: [
+        { wrong: 'Good engineers only need technical skill.', right: 'Clarity, collaboration, and learning create impact.' },
+        { wrong: 'Asking for help means failing.', right: 'Independent learning includes knowing when to ask.' }
+      ],
+      takeaways: [
+        'The loop works for any unknown.',
+        'Learning is a habit, not a one-off.',
+        'Apply what you learn to the real task.'
+      ],
+      reflection: 'Write one principle you will use when you next feel stuck on a task.',
+      checks: [
+        'What are the steps of the loop?',
+        'Why experiment before applying?',
+        'How do you validate a hypothesis?',
+        'What will you do next time you are stuck?'
+      ]
     }
   ]
 }

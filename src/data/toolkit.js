@@ -9,7 +9,14 @@ export const toolkit = [
     visual: {
       kind: 'flow',
       label: 'Independent learning loop.',
-      steps: ['Identify what is unknown', 'Research using trusted sources', 'Experiment safely in a non-production environment', 'Form a hypothesis', 'Validate or adjust the hypothesis', 'Apply the learning']
+      steps: [
+        { icon: 'magnifying-glass', label: 'Identify what is unknown', desc: 'Define the question or problem you want to understand.' },
+        { icon: 'book', label: 'Research using trusted sources', desc: 'Gather information from credible and relevant sources.' },
+        { icon: 'flask', label: 'Experiment safely', desc: 'Test your ideas in a safe, non-production space.' },
+        { icon: 'lightbulb', label: 'Form a hypothesis', desc: "Make an educated guess based on what you've learned." },
+        { icon: 'clipboard-check', label: 'Validate or adjust', desc: 'Check your results. Does it hold true? Refine if needed.' },
+        { icon: 'rocket', label: 'Apply the learning', desc: "Use it in real projects — and share what you found." }
+      ]
     },
     reflection: 'What is the unknown in front of you right now?'
   },
@@ -21,7 +28,14 @@ export const toolkit = [
     visual: {
       kind: 'flow',
       label: 'Problem breakdown loop.',
-      steps: ['Understand the outcome', 'List knowns and unknowns', 'Identify systems involved', 'Break the work into smaller tasks', 'Deliver the smallest useful version', 'Validate and iterate']
+      steps: [
+        { icon: 'bullseye', label: 'Understand the outcome', desc: 'Be clear on the result you need.' },
+        { icon: 'list-check', label: 'List knowns and unknowns', desc: 'Separate what you know from the gaps.' },
+        { icon: 'diagram-project', label: 'Identify systems involved', desc: 'Map the parts that are affected.' },
+        { icon: 'puzzle-piece', label: 'Break into smaller tasks', desc: 'Split it into manageable pieces.' },
+        { icon: 'cube', label: 'Deliver the smallest useful version', desc: 'Ship something small but real.' },
+        { icon: 'arrows-rotate', label: 'Validate and iterate', desc: 'Check it, learn, and go again.' }
+      ]
     },
     reflection: 'What is the smallest useful version of your current task?'
   },
@@ -33,7 +47,14 @@ export const toolkit = [
     visual: {
       kind: 'flow',
       label: 'Escalation ladder.',
-      steps: ['Think through the problem', 'Experiment safely', 'Search docs, code, tickets, previous PRs, and trusted external sources', 'Form a hypothesis', 'Ask for help with context, evidence, and a specific question']
+      loop: false,
+      steps: [
+        { icon: 'brain', label: 'Think through the problem', desc: 'Reason it out before acting.' },
+        { icon: 'flask', label: 'Experiment safely', desc: 'Try things where nothing breaks.' },
+        { icon: 'magnifying-glass', label: 'Search everything relevant', desc: 'Docs, code, tickets, previous PRs, trusted sources.' },
+        { icon: 'lightbulb', label: 'Form a hypothesis', desc: "Decide what you think is going on." },
+        { icon: 'comments', label: 'Ask for help with evidence', desc: 'Escalate with context and a specific question.' }
+      ]
     },
     reflection: 'Which rung are you on?'
   }

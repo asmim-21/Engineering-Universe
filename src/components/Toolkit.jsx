@@ -22,7 +22,7 @@ export default function Toolkit({ onClose }) {
           <div className="sheet-part kit-loop" key={loop.id}>
             <h3>{loop.title}</h3>
             <p>{loop.concept}</p>
-            <VisualModel visual={loop.visual} tone="var(--ink)" />
+            <VisualModel visual={loop.visual} />
             <div className="reflection" style={{ marginTop: 14 }}>
               <div className="reflection-text">{loop.reflection}</div>
             </div>

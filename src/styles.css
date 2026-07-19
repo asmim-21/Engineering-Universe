@@ -109,15 +109,10 @@ button {
   padding: 0;
 }
 
-.brand-mark {
-  width: 26px;
-  height: 26px;
-  border: 2px solid var(--ink);
-  border-radius: var(--hand);
-  display: grid;
-  place-items: center;
-  background: var(--hl);
-  font-size: 12px;
+.brand-logo {
+  width: 30px;
+  height: 30px;
+  display: block;
 }
 
 .brand-name {
@@ -587,99 +582,358 @@ button {
   color: var(--tone, var(--ink));
 }
 
-.sheet h2 {
-  font-size: clamp(24px, 3.6vw, 36px);
-  margin: 10px 0 0;
-  max-width: 22ch;
-  padding-right: 44px;
+.sheet-title {
+  font-size: clamp(26px, 4vw, 40px);
+  margin: 8px auto 0;
+  max-width: 24ch;
+  padding: 0 44px;
+  text-align: center;
 }
 
 .sheet-purpose {
   font-family: 'Gaegu', cursive;
   font-size: clamp(18px, 2.2vw, 22px);
   color: var(--soft);
-  margin-top: 10px;
-  max-width: 56ch;
+  margin: 10px auto 0;
+  max-width: 60ch;
+  text-align: center;
 }
+
+/* ----- sectioned card body (Popup) ----- */
+
+.card-section {
+  margin-top: 28px;
+}
+
+.section-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-head i {
+  font-size: 15px;
+}
+
+.sh-blue { color: #2b6cb0; }
+.sh-red { color: #c0392b; }
+.sh-gold { color: #b0810f; }
+.sh-green { color: #2f855a; }
+.sh-purple { color: #7c4dbb; }
+.sh-teal { color: #0f766e; }
+.sh-ink { color: var(--ink); }
+
+.intro-box {
+  background: #eef4fb;
+  border: 2px solid #cbdef2;
+  border-radius: 16px;
+  padding: 18px 20px;
+}
+
+.intro-box p {
+  max-width: 72ch;
+}
+
+.intro-box p:last-of-type {
+  margin-bottom: 0;
+}
+
+.check-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 7px 18px;
+}
+
+.check-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14.5px;
+  line-height: 1.35;
+}
+
+.check-list .check-ic {
+  color: #2b6cb0;
+  font-size: 14px;
+  margin-top: 3px;
+  flex: none;
+}
+
+.section-pill-wrap {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.section-pill {
+  display: inline-block;
+  background: #fcf1d9;
+  border: 2px solid #ead9a0;
+  border-radius: 999px;
+  padding: 5px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a6d1b;
+}
+
+.miscon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+}
+
+.miscon {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fdecec;
+  border: 2px solid #f2c4c4;
+  border-radius: 12px;
+  padding: 11px 13px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.miscon i {
+  color: #c0392b;
+  margin-top: 2px;
+  flex: none;
+}
+
+.reflect-box {
+  background: #fcf6e3;
+  border: 2px solid #ead9a0;
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-family: 'Gaegu', cursive;
+  font-size: clamp(19px, 2.4vw, 23px);
+  line-height: 1.3;
+}
+
+/* ----- data tables + panels ----- */
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  line-height: 1.35;
+}
+
+.info-table th {
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soft);
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--rule);
+  white-space: nowrap;
+}
+
+.info-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.info-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.info-table .cell-stage {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.info-table .cell-stage i {
+  margin-right: 7px;
+}
+
+.info-table .cell-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--soft);
+  width: 1%;
+}
+
+.io-list {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.io-list li {
+  margin-bottom: 2px;
+}
+
+/* running example: a card per stage */
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.example-item {
+  text-align: center;
+  padding: 12px 8px;
+  border: 2px solid var(--border, #e4e2d8);
+  border-radius: 12px;
+  background: var(--bg, #fcfcf9);
+}
+
+.example-item .ex-icon {
+  font-size: 22px;
+  color: var(--accent, var(--ink));
+}
+
+.example-item .ex-stage {
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--accent, var(--ink));
+  margin: 7px 0 5px;
+}
+
+.example-item .ex-text {
+  font-family: 'Gaegu', cursive;
+  font-size: 14px;
+  color: var(--soft);
+  line-height: 1.25;
+}
+
+/* misconceptions as wrong -> right pairs */
+.miscon-pairs {
+  display: grid;
+  gap: 8px;
+}
+
+.miscon-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.miscon-cell {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  line-height: 1.35;
+}
+
+.miscon-cell.wrong {
+  background: #fdecec;
+  border: 2px solid #f2c4c4;
+}
+
+.miscon-cell.right {
+  background: #e9f6ef;
+  border: 2px solid #bfe3ce;
+}
+
+.miscon-cell.wrong i {
+  color: #c0392b;
+}
+
+.miscon-cell.right i {
+  color: #2f855a;
+}
+
+.miscon-cell i {
+  margin-top: 2px;
+  flex: none;
+}
+
+/* key takeaways */
+.takeaways {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 8px 20px;
+}
+
+.takeaways li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 14.5px;
+  line-height: 1.35;
+}
+
+.takeaways i {
+  color: #b0810f;
+  margin-top: 3px;
+  flex: none;
+}
+
+/* check your understanding */
+.checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  line-height: 1.35;
+}
+
+.check-num {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--rule);
+  display: grid;
+  place-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--soft);
+}
+
+/* ----- Toolkit sheet still uses the simpler part layout ----- */
 
 .sheet-part {
   margin-top: 26px;
-}
-
-.sheet-part-head {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
-  font-size: 10.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink);
-  background: var(--hl);
-  border: 2px solid var(--ink);
-  border-radius: var(--hand);
-  padding: 4px 11px;
-  margin-bottom: 12px;
 }
 
 .sheet-part p {
   max-width: 72ch;
 }
 
-.points-list {
-  list-style: none;
-  margin: 10px 0 0;
-  padding: 0;
-  max-width: 74ch;
-}
-
-.points-list li {
-  position: relative;
-  padding-left: 19px;
-  margin-bottom: 6px;
-  font-size: 15px;
-}
-
-.points-list li::before {
-  content: '';
-  position: absolute;
-  left: 1px;
-  top: 10px;
-  width: 9px;
-  height: 2.5px;
-  background: var(--tone, var(--ink));
-  border-radius: 2px;
-}
-
-.mistakes-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.mistakes-list span {
-  background: #fff;
-  border: 2px solid var(--c3);
-  border-radius: var(--hand);
-  padding: 6px 12px;
-  font-size: 14px;
-  text-decoration: line-through;
-  text-decoration-color: var(--c3);
-  text-decoration-thickness: 2px;
-}
-
 .reflection {
-  border: 2.5px solid var(--ink);
-  border-radius: var(--hand);
-  background: var(--hl);
+  background: #fcf6e3;
+  border: 2px solid #ead9a0;
+  border-radius: 14px;
   padding: 16px 20px;
-  box-shadow: 4px 5px 0 rgba(25, 28, 26, 0.16);
 }
 
 .reflection-text {
   font-family: 'Gaegu', cursive;
-  font-size: clamp(20px, 2.6vw, 25px);
+  font-size: clamp(19px, 2.4vw, 23px);
   line-height: 1.3;
   max-width: 52ch;
 }
@@ -737,9 +991,8 @@ button {
 /* ---------- diagrams ---------- */
 
 .diagram {
-  border: 2.5px dashed var(--rule);
   border-radius: var(--hand2);
-  padding: 18px;
+  padding: 20px 14px 22px;
   background: #fcfcf9;
 }
 
@@ -747,25 +1000,130 @@ button {
   font-family: 'Gaegu', cursive;
   font-size: 19px;
   color: var(--soft);
-  margin-bottom: 14px;
+  text-align: center;
+  margin: 0 auto 12px;
+  max-width: 60ch;
 }
 
-.flow-box {
-  background: #fff;
-  border: 2.5px solid var(--ink);
-  border-radius: var(--hand);
-  padding: 9px 13px;
-  font-size: 14px;
-  line-height: 1.25;
-  max-width: 230px;
+/* Serpentine (snake) layout: cards flow left-to-right, then right-to-left on
+   the next row, etc. An SVG overlay draws the connectors — horizontal hops
+   within a row, wrap-around turns between rows, and a loop-back to the start.
+   The extra side/bottom padding is the routing margin for those connectors. */
+.serp {
+  position: relative;
+  padding: 10px 34px 44px;
 }
 
-.flow-box-index {
-  display: block;
+.serp-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 34px 28px;
+  align-items: stretch;
+}
+
+.serp-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.serp-arc {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.snode {
+  position: relative;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 16px 16px;
+}
+
+.snode-badge {
+  position: absolute;
+  top: -15px;
+  left: 22px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  border: 3px solid #fcfcf9;
+  display: grid;
+  place-items: center;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--tone, var(--ink));
-  margin-bottom: 2px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.snode-body {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+  margin-top: 4px;
+}
+
+.snode-icon {
+  flex: none;
+  width: 30px;
+  margin-top: 2px;
+  text-align: center;
+  font-size: 25px;
+  color: var(--accent);
+}
+
+.snode-text {
+  min-width: 0;
+}
+
+.snode-title {
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.snode-accent {
+  width: 34px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--accent);
+  margin: 8px 0;
+}
+
+.snode-desc {
+  font-family: 'Gaegu', cursive;
+  font-size: 15.5px;
+  line-height: 1.3;
+  color: var(--soft);
+}
+
+.serp-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 6px auto 0;
+  padding: 10px 18px;
+  max-width: 60ch;
+  border: 2px dashed var(--rule);
+  border-radius: var(--hand);
+  font-family: 'Gaegu', cursive;
+  font-size: 17px;
+  color: var(--soft);
+}
+
+.serp-footer i {
+  color: var(--c4);
+  font-size: 18px;
 }
 
 .pyramid {
@@ -773,54 +1131,28 @@ button {
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  padding-top: 6px;
 }
 
-.pyramid .flow-box {
+.pyramid-tier {
   width: var(--w, 100%);
-  max-width: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   text-align: center;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 13px;
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
 }
 
-/* Steps arranged around a ring. An SVG draws the arrows (real arrowhead
-   markers on arcs between nodes); the node boxes are HTML positioned on top
-   at percentages computed in JS so they scale with the SVG. */
-.loop-diagram {
-  position: relative;
-  margin: 6px auto 0;
-  max-width: 100%;
-}
-
-.loop-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.loop-arc {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 2.2;
-  stroke-linecap: round;
-}
-
-.loop-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 20px;
-  color: var(--rule);
-}
-
-.flow-box.loop-node {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  width: 148px;
-  max-width: 148px;
-  text-align: center;
-  font-size: 12.5px;
+.pyramid-icon {
+  color: var(--accent);
+  font-size: 16px;
 }
 
 /* ---------- responsive ---------- */
@@ -839,33 +1171,17 @@ button {
     display: none;
   }
 
-  /* The circle needs room to breathe, so on narrow screens fall back to a
-     plain numbered stack instead of cramming a ring into the width. */
-  .loop-diagram {
-    position: static;
-    width: auto !important;
-    height: auto !important;
-    aspect-ratio: auto !important;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  /* On narrow screens the snake collapses to a single column (handled in JS by
+     the column count), so tighten the routing margins the connectors use. */
+  .serp {
+    padding: 10px 26px 40px;
   }
 
-  .loop-svg,
-  .loop-center {
-    display: none;
+  .serp-grid {
+    gap: 30px 26px;
   }
 
-  .flow-box.loop-node {
-    position: static;
-    transform: none;
-    width: auto;
-    max-width: none;
-    text-align: left;
-    font-size: 14px;
-  }
-
-  .pyramid .flow-box {
+  .pyramid-tier {
     width: 100% !important;
   }
 
