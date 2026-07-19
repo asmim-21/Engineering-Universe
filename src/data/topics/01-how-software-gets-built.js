@@ -10,7 +10,7 @@ export default {
   popups: [
     {
       id: 'sdlc',
-      title: 'Software Development Lifecycle',
+      title: 'Software Development Lifecycle (SDLC)',
       blurb: 'End-to-end software journey from idea to value and ongoing improvement.',
       whatIs: {
         text: 'The SDLC is the repeatable process teams use to turn an idea into reliable software.',
@@ -253,6 +253,7 @@ export default {
       visual: {
         kind: 'flow',
         label: 'Feature journey — shows how a feature travels from idea to users.',
+        loop: false,
         steps: [
           { icon: 'inbox', label: 'Feature request', desc: 'Someone asks for a capability.' },
           { icon: 'circle-question', label: 'Clarifying questions', desc: 'Pin down what is really needed.' },
@@ -279,6 +280,17 @@ export default {
           'Add avatar cropping based on feedback.'
         ]
       },
+      who: [
+        'User, Stakeholder',
+        'Business Analyst, Product Owner',
+        'Product Owner, Business Analyst',
+        'Developer, Designer',
+        'Developers',
+        'Developers',
+        'QA, Testers',
+        'DevOps, Release Manager',
+        'Product Owner, Support, Users'
+      ],
       misconceptions: [
         { wrong: 'A feature is finished forever once released.', right: 'Release starts monitoring, feedback, and improvement.' },
         { wrong: 'Skipping clarifying questions saves time.', right: 'It risks building the wrong thing well.' },

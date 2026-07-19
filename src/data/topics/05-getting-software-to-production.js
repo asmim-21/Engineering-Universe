@@ -32,6 +32,27 @@ export default {
           { icon: 'chart-line', label: 'Monitoring', desc: 'Confirm it behaves in production.' }
         ]
       },
+      example: {
+        title: 'Fixing a footer typo',
+        items: [
+          'Create a branch fix/footer-typo.',
+          'Open a PR with the one-line change.',
+          'A teammate reviews; CI runs checks.',
+          'The build produces an artefact.',
+          'Automated tests pass.',
+          'Deploy the change to production.',
+          'Dashboards confirm nothing broke.'
+        ]
+      },
+      who: [
+        'Developer',
+        'Developer',
+        'Reviewers, CI',
+        'CI pipeline',
+        'CI pipeline, QA',
+        'DevOps, Release Manager',
+        'SRE, On-call'
+      ],
       misconceptions: [
         { wrong: 'Deployment is just copying files.', right: 'It is a reviewed, built, tested, monitored flow.' },
         { wrong: 'A pull request is just a formality.', right: 'Review and checks catch problems early.' }
@@ -75,6 +96,19 @@ export default {
           { icon: 'rocket', label: 'Deployment', desc: 'Release it to an environment.' },
           { icon: 'server', label: 'Running application', desc: 'The live workload.' },
           { icon: 'chart-line', label: 'Monitoring', desc: 'Watch its health.' }
+        ]
+      },
+      example: {
+        title: 'Shipping a new endpoint',
+        items: [
+          'Branch off to add the endpoint.',
+          'Open a pull request.',
+          'The pipeline builds the change.',
+          'Automated tests run.',
+          'A container image is produced.',
+          'The image deploys to staging.',
+          'The app serves the new endpoint.',
+          'Metrics confirm it is healthy.'
         ]
       },
       misconceptions: [
@@ -157,6 +191,16 @@ export default {
           { icon: 'box-archive', label: 'Container image', desc: 'The packaged blueprint.' },
           { icon: 'box-open', label: 'Running container', desc: 'A live instance of the image.' },
           { icon: 'server', label: 'Deployed environment', desc: 'Where it actually runs.' }
+        ]
+      },
+      example: {
+        title: 'Packaging a Node app',
+        items: [
+          'Your Node app source code.',
+          'Bundle Node and npm packages.',
+          'Build an image with a Dockerfile.',
+          'Run the image as a container.',
+          'The container runs in staging.'
         ]
       },
       misconceptions: [
@@ -244,6 +288,25 @@ export default {
           { icon: 'lock', label: 'Prevent recurrence', desc: 'Make it not happen again.' }
         ]
       },
+      example: {
+        title: 'Error rate spikes after a deploy',
+        items: [
+          'An alert fires on high 5xx errors.',
+          'On-call opens the dashboards.',
+          'The spike started at the last deploy.',
+          'Roll back to stop the errors.',
+          'Errors clear; write up what happened.',
+          'Add a check that would have caught it.'
+        ]
+      },
+      who: [
+        'On-call engineer',
+        'On-call, Responders',
+        'Responders',
+        'Incident Commander, Responders',
+        'Team',
+        'Team, SRE'
+      ],
       misconceptions: [
         { wrong: 'The goal is to find who to blame.', right: 'The goal is to mitigate, resolve, and learn.' },
         { wrong: 'Once resolved, the incident is closed.', right: 'Prevention and learning come after resolution.' }

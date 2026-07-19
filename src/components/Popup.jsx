@@ -199,90 +199,91 @@ export default function Popup({ popup, siblings, onClose }) {
           <Icon name="xmark" />
         </button>
 
-        <div className="sheet-kicker">{popup.isToolkit ? 'Your toolkit' : 'Sketch card'}</div>
         <h2 className="sheet-title">{popup.title}</h2>
         <div className="sheet-purpose">{popup.blurb}</div>
 
-        <section className="card-section">
-          <IntroBox whatIs={popup.whatIs} concept={popup.concept} points={popup.points} />
-        </section>
-
-        {popup.visual && (
-          <section className="card-section">
-            <div className="section-pill-wrap">
-              <span className="section-pill">{flowLabel}</span>
-            </div>
-            <VisualModel visual={popup.visual} />
+        <div className="card-body">
+          <section className="card-section col-2">
+            <IntroBox whatIs={popup.whatIs} concept={popup.concept} points={popup.points} />
           </section>
-        )}
 
-        {hasStages && (
+          {popup.visual && (
+            <section className="card-section col-2">
+              <div className="section-pill-wrap">
+                <span className="section-pill">{flowLabel}</span>
+              </div>
+              <VisualModel visual={popup.visual} />
+            </section>
+          )}
+
+          {hasStages && (
+            <section className="card-section col-2">
+              <SectionHead icon="table-list" color="sh-teal">Stages at a glance</SectionHead>
+              <StagesTable steps={steps} />
+            </section>
+          )}
+
+          {popup.example && (
+            <section className="card-section col-2">
+              <SectionHead icon="lightbulb" color="sh-green">Running example — {popup.example.title}</SectionHead>
+              <ExampleGrid steps={steps} items={popup.example.items} />
+            </section>
+          )}
+
+          {popup.io && (
+            <section className="card-section col-2">
+              <SectionHead icon="right-long" color="sh-blue">Inputs → outputs</SectionHead>
+              <IoTable steps={steps} inputs={popup.io.inputs} outputs={popup.io.outputs} />
+            </section>
+          )}
+
+          {popup.who && (
+            <section className="card-section">
+              <SectionHead icon="users" color="sh-purple">Who is involved</SectionHead>
+              <WhoTable steps={steps} who={popup.who} />
+            </section>
+          )}
+
+          {hasMistakes && (
+            <section className="card-section col-2">
+              <SectionHead icon="triangle-exclamation" color="sh-red">Common misconceptions</SectionHead>
+              <Misconceptions pairs={popup.misconceptions} mistakes={popup.mistakes} />
+            </section>
+          )}
+
+          {popup.takeaways?.length > 0 && (
+            <section className="card-section">
+              <SectionHead icon="star" color="sh-gold">Key takeaways</SectionHead>
+              <ul className="takeaways">
+                {popup.takeaways.map((t) => (
+                  <li key={t}>
+                    <Icon name="star" />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
           <section className="card-section">
-            <SectionHead icon="table-list" color="sh-teal">Stages at a glance</SectionHead>
-            <StagesTable steps={steps} />
+            <SectionHead icon="circle-question" color="sh-gold">Reflection</SectionHead>
+            <div className="reflect-box">{popup.reflection}</div>
           </section>
-        )}
 
-        {popup.example && (
-          <section className="card-section">
-            <SectionHead icon="lightbulb" color="sh-green">Running example — {popup.example.title}</SectionHead>
-            <ExampleGrid steps={steps} items={popup.example.items} />
-          </section>
-        )}
-
-        {popup.io && (
-          <section className="card-section">
-            <SectionHead icon="right-long" color="sh-blue">Inputs → outputs</SectionHead>
-            <IoTable steps={steps} inputs={popup.io.inputs} outputs={popup.io.outputs} />
-          </section>
-        )}
-
-        {popup.who && (
-          <section className="card-section">
-            <SectionHead icon="users" color="sh-purple">Who is involved</SectionHead>
-            <WhoTable steps={steps} who={popup.who} />
-          </section>
-        )}
-
-        {hasMistakes && (
-          <section className="card-section">
-            <SectionHead icon="triangle-exclamation" color="sh-red">Common misconceptions</SectionHead>
-            <Misconceptions pairs={popup.misconceptions} mistakes={popup.mistakes} />
-          </section>
-        )}
-
-        {popup.takeaways?.length > 0 && (
-          <section className="card-section">
-            <SectionHead icon="star" color="sh-gold">Key takeaways</SectionHead>
-            <ul className="takeaways">
-              {popup.takeaways.map((t) => (
-                <li key={t}>
-                  <Icon name="star" />
-                  <span>{t}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        <section className="card-section">
-          <SectionHead icon="circle-question" color="sh-gold">Reflection</SectionHead>
-          <div className="reflect-box">{popup.reflection}</div>
-        </section>
-
-        {popup.checks?.length > 0 && (
-          <section className="card-section">
-            <SectionHead icon="clipboard-check" color="sh-ink">Check your understanding</SectionHead>
-            <div className="checks">
-              {popup.checks.map((q, i) => (
-                <div className="check-item" key={q}>
-                  <span className="check-num">{i + 1}</span>
-                  <span>{q}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+          {popup.checks?.length > 0 && (
+            <section className="card-section">
+              <SectionHead icon="clipboard-check" color="sh-ink">Check your understanding</SectionHead>
+              <div className="checks">
+                {popup.checks.map((q, i) => (
+                  <div className="check-item" key={q}>
+                    <span className="check-num">{i + 1}</span>
+                    <span>{q}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
 
         {jumpTargets.length > 0 && (
           <div className="jump-nav">

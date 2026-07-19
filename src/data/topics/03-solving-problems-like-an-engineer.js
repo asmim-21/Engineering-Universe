@@ -33,6 +33,19 @@ export default {
           { icon: 'file-lines', label: 'Documentation', desc: 'Leave notes for the next person.' }
         ]
       },
+      example: {
+        title: 'Employees can create social events',
+        items: [
+          'Employees can create and share events.',
+          'Create, edit, RSVP, and list events.',
+          'Add Event and RSVP tables.',
+          'Add create, list, and RSVP endpoints.',
+          'Add an event form and a list screen.',
+          'Unit and end-to-end tests for RSVPs.',
+          'Ship behind a flag; watch errors.',
+          'Document the feature and its API.'
+        ]
+      },
       misconceptions: [
         { wrong: 'Large tasks should be solved in one big step.', right: 'Break them into small, reviewable pieces.' },
         { wrong: 'Breaking down work is just admin.', right: 'It reduces risk and creates visible progress.' }

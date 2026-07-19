@@ -86,14 +86,9 @@ function buildArrows(cards, w, h, cols, n, loop) {
   if (loop && n > 1) {
     const a = cards[n - 1]
     const b = cards[0]
-    const { col } = gridCell(n - 1, cols)
-    if (col === 0) {
-      // Last card already on the left: run straight up the left margin.
-      paths.push(orthPath([[a.x, mid(a)], [6, mid(a)], [6, mid(b)], [b.x, mid(b)]]))
-    } else {
-      // Otherwise loop down, along the bottom, and up the left margin.
-      paths.push(orthPath([[a.x + a.w / 2, a.y + a.h], [a.x + a.w / 2, h - 6], [6, h - 6], [6, mid(b)], [b.x, mid(b)]]))
-    }
+    // Exit the left side of the last card and run up the left margin into the
+    // first card, rather than dropping out of the bottom.
+    paths.push(orthPath([[a.x, mid(a)], [6, mid(a)], [6, mid(b)], [b.x, mid(b)]]))
   }
 
   return paths
@@ -204,23 +199,13 @@ function PyramidDiagram({ steps }) {
 export default function VisualModel({ visual }) {
   if (!visual) return null
 
-  const isPyramid = visual.kind === 'pyramid'
-
   return (
     <div className="diagram">
       {visual.label && <div className="diagram-label">{visual.label}</div>}
-      {isPyramid ? (
+      {visual.kind === 'pyramid' ? (
         <PyramidDiagram steps={visual.steps} />
       ) : (
-        <>
-          <SerpentineDiagram steps={visual.steps} loop={visual.loop !== false} />
-          {visual.loop !== false && (
-            <div className="serp-footer">
-              <Icon name="arrows-rotate" />
-              <span>Back to the start — the loop repeats.</span>
-            </div>
-          )}
-        </>
+        <SerpentineDiagram steps={visual.steps} loop={visual.loop !== false} />
       )}
     </div>
   )

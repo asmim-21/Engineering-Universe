@@ -534,13 +534,39 @@ button {
 
 .sheet {
   position: relative;
-  width: min(940px, 100%);
+  width: min(1160px, 100%);
   background: #fff;
   border: 3px solid var(--ink);
   border-radius: var(--hand);
   box-shadow: 9px 11px 0 rgba(25, 28, 26, 0.28);
-  padding: clamp(22px, 3.4vw, 40px);
+  padding: clamp(20px, 3vw, 36px);
   margin-top: 18px;
+}
+
+/* Magazine grid: wide panels span both columns, compact ones (who / takeaways /
+   reflection / checks) pair up two-across, so far less vertical scrolling. */
+.card-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px 28px;
+  align-items: start;
+  grid-auto-flow: row dense;
+  margin-top: 22px;
+}
+
+.card-body > .card-section {
+  margin-top: 0;
+  min-width: 0;
+}
+
+.card-body > .col-2 {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 820px) {
+  .card-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .sheet-tape {
@@ -583,9 +609,8 @@ button {
 }
 
 .sheet-title {
-  font-size: clamp(26px, 4vw, 40px);
+  font-size: clamp(24px, 3.4vw, 38px);
   margin: 8px auto 0;
-  max-width: 24ch;
   padding: 0 44px;
   text-align: center;
 }
@@ -868,7 +893,7 @@ button {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr;
   gap: 8px 20px;
 }
 
@@ -889,7 +914,7 @@ button {
 /* check your understanding */
 .checks {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 
@@ -1106,26 +1131,6 @@ button {
   color: var(--soft);
 }
 
-.serp-footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 6px auto 0;
-  padding: 10px 18px;
-  max-width: 60ch;
-  border: 2px dashed var(--rule);
-  border-radius: var(--hand);
-  font-family: 'Gaegu', cursive;
-  font-size: 17px;
-  color: var(--soft);
-}
-
-.serp-footer i {
-  color: var(--c4);
-  font-size: 18px;
-}
-
 .pyramid {
   display: flex;
   flex-direction: column;
@@ -1183,6 +1188,16 @@ button {
 
   .pyramid-tier {
     width: 100% !important;
+  }
+
+  .miscon-pair {
+    grid-template-columns: 1fr;
+  }
+
+  /* Let stage/header cells wrap on mobile so narrow tables fit without scroll. */
+  .info-table th,
+  .info-table .cell-stage {
+    white-space: normal;
   }
 
   .brand-name {

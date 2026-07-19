@@ -27,6 +27,14 @@ export default {
           { icon: 'route', label: 'End-to-end tests', desc: 'Check a full user-like flow.' }
         ]
       },
+      example: {
+        title: 'Testing recurring bookings',
+        items: [
+          'Check the recurrence rule generates four dates.',
+          'Check the booking service saves them together.',
+          'Book a weekly desk and see every date appear.'
+        ]
+      },
       misconceptions: [
         { wrong: "Testing is only QA's job.", right: 'Everyone writes and cares about tests.' },
         { wrong: 'Tests prove software is perfect.', right: 'Tests reduce risk; they do not prove perfection.' }
@@ -70,6 +78,19 @@ export default {
           { icon: 'wrench', label: 'Fix', desc: 'Correct the real cause.' },
           { icon: 'circle-check', label: 'Verify', desc: 'Confirm the fix works.' },
           { icon: 'shield-halved', label: 'Prevent recurrence', desc: 'Stop it happening again.' }
+        ]
+      },
+      example: {
+        title: '"Bookings vanish overnight"',
+        items: [
+          'Users report bookings gone by morning.',
+          'Reproduce by advancing the clock in test.',
+          'Read the logs around midnight.',
+          'Maybe a cleanup job deletes them.',
+          'Disable the job in test and re-check.',
+          "Correct the job's date filter.",
+          'Confirm bookings survive overnight.',
+          'Add a test for the retention rule.'
         ]
       },
       misconceptions: [
