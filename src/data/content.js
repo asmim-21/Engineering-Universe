@@ -49,7 +49,7 @@ export const universes = [
       line1: 'The Software',
       line2: 'Engineering',
       em: 'Universe',
-      blurb: 'Six regions of how software is really built — delivery, architecture, problem-solving, reliability, release, and craft.'
+      blurb: 'How software is really built — delivery, architecture, problem-solving, reliability, release, and craft.'
     },
     core: {
       kicker: 'At the centre',
@@ -68,7 +68,7 @@ export const universes = [
       line1: 'The Computer',
       line2: 'Engineering',
       em: 'Universe',
-      blurb: 'Six regions of what happens underneath software — hardware, systems, networks, and troubleshooting.'
+      blurb: 'What happens underneath software — hardware, systems, networks, and troubleshooting.'
     },
     core: {
       kicker: 'At the centre',

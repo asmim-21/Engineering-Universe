@@ -1,27 +1,67 @@
 # Software Engineering Universe
 
-An interactive, sketchnote-style learning site covering how real software engineering
-works — delivery, architecture, problem solving, reliability, shipping to production, and
-working effectively as an engineer.
+An interactive, sketch-style guide to how software and computer engineering really work.
 
-The homepage is a map: six topic regions sit either side of a central "engineering thinking"
-card. Open a region to see its canvas, then open a concept to read a deep-dive sketch card.
+This site brings together two learning universes — Software Engineering and Computer Engineering — into one visual map. It helps you explore how systems are built, how they fail, and how engineers think through real problems through a simple, approachable experience.
 
-## The layer model
+## What this site contains
 
-| Layer | Format | What it is |
-| --- | --- | --- |
-| 1 | Full page | The homepage — the map of six topic regions |
-| 2 | Full page | One canvas per topic, with clickable concept cards |
-| 3 | Popup overlay | A deep-dive sketch card. No further navigation depth |
+This project is a data-driven, static web experience that presents learning content as an interactive map rather than a traditional course page.
 
-**46 experiences:** 1 homepage + 6 topic canvases + 36 topic popups + 3 global toolkit popups.
+- A homepage that acts like a visual universe map with topic regions and a central “engineering thinking” card.
+- Two major learning universes:
+  - Software Engineering
+  - Computer Engineering
+- Topic canvases for each topic, with concept cards you can open.
+- Popup-style deep dives for each concept, each following a consistent structure:
+  - Concept
+  - Visual Model
+  - Common Mistakes
+  - Reflection
+- A global toolkit that can be opened from any page, with reusable thinking models such as the Learning Loop, Problem Breakdown Loop, and Escalation Ladder.
+- A lightweight, static experience built with React and Vite, with content stored as data rather than hardcoded in components.
 
-Every Layer 3 popup uses the same four-part template: **Concept → Visual Model → Common
-Mistakes → Reflection**. The three toolkit popups (Learning Loop, Problem Breakdown Loop,
-Escalation Ladder) are reachable from every page via the **Toolkit** button.
+## What content it covers
 
-## Running it
+### Software Engineering
+This universe focuses on how software is actually built and delivered in practice.
+
+- How software gets built
+- How modern applications work
+- Solving problems like an engineer
+- Building reliable software
+- Getting software to production
+- Being an effective engineer
+
+### Computer Engineering
+This universe looks at the systems underneath software and how they behave.
+
+- How computers work
+- Operating systems
+- Networking fundamentals
+- How the internet works
+- Security fundamentals
+- Systems troubleshooting
+
+### Toolkit concepts
+These are used across the site as practical thinking models:
+
+- Learning Loop
+- Problem Breakdown Loop
+- Escalation Ladder
+
+## How the experience is structured
+
+The site uses a simple layered flow:
+
+- Home page: the full map of topics
+- Topic canvas: a focused view of one topic with its concept cards
+- Popup: a deep-dive explanation of a single idea
+- Toolkit overlay: a reusable thinking model available from anywhere
+
+Because the content is routed through the URL, each concept or toolkit view can be linked directly.
+
+## Running locally
 
 ```bash
 npm install
@@ -32,100 +72,21 @@ npm run preview  # serve the built site locally
 
 Requires Node 18+.
 
-## Stack
+## Tech stack
 
-React 18 + Vite, and nothing else. No router library, no UI framework, no npm icon package:
+The site is intentionally lightweight:
 
-- The hand-drawn look is plain CSS — wobbly `border-radius`, dotted paper background, and a
-  small set of per-topic marker colours (`--c1`…`--c6`).
-- Icons are [Font Awesome](https://fontawesome.com/search?ic=free) (free), loaded from a CDN
-  in [index.html](index.html) and rendered by the tiny wrapper in
-  [src/components/Icon.jsx](src/components/Icon.jsx). To use one, find its name in the Font
-  Awesome catalog and write `<Icon name="database" />`.
-- Routing is ~30 lines of hash routing in [src/router.js](src/router.js).
-- Fonts are Bricolage Grotesque, Gaegu, Public Sans, and JetBrains Mono from Google Fonts,
-  loaded in [index.html](index.html).
+- React 18 + Vite
+- Plain CSS for the hand-drawn, sketchnote-style visual feel
+- Hash-based routing for simple static deployment
+- Content stored in data files rather than embedded in UI components
 
-Hash routing means the build is a pure static file set needing no server rewrite rules, and
-`base: './'` in [vite.config.js](vite.config.js) means it works from any sub-path.
+## Content structure
 
-## Deploying
+All of the learning content lives under [src/data](src/data), and the app reads it from there.
 
-`npm run build` produces a self-contained static site in `dist/`. Serve that directory from
-any static host — no server-side rendering or rewrite rules required.
+- [src/data/content.js](src/data/content.js) assembles the universes and topics
+- [src/data/toolkit-software.js](src/data/toolkit-software.js) and [src/data/toolkit-computer.js](src/data/toolkit-computer.js) define the toolkit content
+- [src/data/topics](src/data/topics) contains one topic file per learning area
 
-## Adding content
-
-All content is data — no component changes needed. It lives in `src/data/`:
-
-```
-src/data/
-  content.js       assembles everything; topic order here = topic numbering
-  toolkit.js       the 3 global toolkit popups
-  topics/          one file per topic (title, tone, tags, popups)
-```
-
-### Add a popup to an existing topic
-
-1. Open the topic's file in `src/data/topics/`.
-2. Append an object to its `popups` array. Every popup uses the same shape:
-
-```js
-{
-  id: 'my-new-concept',            // used in the URL: #/topic/<topic>/<this>
-  title: 'My New Concept',
-  blurb: 'One line shown on the canvas card.',
-  concept: 'A paragraph explaining the idea.',
-  points: ['**Lead-in:** detail.', 'Another point.'],   // optional; **bold** supported
-  visual: { kind: 'flow', label: 'Caption under the diagram.', steps: ['Step one', 'Step two'] },
-  mistakes: ['A misconception to unlearn.'],             // optional
-  reflection: 'A prompt that makes learners apply the concept.'
-}
-```
-
-That's it — the popup appears as a card on the topic canvas automatically. No separate
-grouping or wiring step.
-
-### Add a whole new topic
-
-1. Copy any file in `src/data/topics/` and edit it (`id`, `title`, `tone`, `blurb`, `tags`,
-   `popups`).
-2. Import it in [src/data/content.js](src/data/content.js) and add it to the `topics` array.
-   Its position in that array sets its number and its slot on the homepage map (odd-numbered
-   topics go in the left column, even-numbered in the right).
-
-Use `tone` values `c1`–`c6` for the six marker colours defined in
-[src/styles.css](src/styles.css).
-
-### Visual models
-
-A popup declares its diagram by `kind`, drawn by
-[src/components/VisualModel.jsx](src/components/VisualModel.jsx):
-
-| `kind` | Renders as |
-| --- | --- |
-| `flow` | A loop — steps arranged around a ring with arrows following the path |
-| `pyramid` | Numbered tiers, widest at the bottom |
-
-Both take `{ kind, label, steps: [...] }`. To add a new kind, add a branch to
-`VisualModel.jsx` and style it in `styles.css`.
-
-## Homepage layout
-
-The map is a three-column grid: a column of topic cards, the central "engineering thinking"
-card, and a second column of topic cards. Odd-numbered topics fill the left column and
-even-numbered topics the right, so the cards read 1-2, 3-4, 5-6 across the page. Below 860px
-the grid collapses to a single column. Built in
-[src/components/Home.jsx](src/components/Home.jsx) from
-[src/components/TopicCard.jsx](src/components/TopicCard.jsx).
-
-## Routes
-
-| URL | Shows |
-| --- | --- |
-| `#/` | Homepage |
-| `#/topic/<topicId>` | Topic canvas |
-| `#/topic/<topicId>/<popupId>` | Canvas with a popup open |
-| `#/toolkit` | The global toolkit sheet, open over the current page |
-
-Because popups are routed, any deep dive can be linked to directly.
+This makes it easy to add new topics or concept popups without changing the UI itself.
