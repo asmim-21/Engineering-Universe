@@ -15,6 +15,20 @@ export const PALETTE = [
 // Steps may be plain strings or { icon, label, desc }; normalise to objects.
 const normalise = (step) => (typeof step === 'string' ? { label: step } : step)
 
+// Compare two measured geometries so we can skip redundant re-renders when a
+// ResizeObserver fires without anything actually moving. Sub-pixel wobble is
+// ignored (rounded to whole pixels).
+const px = (v) => Math.round(v)
+function sameGeo(a, b) {
+  if (!a || !b) return false
+  if (px(a.w) !== px(b.w) || px(a.h) !== px(b.h)) return false
+  if (a.cards.length !== b.cards.length) return false
+  return a.cards.every((c, i) => {
+    const d = b.cards[i]
+    return px(c.x) === px(d.x) && px(c.y) === px(d.y) && px(c.w) === px(d.w) && px(c.h) === px(d.h)
+  })
+}
+
 // How many columns the snake uses for a given step count. The aim is to keep it
 // to two rows so an extra item extends the row sideways rather than dropping to
 // a lonely third row (7 → 4+3, 8 → 4+4); 9 stays a balanced 3×3. Narrow screens
@@ -107,7 +121,9 @@ function SerpentineDiagram({ steps, loop }) {
     const cont = containerRef.current
     if (!cont) return
 
-    const measure = () => {
+    let frame = 0
+
+    const run = () => {
       const maxCols = Math.max(1, Math.min(4, Math.floor(cont.clientWidth / 165)))
       const want = Math.min(desiredCols(n), maxCols)
       if (want !== cols) {
@@ -119,13 +135,26 @@ function SerpentineDiagram({ steps, loop }) {
         const r = el.getBoundingClientRect()
         return { x: r.left - box.left, y: r.top - box.top, w: r.width, h: r.height }
       })
-      setGeo({ w: box.width, h: box.height, cards })
+      const next = { w: box.width, h: box.height, cards }
+      // Skip the state update (and re-render) when nothing actually moved — a
+      // ResizeObserver can fire with identical geometry, and re-rendering the
+      // whole diagram each time is what made resizing feel jittery.
+      setGeo((prev) => (sameGeo(prev, next) ? prev : next))
     }
 
-    measure()
+    // Coalesce bursts of ResizeObserver callbacks into one measure per frame.
+    const measure = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(run)
+    }
+
+    run()
     const ro = new ResizeObserver(measure)
     ro.observe(cont)
-    return () => ro.disconnect()
+    return () => {
+      cancelAnimationFrame(frame)
+      ro.disconnect()
+    }
   }, [cols, n])
 
   const arrows = geo ? buildArrows(geo.cards, geo.w, geo.h, cols, n, loop) : []

@@ -1,14 +1,16 @@
-import { topics } from '../data/content.js'
+import { universeById } from '../data/content.js'
 import { navigate } from '../router.js'
 import ConceptCard from './ConceptCard.jsx'
 
 export default function TopicCanvas({ topic }) {
   const tone = { '--tone': `var(--${topic.tone})` }
+  const universe = universeById[topic.universe]
+  const topics = universe.topics
 
   return (
     <div className="page-wrap">
       <div className="crumb">
-        <button onClick={() => navigate('/')}>Universe</button> › <span>{topic.title}</span>
+        <button onClick={() => navigate(`/${universe.id}`)}>{universe.name}</button> › <span>{topic.title}</span>
       </div>
 
       <div className="topic-header" style={tone}>

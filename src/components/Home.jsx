@@ -1,16 +1,35 @@
-import { topics } from '../data/content.js'
+import { universes } from '../data/content.js'
+import { navigate } from '../router.js'
 import TopicCard from './TopicCard.jsx'
 
-export default function Home() {
+export default function Home({ universe }) {
+  const topics = universe.topics
+  const { hero, core } = universe
+
   return (
     <div className="page-wrap">
+      {/* Toggle between the two universes — the map is shared, the content swaps. */}
+      <div className="universe-switch" role="tablist" aria-label="Choose a universe">
+        {universes.map((u) => (
+          <button
+            key={u.id}
+            role="tab"
+            className="universe-tab"
+            aria-selected={u.id === universe.id}
+            onClick={() => navigate(`/${u.id}`)}
+          >
+            {u.name}
+          </button>
+        ))}
+      </div>
+
       <div className="hero">
         <h1>
-          The Software
+          {hero.line1}
           <br />
-          Engineering <em className="highlight">Universe</em>
+          {hero.line2} <em className="highlight">{hero.em}</em>
         </h1>
-        <p>Six regions of engineering thinking. Pick one, open a sketch card, learn the loop.</p>
+        <p>{hero.blurb}</p>
       </div>
 
       <div className="map">
@@ -24,9 +43,9 @@ export default function Home() {
         </div>
 
         <div className="core-card">
-          <div className="kicker">At the centre</div>
-          <h2>Engineering thinking</h2>
-          <p>"I do not know yet, so I need to investigate, break it down, and form a plan."</p>
+          <div className="kicker">{core.kicker}</div>
+          <h2>{core.title}</h2>
+          <p>{core.quote}</p>
         </div>
 
         <div className="map-col">

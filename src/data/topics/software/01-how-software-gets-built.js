@@ -114,12 +114,32 @@ export default {
         kind: 'flow',
         label: 'The core behaviour is iteration.',
         steps: [
-          { icon: 'hammer', label: 'Build a small useful piece', desc: 'Ship a small, usable increment.' },
-          { icon: 'circle-check', label: 'Validate it', desc: 'Put it in front of real feedback.' },
-          { icon: 'lightbulb', label: 'Learn', desc: 'See what the feedback teaches you.' },
-          { icon: 'pen-ruler', label: 'Adjust', desc: 'Change direction based on what you learned.' }
+          { icon: 'hammer', label: 'Build a small useful piece', desc: 'Ship a small, usable increment.', purpose: 'Ship a small, usable increment.', question: 'What is the smallest useful piece?' },
+          { icon: 'circle-check', label: 'Validate it', desc: 'Put it in front of real feedback.', purpose: 'Put it in front of real feedback.', question: 'What does feedback say?' },
+          { icon: 'lightbulb', label: 'Learn', desc: 'See what the feedback teaches you.', purpose: 'See what the feedback teaches.', question: 'What did we learn?' },
+          { icon: 'pen-ruler', label: 'Adjust', desc: 'Change direction based on what you learned.', purpose: 'Change direction on what you learned.', question: 'What should change next?' }
         ]
       },
+      io: {
+        inputs: [
+          ['Backlog', 'Priorities'],
+          ['Increment', 'Users'],
+          ['Feedback'],
+          ['Insights']
+        ],
+        outputs: [
+          ['A small increment'],
+          ['Real feedback'],
+          ['Insights'],
+          ['An adjusted plan']
+        ]
+      },
+      who: [
+        'Team, Developers',
+        'Users, Product Owner',
+        'Team',
+        'Product Owner, Team'
+      ],
       example: {
         title: 'Adding a "dark mode" toggle',
         items: [
@@ -170,12 +190,41 @@ export default {
         label: 'Who is affected by a product?',
         loop: false,
         steps: [
-          { icon: 'briefcase', label: 'Business stakeholders', desc: 'Care about value, cost, and outcomes.' },
-          { icon: 'user', label: 'End users', desc: 'Live with the experience day to day.' },
-          { icon: 'code', label: 'Engineering', desc: 'Design, build, and maintain the system.' },
-          { icon: 'headset', label: 'Support', desc: 'Help users when things go wrong.' },
-          { icon: 'server', label: 'Operations', desc: 'Keep it running in production.' },
-          { icon: 'shield-halved', label: 'Security / compliance', desc: 'Guard data, access, and the rules.' }
+          { icon: 'briefcase', label: 'Business stakeholders', desc: 'Care about value, cost, and outcomes.', purpose: 'Care about value, cost, and outcomes.', question: 'Is it worth it?' },
+          { icon: 'user', label: 'End users', desc: 'Live with the experience day to day.', purpose: 'Live with the experience daily.', question: 'Does it help me?' },
+          { icon: 'code', label: 'Engineering', desc: 'Design, build, and maintain the system.', purpose: 'Design, build, and maintain it.', question: 'How do we build it well?' },
+          { icon: 'headset', label: 'Support', desc: 'Help users when things go wrong.', purpose: 'Help users when things go wrong.', question: 'How do we help users?' },
+          { icon: 'server', label: 'Operations', desc: 'Keep it running in production.', purpose: 'Keep it running in production.', question: 'Is it healthy and available?' },
+          { icon: 'shield-halved', label: 'Security / compliance', desc: 'Guard data, access, and the rules.', purpose: 'Guard data, access, and the rules.', question: 'Is it safe and compliant?' }
+        ]
+      },
+      example: {
+        title: 'Who a desk-booking feature touches',
+        items: [
+          'Managers who fund it want fewer wasted desks.',
+          'Employees who book desks want it fast and clear.',
+          'Engineers design, build, and maintain the feature.',
+          'Support handles "my booking vanished" tickets.',
+          'Operations keeps the booking service running.',
+          'Security ensures only the right people see bookings.'
+        ]
+      },
+      io: {
+        inputs: [
+          ['Business goals', 'Budget'],
+          ['The experience'],
+          ['Requirements'],
+          ['User problems'],
+          ['Live system'],
+          ['Data', 'Access rules']
+        ],
+        outputs: [
+          ['Priorities', 'Funding'],
+          ['Needs', 'Feedback'],
+          ['Working software'],
+          ['Resolutions', 'Escalations'],
+          ['Uptime', 'Reliability'],
+          ['Safeguards', 'Approvals']
         ]
       },
       misconceptions: [
@@ -215,11 +264,36 @@ export default {
         label: 'Software environments — introduces environment separation and why production requires extra care.',
         loop: false,
         steps: [
-          { icon: 'laptop-code', label: 'Development (Dev)', desc: 'Where engineers build and experiment.' },
-          { icon: 'vial', label: 'Test / UAT', desc: 'Where the solution is validated.' },
-          { icon: 'globe', label: 'Production (Prod)', desc: 'Live: real users and real impact.' }
+          { icon: 'laptop-code', label: 'Development (Dev)', desc: 'Where engineers build and experiment.', purpose: 'Build and experiment where change is cheap.', question: 'Is this safe to try here?' },
+          { icon: 'vial', label: 'Test / UAT', desc: 'Where the solution is validated.', purpose: 'Validate the change before real users.', question: 'Does it work as intended?' },
+          { icon: 'globe', label: 'Production (Prod)', desc: 'Live: real users and real impact.', purpose: 'Serve real users with real data.', question: 'Is it safe for real users?' }
         ]
       },
+      example: {
+        title: 'Promoting a change',
+        items: [
+          'A developer builds the change on Dev.',
+          'QA and business users validate it in UAT.',
+          'It is released to real users in Production.'
+        ]
+      },
+      io: {
+        inputs: [
+          ['New code', 'Test data'],
+          ['Built change', 'Test cases'],
+          ['Approved release', 'Real data']
+        ],
+        outputs: [
+          ['A built change'],
+          ['A validated change'],
+          ['Live software']
+        ]
+      },
+      who: [
+        'Developers',
+        'QA, Testers, Business users',
+        'DevOps, Release Manager, Users'
+      ],
       misconceptions: [
         { wrong: 'Production is just another environment.', right: 'Production has real users, data, and consequences.' },
         { wrong: 'If it works on my machine, it works everywhere.', right: 'Environments differ in data, config, and scale.' }
@@ -255,15 +329,39 @@ export default {
         label: 'Feature journey — shows how a feature travels from idea to users.',
         loop: false,
         steps: [
-          { icon: 'inbox', label: 'Feature request', desc: 'Someone asks for a capability.' },
-          { icon: 'circle-question', label: 'Clarifying questions', desc: 'Pin down what is really needed.' },
-          { icon: 'list-check', label: 'Requirements', desc: 'Agree the problem and success criteria.' },
-          { icon: 'compass-drafting', label: 'Design choices', desc: 'Decide how to build it.' },
-          { icon: 'code', label: 'Development', desc: 'Implement and test it locally.' },
-          { icon: 'laptop-code', label: 'Dev environment', desc: 'Integrate it with the team.' },
-          { icon: 'vial', label: 'Test/UAT environment', desc: 'Validate before real users.' },
-          { icon: 'globe', label: 'Production', desc: 'Release it to users.' },
-          { icon: 'comments', label: 'Feedback and iteration', desc: 'Learn from use and improve.' }
+          { icon: 'inbox', label: 'Feature request', desc: 'Someone asks for a capability.', purpose: 'Capture a need someone wants met.', question: 'What is being asked for?' },
+          { icon: 'circle-question', label: 'Clarifying questions', desc: 'Pin down what is really needed.', purpose: 'Understand what is really needed.', question: 'What do they actually mean?' },
+          { icon: 'list-check', label: 'Requirements', desc: 'Agree the problem and success criteria.', purpose: 'Agree the problem and success criteria.', question: 'What must it do?' },
+          { icon: 'compass-drafting', label: 'Design choices', desc: 'Decide how to build it.', purpose: 'Decide how the solution will work.', question: 'How will it work?' },
+          { icon: 'code', label: 'Development', desc: 'Implement and test it locally.', purpose: 'Implement and test it locally.', question: 'Can we build it?' },
+          { icon: 'laptop-code', label: 'Dev environment', desc: 'Integrate it with the team.', purpose: "Integrate it with the team's work.", question: 'Does it fit together?' },
+          { icon: 'vial', label: 'Test/UAT environment', desc: 'Validate before real users.', purpose: 'Validate before real users see it.', question: 'Does it hold up?' },
+          { icon: 'globe', label: 'Production', desc: 'Release it to users.', purpose: 'Release it to real users.', question: 'Can users use it?' },
+          { icon: 'comments', label: 'Feedback and iteration', desc: 'Learn from use and improve.', purpose: 'Learn from real use and improve.', question: 'How can we make it better?' }
+        ]
+      },
+      io: {
+        inputs: [
+          ['User need', 'Business goal'],
+          ['Raw request', 'Stakeholders'],
+          ['Answers', 'Constraints'],
+          ['Requirements', 'Tech options'],
+          ['Design', 'Code standards'],
+          ['Code', "Team's build"],
+          ['Integrated build', 'Test cases'],
+          ['Validated build', 'Release plan'],
+          ['Usage', 'User feedback']
+        ],
+        outputs: [
+          ['A captured request'],
+          ['Shared understanding'],
+          ['Requirements', 'Acceptance criteria'],
+          ['A design approach'],
+          ['Working code', 'Unit tests'],
+          ['An integrated change'],
+          ['A validated release'],
+          ['A live feature'],
+          ['Improvements', 'Next version']
         ]
       },
       example: {
@@ -328,11 +426,21 @@ export default {
         label: 'Coding vs engineering.',
         loop: false,
         steps: [
-          { icon: 'code', label: 'What code do I write?', desc: 'The coding-only mindset.' },
-          { icon: 'bullseye', label: 'What problem are we solving?', desc: 'Engineering starts with the problem.' },
-          { icon: 'lock', label: 'What are the constraints?', desc: 'Time, cost, risk, and context.' },
-          { icon: 'triangle-exclamation', label: 'What could go wrong?', desc: 'Think through the failure modes.' },
-          { icon: 'circle-check', label: 'How will we know it worked?', desc: 'Define what success looks like.' }
+          { icon: 'code', label: 'What code do I write?', desc: 'The coding-only mindset.', purpose: 'The narrow, coding-only starting point.', question: 'Am I only thinking about code?' },
+          { icon: 'bullseye', label: 'What problem are we solving?', desc: 'Engineering starts with the problem.', purpose: 'Engineering starts with the problem.', question: 'What problem are we solving?' },
+          { icon: 'lock', label: 'What are the constraints?', desc: 'Time, cost, risk, and context.', purpose: 'Account for time, cost, risk, and context.', question: 'What limits us?' },
+          { icon: 'triangle-exclamation', label: 'What could go wrong?', desc: 'Think through the failure modes.', purpose: 'Think through the failure modes.', question: 'How could this fail?' },
+          { icon: 'circle-check', label: 'How will we know it worked?', desc: 'Define what success looks like.', purpose: 'Define what success looks like.', question: 'How do we measure success?' }
+        ]
+      },
+      example: {
+        title: 'Adding a "notify me" button',
+        items: [
+          'The coding-only view: just add a button and endpoint.',
+          'The real problem: users miss desk availability.',
+          'Constraints: email limits, no new infra, ship this sprint.',
+          'What could go wrong: spam, failed sends, wrong recipients.',
+          'Success: users notified reliably, fewer missed desks.'
         ]
       },
       misconceptions: [

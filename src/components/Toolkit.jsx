@@ -1,10 +1,10 @@
-import { toolkit } from '../data/content.js'
 import { useSheet } from './useSheet.js'
 import VisualModel from './VisualModel.jsx'
 import Icon from './Icon.jsx'
 
-export default function Toolkit({ onClose }) {
+export default function Toolkit({ universe, onClose }) {
   const { sheetRef, closeRef } = useSheet(onClose)
+  const loops = universe.toolkit
 
   return (
     <div className="overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
@@ -14,11 +14,11 @@ export default function Toolkit({ onClose }) {
           <Icon name="xmark" />
         </button>
 
-        <div className="sheet-kicker">Global toolkit</div>
+        <div className="sheet-kicker">{universe.name} · Global toolkit</div>
         <h2>Three loops you can use anywhere</h2>
         <div className="sheet-purpose">Cross-cutting engineering behaviours that appear throughout the whole universe.</div>
 
-        {toolkit.map((loop) => (
+        {loops.map((loop) => (
           <div className="sheet-part kit-loop" key={loop.id}>
             <h3>{loop.title}</h3>
             <p>{loop.concept}</p>
