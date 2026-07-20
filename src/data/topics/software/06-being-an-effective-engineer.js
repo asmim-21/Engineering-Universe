@@ -467,6 +467,89 @@ export default {
         'How do you validate a hypothesis?',
         'What will you do next time you are stuck?'
       ]
+    },
+    {
+      id: 'etiquette',
+      title: 'Corporate Etiquette',
+      blurb: 'The everyday basics that help a new graduate make a good impression: email, meetings, timing, honesty, and accountability.',
+      whatIs: {
+        text: 'Professional etiquette is about being clear, responsive, honest, and reliable in everyday workplace interactions.',
+        ensures: [
+          'Reply to emails promptly and clearly',
+          'Accept or decline meetings professionally',
+          'Be on time and prepared',
+          'Be honest if you do not know something',
+          'Take accountability when you make a mistake'
+        ]
+      },
+      visual: {
+        kind: 'flow',
+        label: 'The basics of workplace professionalism.',
+        loop: false,
+        steps: [
+          { icon: 'envelope', label: 'Check and reply', desc: 'Read messages and respond promptly.', purpose: 'Respond promptly and clearly.', question: 'What needs a reply?' },
+          { icon: 'calendar', label: 'Handle meetings well', desc: 'Accept, decline, or propose alternatives professionally.', purpose: 'Manage meetings respectfully.', question: 'Do I need to attend?' },
+          { icon: 'clock', label: 'Be punctual', desc: 'Arrive on time and be prepared.', purpose: 'Show reliability.', question: 'Am I ready?' },
+          { icon: 'comments', label: 'Be honest', desc: 'Say when you do not know something and ask for help.', purpose: 'Show honesty and good judgement.', question: 'What do I actually know?' },
+          { icon: 'check', label: 'Take accountability', desc: 'If you make a mistake, own it, fix it, and learn from it.', purpose: 'Build trust through accountability.', question: 'What should I own and fix?' },
+          { icon: 'handshake', label: 'Follow through', desc: 'Do what you said you would do.', purpose: 'Build trust.', question: 'What is my next step?' }
+        ]
+      },
+      example: {
+        title: 'A good first-week impression',
+        items: [
+          'Reply to a manager email with a short acknowledgement and next step.',
+          'Decline a meeting politely if you cannot attend and suggest another time.',
+          'Arrive early, bring notes, and be ready to contribute.',
+          'Say, “I am not sure yet, but I will find out,” instead of pretending you know.',
+          'If you miss a deadline or send the wrong file, own it quickly and propose a fix.',
+          'If you promise to send an update by 3 pm, send it by 3 pm and confirm it is done.'
+        ]
+      },
+      io: {
+        inputs: [
+          ['An email', 'A meeting request'],
+          ['A work situation'],
+          ['Your schedule', 'Your preparation'],
+          ['Your knowledge', 'Your uncertainty'],
+          ['Your mistake', 'Your next action'],
+          ['Your commitments']
+        ],
+        outputs: [
+          ['An email reply with a clear next step'],
+          ['A meeting response that is polite and professional'],
+          ['A reputation for being punctual and prepared'],
+          ['A message that is honest about what you know'],
+          ['A quick ownership response when something goes wrong'],
+          ['A completed action or update you promised']
+        ]
+      },
+      who: [
+        'You, Manager, Team',
+        'You, Team',
+        'You, Team',
+        'You, Everyone',
+        'You, Everyone',
+        'You, Team'
+      ],
+      misconceptions: [
+        { wrong: 'Etiquette is only about being formal.', right: 'It is mainly about being clear, honest, and dependable.' },
+        { wrong: 'If you are busy, you can ignore messages.', right: 'A quick acknowledgement is better than silence.' },
+        { wrong: 'Admitting a mistake makes you look weak.', right: 'Owning it early usually builds more trust.' }
+      ],
+      takeaways: [
+        'Professionalism is built from small habits.',
+        'Clear replies and good timing matter.',
+        'Honesty and accountability build trust.'
+      ],
+      reflection: 'Write a short email reply, a polite meeting response, and a brief apology-plus-fix message you could use this week.',
+      checks: [
+        'How should you reply to an email when you need more time?',
+        'What is a professional way to decline a meeting?',
+        'Why does punctuality matter?',
+        'How should you respond if you do not know something?',
+        'What should you do if you make a mistake?' 
+      ]
     }
   ]
 }
