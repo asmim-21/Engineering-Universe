@@ -12,7 +12,7 @@ import { DEFAULT_UNIVERSE } from './data/content.js'
 //   #/topic/<topicId>/<popupId> topic canvas with a popup open
 //   #/toolkit                   default universe's toolkit (back-compat)
 
-const UNIVERSE_IDS = ['software', 'computer']
+const UNIVERSE_IDS = ['software', 'computer', 'programming']
 
 export function parseHash(hash) {
   const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean)

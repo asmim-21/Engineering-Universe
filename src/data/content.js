@@ -1,13 +1,13 @@
-// All learning content, assembled from one file per topic and grouped into two
-// universes: Software Engineering and Computer Engineering.
+// All learning content, assembled from one file per topic and grouped into three
+// universes: Software Engineering, Computer Engineering, and Programming.
 //
-// TO ADD A POPUP: open the relevant file in ./topics/ (or ./topics/computer/)
+// TO ADD A POPUP: open the relevant file in ./topics/ (or ./topics/computer/ or ./topics/programming/)
 // and append an object to its `popups` array — see the comment at the top of
 // any topic file.
 //
 // TO ADD A TOPIC: copy an existing file, edit it, and import + list it in the
 // matching universe below. Its position in that universe's `topics` array sets
-// its number and its slot on the homepage map (first 3 left, last 3 right).
+// its number and its slot on the homepage map.
 //
 // TO ADD A UNIVERSE: add another entry to the `universes` array with its own
 // topics and toolkit.
@@ -28,8 +28,19 @@ import internet from './topics/computer/04-how-the-internet-works.js'
 import security from './topics/computer/05-security-fundamentals.js'
 import troubleshooting from './topics/computer/06-systems-troubleshooting.js'
 
+// --- Programming topics ---
+import bash from './topics/programming/01-bash.js'
+import python from './topics/programming/02-python.js'
+import java from './topics/programming/03-java.js'
+import c from './topics/programming/04-c.js'
+import oop from './topics/programming/05-oop.js'
+import dsa from './topics/programming/06-dsa.js'
+import designPatterns from './topics/programming/07-design-patterns.js'
+import cleanCoding from './topics/programming/08-clean-coding-practices.js'
+
 import { toolkit as softwareToolkit } from './toolkit-software.js'
 import { toolkit as computerToolkit } from './toolkit-computer.js'
+import { toolkit as programmingToolkit } from './toolkit-programming.js'
 
 // Each universe owns its topics, its toolkit, and the copy shown on its map.
 // `num` and `universe` are stamped onto every topic here so the rest of the app
@@ -77,6 +88,24 @@ export const universes = [
     },
     topics: [computers, os, networking, internet, security, troubleshooting],
     toolkit: computerToolkit
+  }),
+  defineUniverse({
+    id: 'programming',
+    name: 'Programming',
+    short: 'Programming',
+    tagline: 'Languages, algorithms, data structures, design patterns, and writing quality code.',
+    hero: {
+      line1: 'The Programming',
+      em: 'Universe',
+      blurb: 'Core concepts across languages — syntax, data structures, algorithms, design patterns, and the craft of writing clean, maintainable code.'
+    },
+    core: {
+      kicker: 'At the centre',
+      title: 'Computational thinking',
+      quote: '"Programming is problem-solving with code — the language matters less than the thinking."'
+    },
+    topics: [bash, python, java, c, oop, dsa, designPatterns, cleanCoding],
+    toolkit: programmingToolkit
   })
 ]
 

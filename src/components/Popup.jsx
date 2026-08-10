@@ -2,12 +2,7 @@ import { navigate } from '../router.js'
 import { useSheet } from './useSheet.js'
 import VisualModel, { PALETTE } from './VisualModel.jsx'
 import Icon from './Icon.jsx'
-
-// "**Label:**" in text renders as bold — a tiny markdown-lite so data files
-// stay plain strings.
-export function renderRich(text) {
-  return text.split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 === 1 ? <strong key={i}>{part}</strong> : part))
-}
+import { renderRich } from './richText.jsx'
 
 const stepObj = (s) => (typeof s === 'string' ? { label: s } : s)
 
@@ -23,11 +18,13 @@ function SectionHead({ icon, color, children }) {
 // ---- individual panels (each rendered only when its data exists) ----
 
 function IntroBox({ whatIs, concept, points }) {
-  const paragraphs = Array.isArray(concept) ? concept : concept ? [concept] : []
+  const paragraphs = whatIs?.text
+    ? whatIs.text.split(/\n\s*\n/)
+    : Array.isArray(concept) ? concept : concept ? [concept] : []
   return (
     <div className="intro-box">
       <SectionHead icon="lightbulb" color="sh-blue">In a nutshell</SectionHead>
-      {whatIs?.text ? <p>{whatIs.text}</p> : paragraphs.map((p) => <p key={p}>{p}</p>)}
+      {paragraphs.map((p, i) => <p key={i}>{renderRich(p)}</p>)}
       {(whatIs?.ensures?.length || points?.length) > 0 && (
         <ul className="check-list">
           {(whatIs?.ensures ?? points).map((item) => (
@@ -72,6 +69,8 @@ function StagesTable({ steps }) {
   )
 }
 
+// Used when example items map 1:1 onto the flow diagram's steps — a short
+// narrative phrase per stage (the software/computer-universe pattern).
 function ExampleGrid({ steps, items }) {
   return (
     <div className="example-grid">
@@ -81,11 +80,35 @@ function ExampleGrid({ steps, items }) {
           <div className="example-item" key={s.label} style={{ '--accent': c.accent, '--bg': c.bg, '--border': c.border }}>
             {s.icon && <Icon name={s.icon} className="ex-icon" />}
             <div className="ex-stage">{s.label}</div>
-            <div className="ex-text">{items[i]}</div>
+            <div className="ex-text">{renderRich(items[i])}</div>
           </div>
         )
       })}
     </div>
+  )
+}
+
+// Used when there's no matching flow diagram (or the item count doesn't line
+// up with it) — a reference list of commands/tips, one per line.
+function ExampleList({ items }) {
+  return (
+    <ul className="example-list">
+      {items.map((item, i) => (
+        <li key={i}>
+          <span className="example-list-num">{String(i + 1).padStart(2, '0')}</span>
+          <span className="example-list-text">{renderRich(item)}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+// Used for a genuine multi-line code sample (a script), rendered verbatim.
+function CodeBlock({ code }) {
+  return (
+    <pre className="code-block">
+      <code>{code}</code>
+    </pre>
   )
 }
 
@@ -226,7 +249,13 @@ export default function Popup({ popup, siblings, onClose }) {
           {popup.example && (
             <section className="card-section col-2">
               <SectionHead icon="lightbulb" color="sh-green">Running example — {popup.example.title}</SectionHead>
-              <ExampleGrid steps={steps} items={popup.example.items} />
+              {popup.example.code ? (
+                <CodeBlock code={popup.example.code} />
+              ) : steps.length > 0 && steps.length === popup.example.items.length ? (
+                <ExampleGrid steps={steps} items={popup.example.items} />
+              ) : (
+                <ExampleList items={popup.example.items} />
+              )}
             </section>
           )}
 
@@ -258,7 +287,7 @@ export default function Popup({ popup, siblings, onClose }) {
                 {popup.takeaways.map((t) => (
                   <li key={t}>
                     <Icon name="star" />
-                    <span>{t}</span>
+                    <span>{renderRich(t)}</span>
                   </li>
                 ))}
               </ul>
@@ -267,7 +296,7 @@ export default function Popup({ popup, siblings, onClose }) {
 
           <section className="card-section">
             <SectionHead icon="circle-question" color="sh-gold">Reflection</SectionHead>
-            <div className="reflect-box">{popup.reflection}</div>
+            <div className="reflect-box">{renderRich(popup.reflection)}</div>
           </section>
 
           {popup.checks?.length > 0 && (
@@ -277,7 +306,7 @@ export default function Popup({ popup, siblings, onClose }) {
                 {popup.checks.map((q, i) => (
                   <div className="check-item" key={q}>
                     <span className="check-num">{i + 1}</span>
-                    <span>{q}</span>
+                    <span>{renderRich(q)}</span>
                   </div>
                 ))}
               </div>

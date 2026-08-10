@@ -1,5 +1,6 @@
 import { useId, useLayoutEffect, useRef, useState } from 'react'
 import Icon from './Icon.jsx'
+import { renderRich } from './richText.jsx'
 
 // Each step card cycles through this pastel palette (accent = badge/icon/underline,
 // bg = card fill, border = card outline), matching the reference infographic.
@@ -191,7 +192,7 @@ function SerpentineDiagram({ steps, loop }) {
                 <div className="snode-text">
                   <div className="snode-title">{step.label}</div>
                   <div className="snode-accent" />
-                  {step.desc && <div className="snode-desc">{step.desc}</div>}
+                  {step.desc && <div className="snode-desc">{renderRich(step.desc)}</div>}
                 </div>
               </div>
             </div>

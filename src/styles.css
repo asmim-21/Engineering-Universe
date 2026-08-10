@@ -17,6 +17,8 @@
   --c4: #6b3fa0;
   --c5: #a9741a;
   --c6: #0f6e77;
+  --c7: #e8663f;
+  --c8: #4a5f8f;
 
   /* Hand-drawn blob border radius, reused everywhere a shape should look
      slightly imperfect instead of a uniform rounded rectangle. */
@@ -730,6 +732,17 @@ button {
   margin-bottom: 0;
 }
 
+/* inline "`code`" spans used throughout rich text */
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+  background: #eceadf;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 0.05em 0.4em;
+  white-space: nowrap;
+}
+
 .check-list {
   list-style: none;
   margin: 12px 0 0;
@@ -901,6 +914,57 @@ button {
   font-size: 0.875rem;
   color: var(--soft);
   line-height: 1.25;
+}
+
+/* running example: reference list (no matching flow diagram to pair with) */
+.example-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.example-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: #fcfcf9;
+}
+
+.example-list-num {
+  flex: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: var(--soft);
+  margin-top: 2px;
+}
+
+.example-list-text {
+  font-size: 0.9062rem;
+  line-height: 1.4;
+}
+
+/* running example: a genuine multi-line code sample */
+.code-block {
+  margin: 0;
+  padding: 16px 18px;
+  background: var(--ink);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.code-block code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #eef1ec;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  white-space: pre;
 }
 
 /* misconceptions as wrong -> right pairs */
