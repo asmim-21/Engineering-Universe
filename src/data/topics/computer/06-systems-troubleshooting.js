@@ -11,71 +11,83 @@ export default {
       title: 'How Systems Fail',
       blurb: 'Computers fail in predictable ways — start by understanding the symptom, not jumping to a fix.',
       whatIs: {
-        text: 'Systems can fail from resource exhaustion, misconfiguration, defects, dependency failures, permission issues, disk or network problems, or hardware faults. Troubleshooting starts by understanding the symptom and gathering evidence before jumping to a fix.',
+        text: `Failures cluster into a small number of families, and knowing them turns "something is broken" into a short list of things to check. **Resources** run out — processor, memory, disk or network saturated. **Configuration** is wrong or missing for this environment. **Code and dependencies** fail — a defect, or a service you rely on being down. **Infrastructure** underneath breaks — permissions, storage, the network, or hardware.
+
+The most useful question at the start of almost any investigation is **"what changed?"** Systems that ran happily for months rarely break spontaneously. A deploy, a configuration edit, a certificate expiring, a disk filling gradually, an upstream provider having a bad day — something moved, and finding it usually finds the cause.
+
+The discipline is to separate what you **know** from what you **assume** from what you still need to **check**. Under pressure those three collapse into each other, and an assumption treated as a fact sends the whole investigation down the wrong path — which is expensive precisely when time matters most.`,
         ensures: [
-          'Failure has many common causes, not just "bad code".',
-          'Start with the symptom, then gather evidence.',
-          'Separate what is known, assumed, and still to be checked.',
-          'A good investigator resists jumping to conclusions.'
+          'Name the common families of failure',
+          'Start from the symptom rather than a suspected fix',
+          'Ask what changed before anything else',
+          'Separate known, assumed and unverified',
+          'Recognise that "bad code" is only one possibility',
+          'Resist acting on the first plausible theory'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'The common families of system failure — the space you’re investigating.',
+        label: 'The families of failure — the space you are searching.',
         loop: false,
         steps: [
-          { icon: 'gauge-high', label: 'Resource exhaustion', desc: 'CPU, memory, disk, or network is maxed.', purpose: 'Consider whether a resource ran out.', question: 'Did something run out of capacity?' },
-          { icon: 'sliders', label: 'Misconfiguration', desc: 'Wrong settings or environment.', purpose: 'Consider whether config is wrong.', question: 'Is something configured incorrectly?' },
-          { icon: 'bug', label: 'Defects & dependencies', desc: 'A bug or a failed dependency.', purpose: 'Consider code faults and broken dependencies.', question: 'Did a bug or dependency fail?' },
-          { icon: 'server', label: 'Infrastructure', desc: 'Permissions, disk, network, or hardware.', purpose: 'Consider the environment underneath.', question: 'Is the infrastructure at fault?' }
+          { icon: 'gauge-high', label: 'Resources', desc: 'Central processing unit (CPU), memory, disk or network saturated.', purpose: 'Check whether something simply ran out of capacity.', question: 'Did a resource hit its limit?' },
+          { icon: 'sliders', label: 'Configuration', desc: 'Wrong or missing settings.', purpose: 'Check what this environment was actually given.', question: 'Is the configuration right for here?' },
+          { icon: 'bug', label: 'Code & dependencies', desc: 'A defect, or something upstream down.', purpose: 'Check recent changes and the health of what you depend on.', question: 'Did our code change, or did something we call fail?' },
+          { icon: 'server', label: 'Infrastructure', desc: 'Permissions, storage, network, hardware.', purpose: 'Check the layer underneath the application.', question: 'Is the platform beneath us healthy?' }
         ]
       },
       io: {
         inputs: [
-          ['Symptom'],
-          ['Config & environment'],
-          ['Code & dependencies'],
-          ['Infrastructure state']
+          ['Symptom', 'Resource metrics'],
+          ['Environment', 'Config values'],
+          ['Deploy history', 'Dependency status'],
+          ['Platform and hardware state']
         ],
         outputs: [
-          ['Resource ruled in or out'],
-          ['Config ruled in or out'],
-          ['Bug/dependency ruled in or out'],
-          ['Infra ruled in or out']
+          ['Resources ruled in or out'],
+          ['Configuration ruled in or out'],
+          ['Code and dependencies ruled in or out'],
+          ['Infrastructure ruled in or out']
         ]
       },
       who: [
         'Engineer, Monitoring',
         'Engineer, Operations',
-        'Engineer',
+        'Engineer, Upstream teams',
         'Engineer, Platform'
       ],
       example: {
         title: 'A service goes down',
         items: [
-          'Known: the service stopped responding at 2pm.',
-          'Assumed: it might be resource exhaustion.',
-          'To check: CPU, memory, disk, config, and dependencies.',
-          'Only after evidence do you decide the actual cause.'
+          'Known: it stopped responding at 14:02 and returns nothing.',
+          'Checked: memory and disk are normal; not resource exhaustion.',
+          'Checked: a configuration change was deployed at 13:58.',
+          'Confirmed: the new config points at a database that does not exist here.'
         ]
       },
       misconceptions: [
-        { wrong: 'A failure always means bad code.', right: 'Config, resources, dependencies, and hardware fail too.' },
-        { wrong: 'Jump to a fix as fast as possible.', right: 'Understand the symptom and gather evidence first.' },
-        { wrong: 'What you assume is what you know.', right: 'Separate known, assumed, and still-to-check.' }
+        { wrong: 'A failure means someone wrote bad code.', right: 'Configuration, resources, dependencies and hardware fail too.' },
+        { wrong: 'Fix it as fast as possible.', right: 'Understand the symptom first, or you will fix the wrong thing quickly.' },
+        { wrong: 'Systems break spontaneously.', right: 'Something almost always changed — find it.' },
+        { wrong: 'What you assume is what you know.', right: 'Assumptions treated as facts send investigations sideways.' }
       ],
       takeaways: [
-        'Systems fail in several predictable families.',
-        'Start with the symptom, not the fix.',
-        'Gather evidence before concluding.',
-        'Separate known from assumed.'
+        '**Failures fall into families:** resources, configuration, code and dependencies, infrastructure. That list is the search space.',
+        '**"What changed?" is the highest-yield question.** Deploys, config edits, certificates and gradually filling disks cause most sudden failures.',
+        '**Symptom first, cause second.** Write down exactly what is happening, for whom, and since when, before touching anything.',
+        '**Separate known, assumed and unchecked.** Under pressure these merge, and the merged version is usually wrong.',
+        '**Gradual failures hide.** A disk filling over three weeks looks sudden on the day it completes.',
+        '**Dependencies fail on their own schedule.** Your code can be perfect and your service still down.',
+        '**The first plausible theory is a hypothesis, not a diagnosis.** Test it before acting on it.'
       ],
-      reflection: 'Last outage you saw — did the team investigate the symptom, or jump straight to a guess?',
+      reflection: 'Think of the last outage you saw. Was the cause in the code, the configuration, the resources or a dependency — and how long did it take before anyone asked what had changed?',
       checks: [
-        'Name several common causes of system failure.',
-        'What do you do before jumping to a fix?',
-        'Why separate known from assumed?',
-        'Is "bad code" always the cause?'
+        'What are the common families of system failure?',
+        'Why is "what changed?" such a productive first question?',
+        'What should you do before attempting a fix?',
+        'Why separate what you know from what you assume?',
+        'Why do gradual failures appear sudden?',
+        'Can a service fail with no fault in its own code?'
       ]
     },
     {
@@ -83,12 +95,18 @@ export default {
       title: 'Logs & Evidence',
       blurb: 'Logs are records of events — good ones carry the context you need to investigate.',
       whatIs: {
-        text: 'Logs are records of events produced by systems and applications. Useful logs contain timestamps, error messages, request IDs, component names, and context, helping you see what happened before, during, and after a failure.',
+        text: `A log line is the system telling you something happened. Whether it is useful depends on what it carries: a **timestamp**, a **level** (info, warning, error), the **component** that emitted it, an **identifier** tying it to a request or user, and enough **context** to act on — which host, which record, which value.
+
+Reading logs well is mostly narrowing. Start from a time window around the failure, then follow a single request through the system using its correlation identifier rather than reading everything. Read the **first** error rather than the most alarming one: later errors are usually consequences, and the earliest is closest to the cause.
+
+Logs also mislead in specific ways worth knowing. They only contain what someone thought to record, so absence of evidence is not evidence of absence. Timestamps may be in different timezones across systems. Volume buries signal, so an ERROR that fires constantly stops being read. And logs tell you **what happened**, rarely **why** — the why usually comes from combining them with what changed.`,
         ensures: [
-          'Good logs have timestamps, errors, IDs, and context.',
-          'They show the sequence around a failure.',
-          'Bad logs are vague, missing context, or too noisy.',
-          'Logs are clues, not always the final answer.'
+          'Identify the parts of a useful log line',
+          'Narrow by time and follow one request by its identifier',
+          'Read the first error rather than the loudest',
+          'Recognise what logs cannot tell you',
+          'Watch for timezone and clock differences',
+          'Write log messages that will help someone else at 3am'
         ]
       },
       visual: {
@@ -96,23 +114,26 @@ export default {
         label: 'Reading a log line for what it actually tells you.',
         loop: false,
         steps: [
-          { icon: 'clock', label: 'Timestamp', desc: 'When did it happen?', purpose: 'Place the event in time.', question: 'When did this occur?' },
-          { icon: 'cube', label: 'Component', desc: 'Which part logged it?', purpose: 'Locate where the event came from.', question: 'Which component is this?' },
-          { icon: 'triangle-exclamation', label: 'Error & context', desc: 'What went wrong, with detail.', purpose: 'Understand the actual problem and its context.', question: 'What happened, exactly?' },
-          { icon: 'circle-question', label: 'Next question', desc: 'What does it make you check next?', purpose: 'Turn the clue into the next investigation step.', question: 'What should I look at next?' }
+          { icon: 'clock', label: 'When', desc: 'Timestamp and timezone.', purpose: 'Place the event precisely, and beware mixed timezones.', question: 'Exactly when — and in whose clock?' },
+          { icon: 'cube', label: 'Where', desc: 'Component, host, environment.', purpose: 'Locate which part of which system emitted it.', question: 'Which component, on which host?' },
+          { icon: 'triangle-exclamation', label: 'What', desc: 'Level, message, context.', purpose: 'Understand the event and the values involved.', question: 'What happened, and to what?' },
+          { icon: 'link', label: 'Which request', desc: 'Correlation identifier.', purpose: 'Follow one journey instead of reading everything.', question: 'Can I trace this request across services?' },
+          { icon: 'circle-question', label: 'So what next', desc: 'The clue points somewhere.', purpose: 'Turn the line into the next specific check.', question: 'What does this make me look at next?' }
         ]
       },
       io: {
         inputs: [
-          ['A log line'],
-          ['The log line'],
-          ['The log line'],
+          ['A time window'],
+          ['Log source', 'Component filter'],
+          ['The log line', 'Its level'],
+          ['A correlation id'],
           ['The clue']
         ],
         outputs: [
-          ['When it happened'],
-          ['Where it came from'],
-          ['What happened'],
+          ['A bounded search'],
+          ['The emitting component'],
+          ['What happened, with values'],
+          ['One request\'s full journey'],
           ['The next thing to check']
         ]
       },
@@ -120,34 +141,43 @@ export default {
         'Engineer',
         'Engineer',
         'Engineer',
+        'Engineer',
         'Engineer'
       ],
       example: {
-        title: 'A single log line',
+        title: 'One useful log line',
         items: [
-          'The timestamp shows the error hit at 14:02.',
-          'The component field points at the payment service.',
-          'The message: "connection refused" with the target host.',
-          'Next question: is that host up, and is its port open?'
+          '14:02:11 UTC — matching the reported failure window.',
+          'Component: payment-service, host prod-03.',
+          'ERROR "connection refused" to db-primary:5432.',
+          'Request id ties it to the user\'s failed checkout.',
+          'Next: is db-primary listening, and did anything change at 14:00?'
         ]
       },
       misconceptions: [
-        { wrong: 'Logs always explain the full problem.', right: 'They’re clues; you often need to check further.' },
-        { wrong: 'More logging is always better.', right: 'Noisy logs can bury the useful signal.' },
-        { wrong: 'A log without context is still fine.', right: 'Missing timestamps, IDs, or context make logs hard to use.' }
+        { wrong: 'Logs explain the whole problem.', right: 'They are clues; the why usually needs the change history too.' },
+        { wrong: 'More logging is always better.', right: 'Noise buries signal, and volume costs money and attention.' },
+        { wrong: 'The most alarming error is the cause.', right: 'The earliest one usually is; later ones cascade from it.' },
+        { wrong: 'Timestamps across systems line up.', right: 'Timezones and clock drift make that a dangerous assumption.' }
       ],
       takeaways: [
-        'Logs record events from systems and apps.',
-        'Good logs carry timestamps, errors, IDs, and context.',
-        'They show what happened around a failure.',
-        'Treat logs as clues, not final answers.'
+        '**A useful log line answers when, where, what and which request.** Missing any of those makes it much harder to act on.',
+        '**Narrow before you read.** A two-minute window and one request identifier turn an unreadable stream into a story.',
+        '**Read the first error.** Cascading failures produce dramatic later messages that are pure consequence.',
+        '**Correlation identifiers are what make distributed logs usable.** One id, carried everywhere, reconstructs the journey.',
+        '**Logs contain only what someone chose to record.** Silence can mean "did not happen" or "was never logged".',
+        '**Check timezones.** Comparing 14:02 local with 14:02 UTC has misled a great many investigations.',
+        '**Log levels are a contract.** If ERROR fires all day, nobody will react to the one that matters.',
+        '**Write logs for the person debugging at 3am:** the identifiers, the values that mattered, and no secrets.'
       ],
-      reflection: 'Think of a log you’ve read that was useless. What one field would have made it useful?',
+      reflection: 'Find a log line from a system you use. Can you tell when, where, what and which request it belongs to? Which of the four is missing — and how much harder does that make an investigation?',
       checks: [
-        'What makes a log useful?',
-        'What do good logs contain?',
-        'Why are logs clues rather than answers?',
-        'What makes a log bad?'
+        'What makes a log line useful?',
+        'How do you narrow down which lines matter?',
+        'Why read the earliest error first?',
+        'What does a correlation identifier let you do?',
+        'What can logs never tell you?',
+        'Why can timestamps across systems mislead?'
       ]
     },
     {
@@ -155,30 +185,36 @@ export default {
       title: 'Resource Bottlenecks',
       blurb: 'CPU, memory, disk, and network problems can look alike — evidence tells them apart.',
       whatIs: {
-        text: 'A bottleneck is a saturated resource. CPU, memory, disk, and network problems can produce similar symptoms, so you need evidence to tell them apart rather than guessing.',
+        text: `A bottleneck is whichever resource runs out first. Four candidates cover almost everything: **processor**, **memory**, **disk** and **network**. They produce overlapping symptoms — slow, unresponsive, timing out — so evidence rather than intuition has to separate them.
+
+Each has a signature. A central processing unit (CPU) bottleneck shows high utilisation and, often, one core at 100% while others idle (a single-threaded limit). Memory pressure shows high usage plus **swapping**, and swapping drags everything down because disk is far slower than random-access memory (RAM). Disk problems show as high **I/O wait** or simply no free space. Network problems show as high latency, packet loss or timeouts, usually with the local processor comfortably idle.
+
+Two things regularly mislead. Symptoms are often **second-order** — memory pressure saturates the disk, so the disk looks guilty when memory is the cause. And the constraint may be on a **different machine** entirely: a service waiting on a slow database shows idle resources everywhere locally while being completely stuck.`,
         ensures: [
-          '**CPU:** spending too much time executing work.',
-          '**Memory:** not enough working memory.',
-          '**Disk:** slow reads/writes or storage is full.',
-          '**Network:** communication is slow, blocked, or timing out.'
+          'Name the four resources and how to measure each',
+          'Recognise the characteristic signature of each bottleneck',
+          'Distinguish a cause from a second-order symptom',
+          'Spot when the real constraint is elsewhere',
+          'Interpret I/O wait, swapping and per-core utilisation',
+          'Measure before concluding'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'The four bottleneck families — distinguished by evidence, not symptoms.',
+        label: 'Four candidates, separated by evidence.',
         steps: [
-          { icon: 'microchip', label: 'CPU', desc: 'The processor is saturated.', purpose: 'Test whether compute is the constraint.', question: 'Is CPU usage maxed out?' },
-          { icon: 'memory', label: 'Memory', desc: 'Working memory is exhausted.', purpose: 'Test whether RAM is the constraint.', question: 'Is memory full or swapping?' },
-          { icon: 'hard-drive', label: 'Disk', desc: 'I/O is slow or storage is full.', purpose: 'Test whether the disk is the constraint.', question: 'Is the disk full or busy?' },
-          { icon: 'network-wired', label: 'Network', desc: 'Traffic is slow or timing out.', purpose: 'Test whether the network is the constraint.', question: 'Is the network slow or blocked?' }
+          { icon: 'microchip', label: 'CPU', desc: 'Busy, or one core pinned.', purpose: 'Check total and per-core utilisation.', question: 'Is it saturated — and on every core or just one?' },
+          { icon: 'memory', label: 'Memory', desc: 'Full, and swapping.', purpose: 'Check usage and swap activity together.', question: 'Is it swapping, and has usage been climbing?' },
+          { icon: 'hard-drive', label: 'Disk', desc: 'Full, or high I/O wait.', purpose: 'Check free space and time spent waiting on I/O.', question: 'Is it out of space, or out of throughput?' },
+          { icon: 'network-wired', label: 'Network', desc: 'Latency, loss, timeouts.', purpose: 'Check whether time is spent waiting on something remote.', question: 'Are we waiting on another system?' }
         ]
       },
       io: {
         inputs: [
-          ['CPU metrics'],
-          ['Memory & swap metrics'],
-          ['Disk space & I/O metrics'],
-          ['Network metrics']
+          ['CPU metrics, per core'],
+          ['Memory usage', 'Swap activity'],
+          ['Free space', 'I/O wait'],
+          ['Latency', 'Loss', 'Timeouts']
         ],
         outputs: [
           ['CPU ruled in or out'],
@@ -196,80 +232,92 @@ export default {
       example: {
         title: 'Telling them apart',
         items: [
-          'CPU metrics are low — probably not compute.',
-          'Memory is full and swapping — a strong candidate.',
-          'Disk has space but is busy serving the swap.',
-          'Network latency is normal — evidence points to memory.'
+          'CPU sits at 12% across all cores — not compute.',
+          'Memory is at 98% and swapping steadily — a strong candidate.',
+          'Disk has space but high I/O wait, caused by that swapping.',
+          'Network latency is normal — so the cause is memory, not disk.'
         ]
       },
       misconceptions: [
-        { wrong: 'Slow systems are always network issues.', right: 'CPU, memory, and disk cause slowness too.' },
-        { wrong: 'Similar symptoms mean the same cause.', right: 'Different bottlenecks can look alike — check evidence.' },
-        { wrong: 'You can eyeball the bottleneck.', right: 'Metrics distinguish resources that guessing cannot.' }
+        { wrong: 'Slowness is usually the network.', right: 'Any of the four can produce identical symptoms.' },
+        { wrong: 'The busiest resource is the cause.', right: 'It may be a consequence — swapping makes disk look guilty.' },
+        { wrong: 'Low CPU means the machine is fine.', right: 'An idle machine waiting on a dependency is completely stuck.' },
+        { wrong: 'You can tell by feel.', right: 'Metrics distinguish what intuition consistently confuses.' }
       ],
       takeaways: [
-        'Bottlenecks are saturated resources.',
-        'CPU, memory, disk, and network are the usual families.',
-        'Symptoms overlap; evidence separates them.',
-        'Measure before you conclude.'
+        '**Four candidates: CPU, memory, disk, network.** Checking all four in order beats guessing at any one.',
+        '**Each has a signature.** Pinned cores, swapping, I/O wait and timeouts point at different resources.',
+        '**One core at 100% with the rest idle is a single-threaded limit,** not an underpowered machine.',
+        '**Swapping is memory pressure showing up as disk load** — the classic second-order symptom.',
+        '**An idle machine can still be the problem\'s location,** if it is waiting on something slow elsewhere.',
+        '**Bottlenecks move.** Relieve the tightest one and the next appears — that is progress, not failure.',
+        '**Measure, then conclude.** Every experienced engineer has spent an afternoon optimising the wrong resource.'
       ],
-      reflection: 'What single metric would most quickly separate a memory problem from a disk problem?',
+      reflection: 'Which single metric would most quickly separate a memory problem from a disk problem? And which metric tells you the machine is not the problem at all?',
       checks: [
-        'What is a bottleneck?',
         'What are the four resource families?',
-        'Why can’t you rely on symptoms alone?',
-        'What distinguishes a memory issue from a disk issue?'
+        'What is the signature of each?',
+        'What does one saturated core with the rest idle mean?',
+        'Why does swapping make the disk look guilty?',
+        'How can a machine be idle and still be the bottleneck\'s location?',
+        'Why is measurement essential here?'
       ]
     },
     {
       id: 'tro-service',
       title: 'Process & Service Failures',
-      blurb: 'Why services crash or won’t start — and why restarting isn’t the same as fixing.',
+      blurb: 'Why services crash or won\'t start — and why restarting isn\'t the same as fixing.',
       whatIs: {
-        text: 'A process may crash, hang, or be killed by the OS. A service may fail to start because of missing configuration, permissions, ports, dependencies, or resource limits. Restarting may recover a service but does not explain why it failed.',
+        text: `Services fail in two distinct ways: they **will not start**, or they **stop working while running**. The causes differ, and so do the checks.
+
+Startup failures are usually environmental and, helpfully, loud. A **port** is already held by another process. **Configuration** is missing for this environment. **Permissions** are insufficient for a file, directory or socket. A **dependency** it needs at startup — a database, a queue, a secret store — is unavailable. The startup logs almost always name which, if anyone reads them.
+
+Running services fail differently: a crash from an unhandled error, a **hang** where the process is alive but blocked, an out-of-memory kill by the operating system, or a slow **leak** that takes days to matter. The tempting response is a restart, and sometimes that is the right first move to reduce impact — but restarting **recovers without explaining**. If a service is restarted nightly and nobody knows why, the underlying problem is still there, quietly getting worse.`,
         ensures: [
-          'Processes can crash, hang, or be killed.',
-          'Services fail to start for config, permission, port, or dependency reasons.',
-          'Restarting recovers, but doesn’t explain.',
-          'Good troubleshooting includes verification and prevention.'
+          'Distinguish startup failures from failures while running',
+          'Check port, configuration, permissions and dependencies at startup',
+          'Recognise crash, hang, out-of-memory kill and leak',
+          'Read startup logs before changing anything',
+          'Know when a restart is mitigation rather than a fix',
+          'Follow recovery with an explanation and a guard'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'Why a service won’t start — the usual suspects.',
+        label: 'Why a service will not start — the usual suspects, in order.',
         loop: false,
         steps: [
-          { icon: 'door-closed', label: 'Port in use', desc: 'Another process holds the port.', purpose: 'Check whether the port is already taken.', question: 'Is the port free?' },
-          { icon: 'sliders', label: 'Missing config', desc: 'A required setting is absent.', purpose: 'Check for missing configuration or variables.', question: 'Is the config complete?' },
-          { icon: 'lock', label: 'Permission denied', desc: 'It lacks access it needs.', purpose: 'Check permissions on files and resources.', question: 'Does it have the access it needs?' },
-          { icon: 'diagram-project', label: 'Dependency down', desc: 'Something it relies on is unavailable.', purpose: 'Check that dependencies are up.', question: 'Are its dependencies available?' },
-          { icon: 'circle-check', label: 'Verify & prevent', desc: 'Confirm the fix and stop a recurrence.', purpose: 'Ensure it truly recovered and won’t repeat.', question: 'Is it fixed, and why did it happen?' }
+          { icon: 'door-closed', label: 'Port in use', desc: 'Something else holds it.', purpose: 'Check whether an old instance is still running.', question: 'Is the port free, and whose process holds it?' },
+          { icon: 'sliders', label: 'Missing config', desc: 'A required value is absent.', purpose: 'Check the environment actually provides what is needed.', question: 'Which variable or file is missing here?' },
+          { icon: 'lock', label: 'Permissions', desc: 'It cannot read or write what it needs.', purpose: 'Check the account it runs as against what it touches.', question: 'As whom does it run, and can that account do this?' },
+          { icon: 'diagram-project', label: 'Dependency down', desc: 'Something it needs is unavailable.', purpose: 'Check the services required at startup.', question: 'Is everything it needs at boot actually up?' },
+          { icon: 'circle-check', label: 'Verify & prevent', desc: 'Confirm, then stop the repeat.', purpose: 'Check it truly recovered and add a guard or a clearer error.', question: 'Why did this happen, and what stops it recurring?' }
         ]
       },
       example: {
-        title: 'Service fails to start',
+        title: 'A service fails to start',
         items: [
-          'The log says the port is already in use.',
-          'Config is present and complete.',
-          'Permissions check out too.',
-          'Dependencies are all up — so it’s the port.',
-          'Stop the stale process, restart cleanly, and add a check so it can’t recur silently.'
+          'The startup log says the address is already in use.',
+          'Configuration is complete — not that.',
+          'Permissions are fine — not that either.',
+          'Dependencies are all healthy, so it is the port.',
+          'An old instance never shut down: stop it, restart, and add a startup check.'
         ]
       },
       io: {
         inputs: [
-          ['Port status'],
-          ['Config & environment'],
-          ['Permissions'],
+          ['Port status', 'Running processes'],
+          ['Environment', 'Config files'],
+          ['Service account', 'File permissions'],
           ['Dependency health'],
-          ['Applied fix']
+          ['The applied fix']
         ],
         outputs: [
-          ['Port free or blocked'],
-          ['Config complete or missing'],
-          ['Access sufficient or denied'],
-          ['Dependencies up or down'],
-          ['Verified recovery', 'Prevention step']
+          ['Port free, or a process to stop'],
+          ['Config complete, or the missing value'],
+          ['Access sufficient, or the denied resource'],
+          ['Dependencies up, or the one that is down'],
+          ['Verified recovery', 'A guard against recurrence']
         ]
       },
       who: [
@@ -277,25 +325,32 @@ export default {
         'Engineer, Operations',
         'Engineer, Operating system',
         'Engineer, Dependent services',
-        'Engineer'
+        'Engineer, Team'
       ],
       misconceptions: [
-        { wrong: 'Restarting is the same as fixing.', right: 'It may recover the service without explaining the cause.' },
-        { wrong: 'A crash always means a code bug.', right: 'It may be resources, config, permissions, or dependencies.' },
-        { wrong: 'If it starts, you’re done.', right: 'Verify recovery and prevent a recurrence.' }
+        { wrong: 'Restarting is fixing.', right: 'It recovers the service without explaining anything.' },
+        { wrong: 'A crash means a code bug.', right: 'Out-of-memory kills, config and dependencies all crash services.' },
+        { wrong: 'A hung service is dead.', right: 'It is alive and blocked — often on something remote.' },
+        { wrong: 'If it starts, the incident is over.', right: 'Unexplained recovery means it will happen again.' }
       ],
       takeaways: [
-        'Processes crash, hang, or get killed.',
-        'Services fail to start for config, port, permission, or dependency reasons.',
-        'Restarting recovers but doesn’t explain.',
-        'Good troubleshooting verifies and prevents.'
+        '**Startup failures are environmental and loud.** Port, config, permissions, dependencies — the log usually names which.',
+        '**Read the startup log first.** It is the single highest-value thirty seconds in this whole category.',
+        '**A hang is not a crash.** The process is alive and blocked, which needs a completely different investigation.',
+        '**Out-of-memory kills look like unexplained disappearances,** with no application error at all — check the system log.',
+        '**Restart to reduce impact, then investigate.** Mitigation and diagnosis are both legitimate; skipping the second is not.',
+        '**A service restarted on a schedule for unknown reasons is an unfixed bug** with a workaround attached.',
+        '**"Address already in use" usually means your own previous instance,** not a mysterious conflict.',
+        '**Finish with a guard:** a clearer startup error, a health check, or an alert that catches it next time.'
       ],
-      reflection: 'A restart "fixed" it. What have you actually learned about why it broke?',
+      reflection: 'A restart "fixed" it. What do you actually know about the cause — and what would you check before the next restart to learn something instead?',
       checks: [
-        'What can happen to a failing process?',
-        'Why might a service fail to start?',
-        'Why isn’t restarting the same as fixing?',
-        'What should good troubleshooting include beyond recovery?'
+        'What are the common reasons a service will not start?',
+        'What should you read first?',
+        'What is the difference between a crash and a hang?',
+        'How do you spot an out-of-memory kill?',
+        'When is restarting the right first action?',
+        'What should follow a recovery?'
       ]
     },
     {
@@ -303,86 +358,99 @@ export default {
       title: 'Troubleshooting Methodology',
       blurb: 'A reusable investigation model — from symptom to documented learning.',
       whatIs: {
-        text: 'Good troubleshooting follows a method: define the problem, find what changed, gather evidence, form and test hypotheses one at a time, apply a fix, verify recovery, and document the cause and the learning.',
+        text: `Under pressure, method beats instinct. The reliable sequence is: define the symptom precisely, find what changed, gather evidence, form one hypothesis, test it, fix, verify, and write down what you learned.
+
+Two disciplines do most of the work. **Change one thing at a time**, so that a result actually means something — three simultaneous changes leave you unable to say what helped or what you broke. And **halve the search space** with each test: is it the whole service or one endpoint, all users or one region, since the deploy or before it? Each answer eliminates a large fraction of the possibilities, which is far faster than working through candidates one by one.
+
+Verification and documentation are the steps people skip. Verifying means reproducing the original symptom and seeing it gone, not observing that things look better. Documenting means the next person — very possibly you at 3am in six months — finds the answer in two minutes instead of repeating the whole investigation.`,
         ensures: [
-          'Define the problem clearly before acting.',
-          'Test one hypothesis at a time.',
-          'Verify that the fix actually worked.',
-          'Document the cause so others learn from it.'
+          'Follow a repeatable sequence rather than improvising',
+          'Define the symptom precisely before investigating',
+          'Change one thing at a time',
+          'Halve the search space with each test',
+          'Verify against the original symptom',
+          'Record the cause and the fix so it is findable'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'A reusable investigation model you can apply to any system problem.',
+        label: 'A reusable investigation model for any system problem.',
         loop: false,
         steps: [
-          { icon: 'circle-question', label: 'Understand symptom', desc: 'Define the problem clearly.', purpose: 'Know exactly what is wrong before investigating.', question: 'What is actually happening?' },
-          { icon: 'magnifying-glass', label: 'Gather evidence', desc: 'Collect logs, metrics, and changes.', purpose: 'Base the investigation on facts.', question: 'What does the evidence show?' },
-          { icon: 'lightbulb', label: 'Form hypothesis', desc: 'Propose a likely cause.', purpose: 'Give the investigation something to test.', question: 'What might be causing this?' },
-          { icon: 'flask', label: 'Test hypothesis', desc: 'Check it, one at a time.', purpose: 'Confirm or rule out the cause.', question: 'Does the evidence support it?' },
-          { icon: 'screwdriver-wrench', label: 'Fix or mitigate', desc: 'Apply a change.', purpose: 'Resolve or reduce the problem.', question: 'What change addresses the cause?' },
-          { icon: 'circle-check', label: 'Verify', desc: 'Confirm recovery.', purpose: 'Make sure the problem is truly gone.', question: 'Did it actually recover?' },
-          { icon: 'book', label: 'Document learning', desc: 'Record cause and lesson.', purpose: 'Help the next person avoid or solve it faster.', question: 'What did we learn?' }
+          { icon: 'circle-question', label: 'Define the symptom', desc: 'What, for whom, since when.', purpose: 'Turn a vague report into something specific and measurable.', question: 'What exactly is wrong, and when did it start?' },
+          { icon: 'clock-rotate-left', label: 'Find what changed', desc: 'Deploys, config, data, upstream.', purpose: 'Start where most causes are.', question: 'What changed just before it began?' },
+          { icon: 'magnifying-glass', label: 'Gather evidence', desc: 'Logs, metrics, state.', purpose: 'Collect facts before forming opinions.', question: 'What does the system actually report?' },
+          { icon: 'lightbulb', label: 'One hypothesis', desc: 'A single testable claim.', purpose: 'Commit to something specific enough to be wrong.', question: 'What would explain all of this?' },
+          { icon: 'flask', label: 'Test it', desc: 'One change, one result.', purpose: 'Confirm or eliminate, without changing several things.', question: 'Did that confirm or rule it out?' },
+          { icon: 'screwdriver-wrench', label: 'Fix and verify', desc: 'Against the original symptom.', purpose: 'Prove the specific failure is gone, not merely absent.', question: 'Does the original reproduction now pass?' },
+          { icon: 'book', label: 'Document', desc: 'Cause, fix, prevention.', purpose: 'Make the next occurrence a two-minute lookup.', question: 'Where will the next person find this?' }
         ]
       },
       example: {
         title: 'A slow endpoint',
         items: [
-          'Symptom: one API endpoint is slow since this morning.',
-          'Evidence: logs show slow database queries.',
-          'Hypothesis: a missing index after a recent change.',
-          'Test: check the query plan — it’s doing a full scan.',
-          'Fix: add the index.',
-          'Verify: response times return to normal.',
-          'Document: note the cause and add a check for it.'
+          'Symptom: one endpoint takes 8s instead of 200ms, since 09:00 today.',
+          'Changed: a release went out at 08:55.',
+          'Evidence: logs show one database query taking most of the time.',
+          'Hypothesis: the release added a filter with no supporting index.',
+          'Test: the query plan shows a full table scan — confirmed.',
+          'Fix: add the index; the endpoint returns to 210ms.',
+          'Document: the cause, the index, and a check for unindexed filters.'
         ]
       },
       io: {
         inputs: [
-          ['Symptom report'],
-          ['Logs', 'Metrics', 'Recent changes'],
-          ['Gathered evidence'],
-          ['A hypothesis'],
-          ['Confirmed cause'],
-          ['Applied fix'],
-          ['Verified outcome']
+          ['A report', 'Timing'],
+          ['Deploy and config history'],
+          ['Logs', 'Metrics', 'State'],
+          ['Assembled evidence'],
+          ['A hypothesis', 'One change'],
+          ['A confirmed cause'],
+          ['The whole investigation']
         ],
         outputs: [
-          ['A clear problem statement'],
-          ['A body of evidence'],
-          ['A testable hypothesis'],
-          ['Hypothesis confirmed or rejected'],
-          ['A change applied'],
-          ['Confirmed recovery'],
-          ['A written learning']
+          ['A precise problem statement'],
+          ['A prime suspect'],
+          ['Facts and a timeline'],
+          ['One testable claim'],
+          ['Confirmed or eliminated'],
+          ['A verified fix'],
+          ['A findable write-up']
         ]
       },
       who: [
         'Engineer, Users',
+        'Engineer, DevOps',
         'Engineer, Monitoring',
         'Engineer',
         'Engineer',
-        'Engineer, Operations',
         'Engineer, Users',
         'Engineer, Team'
       ],
       misconceptions: [
-        { wrong: 'The first hypothesis is usually correct.', right: 'Test hypotheses one at a time; the first is often wrong.' },
-        { wrong: 'Once it works, you can skip documentation.', right: 'Documenting the cause prevents the next occurrence.' },
-        { wrong: 'Change several things at once to fix it fast.', right: 'Change one thing at a time so you know what worked.' }
+        { wrong: 'The first hypothesis is usually right.', right: 'It is often wrong, which is why it must be tested.' },
+        { wrong: 'Change several things to fix it faster.', right: 'Then no result means anything, and you may add a second fault.' },
+        { wrong: 'It looks fine now, so it is fixed.', right: 'Verify against the original symptom, not against an impression.' },
+        { wrong: 'Documentation can wait until later.', right: 'Later means never, and the detail is gone within a day.' }
       ],
       takeaways: [
-        'Follow a repeatable method, not guesswork.',
-        'Test one hypothesis at a time.',
-        'Verify recovery before moving on.',
-        'Document the cause and the learning.'
+        '**Define the symptom precisely first:** what, for whom, since when. Everything downstream depends on that being right.',
+        '**"What changed?" comes second because it is where most causes are.** Deploys, config, data and upstream services.',
+        '**Change one thing at a time.** It is the difference between an experiment and a mess.',
+        '**Halve the search space with each test.** One endpoint or all? One region or everywhere? Each answer eliminates a lot.',
+        '**Verify against the original symptom.** "Seems better" is not a result, and coincidences happen.',
+        '**Mitigation and diagnosis are different jobs.** Reduce impact first if users are affected, then find out why.',
+        '**Write it down while it is fresh.** A short honest note now beats a polished reconstruction next week.',
+        '**Under pressure, method is what stops flailing.** The sequence is most valuable precisely when there is least time.'
       ],
-      reflection: 'Which step do people skip most under pressure — and what does skipping it cost later?',
+      reflection: 'Which step do people skip most under pressure — and what does skipping it cost the next time the same thing happens?',
       checks: [
-        'What’s the first step of the method?',
-        'Why test one hypothesis at a time?',
-        'Why verify after fixing?',
-        'Why document the cause?'
+        'What is the first step, and why?',
+        'Why ask what changed so early?',
+        'Why change only one thing at a time?',
+        'What does "halve the search space" mean in practice?',
+        'What does proper verification require?',
+        'Why document immediately rather than later?'
       ]
     },
     {
@@ -390,75 +458,87 @@ export default {
       title: 'Evidence Sources',
       blurb: 'Where to look during an investigation — logs, metrics, process status, config, changes, and users.',
       whatIs: {
-        text: 'When investigating, evidence comes from several places. Knowing where to look keeps you from guessing and helps you build a picture of what happened.',
+        text: `Evidence comes from several places, and each answers a different question. **Logs** say what happened and in what order. **Metrics** say how much and since when — they are what turn "it feels slow" into "latency doubled at 09:15". **Process and system state** says what is true right now: what is running, what it is connected to, how much memory it holds. **Configuration** says what this environment was actually told to do, which is frequently not what you assume.
+
+**Change history** deserves its own place. Deploys, configuration edits, feature flags, infrastructure changes and dependency upgrades cause a large share of incidents, so a timeline of changes lined up against a timeline of symptoms is often the whole diagnosis.
+
+**User reports** are the source people undervalue. They are imprecise, but they anchor the real impact and the timing, and they sometimes contain the detail that unlocks everything — "only when I upload a large file", "only on the mobile app". The strongest investigations **triangulate**: when logs, metrics, changes and users all tell the same story, you have a cause rather than a theory.`,
         ensures: [
-          '**Logs** and **metrics** show behaviour over time.',
-          '**Process status** and **configuration** show the current state.',
-          '**Recent changes** are a frequent root cause.',
-          '**User reports** describe the real-world impact.'
+          'Know which source answers which question',
+          'Use metrics for scale and timing, logs for detail',
+          'Check current state as well as historical records',
+          'Treat change history as a primary source',
+          'Take user reports seriously as evidence',
+          'Triangulate rather than relying on one source'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'Failure evidence sources — where to look during an investigation.',
+        label: 'Where to look, and what each source answers.',
         steps: [
-          { icon: 'file-lines', label: 'Logs', desc: 'Event records from systems.', purpose: 'See what the system reported happening.', question: 'What do the logs say?' },
-          { icon: 'chart-line', label: 'Metrics', desc: 'Resource and performance data.', purpose: 'See trends and saturation over time.', question: 'What do the metrics show?' },
-          { icon: 'list-check', label: 'Process & config', desc: 'Current state and settings.', purpose: 'Check what is running and how it’s set up.', question: 'What is the current state?' },
-          { icon: 'code-branch', label: 'Recent changes', desc: 'What was deployed or altered.', purpose: 'Correlate the failure with a change.', question: 'What changed recently?' },
-          { icon: 'users', label: 'User reports', desc: 'Real-world impact and timing.', purpose: 'Understand the actual impact and when it began.', question: 'What are users experiencing?' }
+          { icon: 'file-lines', label: 'Logs', desc: 'What happened, in order.', purpose: 'Get the detail and the sequence around the failure.', question: 'What did the system report, and in what order?' },
+          { icon: 'chart-line', label: 'Metrics', desc: 'How much, since when.', purpose: 'Establish scale, trend and the moment it started.', question: 'How bad is it, and when did it change?' },
+          { icon: 'list-check', label: 'State & config', desc: 'What is true right now.', purpose: 'Check what is running and what it was configured with.', question: 'What is actually running, with which settings?' },
+          { icon: 'code-branch', label: 'Change history', desc: 'Deploys, config, flags.', purpose: 'Line changes up against the start of the symptom.', question: 'What changed near the time this began?' },
+          { icon: 'users', label: 'User reports', desc: 'Real impact and detail.', purpose: 'Anchor the impact and catch details telemetry misses.', question: 'Who is affected, and what were they doing?' }
         ]
       },
       io: {
         inputs: [
-          ['System events'],
-          ['Resource data'],
-          ['Current state'],
-          ['Change history'],
-          ['User feedback']
+          ['System and application events'],
+          ['Time-series data'],
+          ['Live process and config state'],
+          ['Deploy and change records'],
+          ['Support tickets', 'Complaints']
         ],
         outputs: [
-          ['Log evidence'],
-          ['Trends over time'],
-          ['State & settings'],
-          ['Recent changes'],
-          ['Impact & timing']
+          ['A sequence of events'],
+          ['Scale, trend and start time'],
+          ['Current reality, not assumptions'],
+          ['A prime suspect'],
+          ['Impact, timing and specifics']
         ]
       },
       who: [
         'Systems, Engineer',
         'Monitoring, Engineer',
         'Engineer, Operations',
-        'Engineer, Deployment logs',
+        'Engineer, DevOps',
         'Users, Support'
       ],
       example: {
-        title: 'Building the picture',
+        title: 'Building one consistent story',
         items: [
-          'Logs show errors starting at 09:00.',
-          'Metrics show memory climbing from the same time.',
-          'Process status confirms the service is swapping.',
-          'A config change went out at 08:55.',
-          'Users report slowness beginning right after — a consistent story.'
+          'Logs show errors beginning at 09:00.',
+          'Metrics show memory climbing steadily from 08:55.',
+          'Current state confirms the service is swapping heavily.',
+          'A configuration change raising a cache size went out at 08:55.',
+          'Users report slowness starting "just before nine" — the story is consistent.'
         ]
       },
       misconceptions: [
-        { wrong: 'Logs are the only evidence that matters.', right: 'Metrics, config, changes, and users all add signal.' },
-        { wrong: 'Recent changes are rarely the cause.', right: 'They’re one of the most common root causes.' },
-        { wrong: 'User reports are too vague to use.', right: 'They anchor the timing and real-world impact.' }
+        { wrong: 'Logs are the only real evidence.', right: 'Metrics, state, changes and users each add something logs cannot.' },
+        { wrong: 'Recent changes are rarely the cause.', right: 'They are among the most common causes of sudden failures.' },
+        { wrong: 'User reports are too vague to use.', right: 'They anchor timing and impact, and often contain the key detail.' },
+        { wrong: 'One source is enough if it looks conclusive.', right: 'Agreement across sources is what separates cause from coincidence.' }
       ],
       takeaways: [
-        'Evidence comes from many sources, not just logs.',
-        'Metrics reveal trends and saturation.',
-        'Recent changes are a common root cause.',
-        'User reports ground the impact and timing.'
+        '**Each source answers a different question:** logs for detail, metrics for scale and timing, state for now, changes for why now.',
+        '**Metrics establish when it started,** which is the single most useful fact for correlating with changes.',
+        '**Check current state, not just history.** What is running, what it is connected to, and what configuration it actually loaded.',
+        '**Change history is a primary source.** A deploy at 08:55 and a symptom at 08:56 is rarely a coincidence.',
+        '**User reports contain details telemetry misses** — the file size, the device, the exact action that triggers it.',
+        '**Triangulate.** When four sources tell the same story, you have a cause; when one does, you have a theory.',
+        '**Note which source cracked it.** Over time that tells you where to look first — and what instrumentation is missing.'
       ],
-      reflection: 'For your last incident, which evidence source cracked it — and which did you check too late?',
+      reflection: 'For the last incident you saw, which source finally explained it — and which one did you check too late? What would checking that one first have saved?',
       checks: [
-        'Name the main sources of failure evidence.',
-        'What do metrics add beyond logs?',
-        'Why check recent changes?',
-        'What do user reports contribute?'
+        'Which question does each evidence source answer?',
+        'What do metrics tell you that logs do not?',
+        'Why check current state as well as logs?',
+        'Why is change history a primary source?',
+        'What do user reports contribute?',
+        'What does triangulating give you?'
       ]
     }
   ]

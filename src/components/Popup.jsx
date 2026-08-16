@@ -17,24 +17,36 @@ function SectionHead({ icon, color, children }) {
 
 // ---- individual panels (each rendered only when its data exists) ----
 
+// The intro spans the full width of the sheet, so its prose sits in a column
+// beside the checklist rather than running the whole way across (unreadably
+// long lines) or stopping halfway (a half-empty box). With no checklist, long
+// prose flows into two newspaper columns instead so it still fills the space.
 function IntroBox({ whatIs, concept, points }) {
   const paragraphs = whatIs?.text
     ? whatIs.text.split(/\n\s*\n/)
     : Array.isArray(concept) ? concept : concept ? [concept] : []
+  const list = whatIs?.ensures ?? points ?? []
+  const longProse = paragraphs.join(' ').length > 400
+  const layout = list.length > 0 ? 'has-list' : longProse ? 'wide-prose' : ''
+
   return (
-    <div className="intro-box">
+    <div className={`intro-box ${layout}`.trim()}>
       <SectionHead icon="lightbulb" color="sh-blue">In a nutshell</SectionHead>
-      {paragraphs.map((p, i) => <p key={i}>{renderRich(p)}</p>)}
-      {(whatIs?.ensures?.length || points?.length) > 0 && (
-        <ul className="check-list">
-          {(whatIs?.ensures ?? points).map((item) => (
-            <li key={item}>
-              <Icon name="circle-check" className="check-ic" />
-              <span>{renderRich(item)}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="intro-grid">
+        <div className="intro-prose">
+          {paragraphs.map((p, i) => <p key={i}>{renderRich(p)}</p>)}
+        </div>
+        {list.length > 0 && (
+          <ul className="check-list">
+            {list.map((item) => (
+              <li key={item}>
+                <Icon name="circle-check" className="check-ic" />
+                <span>{renderRich(item)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   )
 }

@@ -10,7 +10,7 @@ export default {
       title: 'Understanding the Shell',
       blurb: 'The shell is your direct line to the operating system. Learn why it matters and how it works.',
       whatIs: {
-        text: `A shell is a program that interprets your commands and tells the operating system what to do. When you type a command in your terminal, the shell reads it, figures out what you want, and asks the OS to run it. Bash (Bourne Again Shell) is the most common shell on Linux and macOS—it's been the default for decades because it's powerful, standardized, and flexible.
+        text: `A shell is a program that interprets your commands and tells the operating system (OS) what to do. When you type a command in your terminal, the shell reads it, figures out what you want, and asks the OS to run it. Bash (Bourne Again Shell) is the most common shell on Linux and macOS—it's been the default for decades because it's powerful, standardized, and flexible.
 
 The relationship is important: Terminal → Shell → OS. The terminal is just a window for text input/output. The shell is the interpreter that sits between you and the OS. The OS is what actually runs programs and manages resources. Understanding this layering helps you troubleshoot, write scripts, and use the system effectively.`,
         ensures: [
@@ -42,7 +42,8 @@ The relationship is important: Terminal → Shell → OS. The terminal is just a
           '**Shell asks OS:** "Run the `ls` program from /bin/ls with arguments: `-la`"',
           '**OS does:** Finds the `ls` executable, creates a process, runs it',
           '**ls outputs:** Directory listing with details (permissions, size, dates)',
-          '**Shell displays:** Output in your terminal and waits for the next command'
+          '**Shell displays:** Output in your terminal and waits for the next command',
+          '**Exit code recorded:** `ls` returns 0 (success); check it with `echo $?`'
         ]
       },
       takeaways: [
@@ -322,7 +323,7 @@ Testing with \`[ ... ]\` is syntax-heavy but critical. There are tests for files
           'exit 0'
       },
       takeaways: [
-        '**The shebang (`#!/bin/bash`)** tells the OS this is a Bash script. When you run `./script.sh`, the OS reads the shebang to determine which interpreter to use. Make the script executable with `chmod +x script.sh`.',
+        '**The shebang (`#!/bin/bash`)** tells the operating system (OS) this is a Bash script. When you run `./script.sh`, the OS reads the shebang to determine which interpreter to use. Make the script executable with `chmod +x script.sh`.',
         '**`$1`, `$2`, etc. are script arguments.** When you run `./script.sh file.txt`, `$1` is `file.txt`. `$0` is the script name itself. `$@` is all arguments as a list.',
         '**Test syntax `[ ... ]` is strict:** `[ -f file ]` (space after `[` and before `]` is required). `-f` tests if a file exists, `-d` tests if a directory exists, `-z` tests if a string is empty, `-n` tests if a string is not empty.',
         '**Exit codes are how scripts communicate success/failure.** Return 0 if successful, non-zero if there\'s an error. `exit 1` terminates the script with status 1. Callers check `$?` to see if your script succeeded.',
@@ -387,7 +388,7 @@ You'll use these constantly: finding errors in logs, extracting fields from data
         '**`grep -v` inverts the match:** `grep -v "debug"` finds everything that doesn\'t contain "debug." Great for filtering out noise.',
         '**`sed` syntax is: `sed "s/pattern/replacement/flags"`.** The `s` means substitute. The `g` flag means global (all occurrences). No `g` means just the first on each line.',
         '**`awk` is a small language.** It processes text line by line. `{print $1}` prints the first field (column). `$NF` is the last field. `NR` is the current line number.',
-        '**Delimiters matter in `awk`.** By default, it splits on whitespace. Use `-F":"` to split on colons (useful for `/etc/passwd`). Use `-F","` for CSV files.',
+        '**Delimiters matter in `awk`.** By default, it splits on whitespace. Use `-F":"` to split on colons (useful for `/etc/passwd`). Use `-F","` for comma-separated values (CSV) files.',
         '**Test your patterns incrementally.** Don\'t write complex pipes all at once. Test `grep`, then add `sed`, then `awk`. Debug each step separately.',
         '**Performance matters with large files.** `grep` is optimized for searching. `sed` can be slow on huge files. `awk` is often faster for data extraction.',
         '**Capture groups in sed: `s/(pattern)/\\1/`.** Parentheses capture parts of the match. `\\1` refers to the first captured group. This lets you reorganize text.'
@@ -408,7 +409,7 @@ You'll use these constantly: finding errors in logs, extracting fields from data
       title: 'Process Management: Monitoring & Control',
       blurb: 'See what\'s running, stop runaway processes, run things in the background, and manage resources.',
       whatIs: {
-        text: `A process is a running program. The OS gives each process a unique ID (PID) and manages its resources (memory, CPU, files).
+        text: `A process is a running program. The operating system (OS) gives each process a unique process ID (PID) and manages its resources: memory, central processing unit (CPU) time, and open files.
 
 You need to know what processes are running: maybe a task is consuming all your CPU, or you want to check if a service is alive. \`ps\` shows running processes. \`top\` or \`htop\` show live resource usage.
 

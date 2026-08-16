@@ -11,50 +11,62 @@ export default {
       title: 'Why Operating Systems Exist',
       blurb: 'The OS manages hardware and gives applications a usable, shared environment.',
       whatIs: {
-        text: 'An operating system manages hardware resources and provides a usable environment for applications. It manages CPU time, memory, files, devices, networking, users, and permissions.',
+        text: `Without an operating system (OS), every program would have to drive the hardware itself — talk to the disk controller, manage physical memory addresses, take turns on the processor with programs it knows nothing about. The OS exists so that none of that is your problem.
+
+It does three jobs. It **shares** finite resources — processor time, memory, disk, network — between everything that wants them. It **isolates** programs so one crashing or misbehaving cannot corrupt another. And it **abstracts** the hardware behind consistent interfaces, so your code opens "a file" rather than addressing sectors on a particular device.
+
+Applications reach these services through **system calls**: read a file, allocate memory, send data. That boundary is also where permissions are enforced, which is why "access denied" comes from the OS rather than the application. Windows, Linux, macOS, iOS and Android differ enormously in appearance and hardly at all in these responsibilities.`,
         ensures: [
-          'Without an OS, every app would have to drive the hardware directly.',
-          'The OS shares finite resources fairly between many programs.',
-          'Applications run as processes managed by the OS.',
-          'Common examples: Windows, Linux, macOS, iOS, Android.'
+          'Say what an operating system is responsible for',
+          'Explain sharing, isolation and abstraction as its three jobs',
+          'Describe what a system call is and why it exists',
+          'Understand why applications cannot touch hardware directly',
+          'See where permission checks actually happen',
+          'Recognise the same responsibilities across different operating systems'
         ]
       },
       visual: {
         kind: 'pyramid',
-        label: 'The OS layer — applications run as processes managed by the operating system on top of hardware.',
+        label: 'Applications run as processes, managed by the OS, on shared hardware.',
         steps: [
-          { icon: 'window-maximize', label: 'Application', purpose: 'The program the user interacts with.', question: 'What does the user run?' },
-          { icon: 'diagram-project', label: 'Process', purpose: 'A running instance the OS manages.', question: 'What is actually running?' },
-          { icon: 'gears', label: 'Operating System', purpose: 'Manages processes and shares hardware.', question: 'What manages it all?' },
-          { icon: 'microchip', label: 'Hardware', purpose: 'The physical resources underneath.', question: 'What does the real work?' }
+          { icon: 'window-maximize', label: 'Application', purpose: 'The program a person actually uses.', question: 'What is the user running?' },
+          { icon: 'diagram-project', label: 'Process', purpose: 'One running instance, isolated and tracked by the OS.', question: 'What is actually executing?' },
+          { icon: 'gears', label: 'Operating system', purpose: 'Shares hardware, isolates processes, enforces permissions.', question: 'Who decides who gets what?' },
+          { icon: 'microchip', label: 'Hardware', purpose: 'The finite physical resources underneath.', question: 'What physically does the work?' }
         ]
       },
       example: {
         title: 'Two apps, one machine',
         items: [
-          'A browser and a music player are open at once.',
-          'Each runs as its own isolated process.',
-          'The OS shares CPU time and memory between them.',
-          'One set of CPU, RAM, and disk serves both.'
+          'A browser and a music player are open at the same time.',
+          'Each runs as its own isolated process with its own memory.',
+          'The OS gives each slices of central processing unit (CPU) time and its share of memory.',
+          'One set of hardware serves both, and neither can read the other\'s data.'
         ]
       },
       misconceptions: [
-        { wrong: 'The OS is just the desktop interface.', right: 'The desktop is one part; the OS manages all hardware and processes.' },
-        { wrong: 'Apps talk directly to the hardware.', right: 'The OS mediates access to CPU, memory, disk, and devices.' },
-        { wrong: 'Servers don’t really need an OS.', right: 'Servers rely on the OS to manage processes and resources.' }
+        { wrong: 'The OS is the desktop interface.', right: 'The desktop is one program; the OS manages hardware and processes.' },
+        { wrong: 'Applications talk directly to hardware.', right: 'They make system calls; the OS mediates every access.' },
+        { wrong: 'Servers barely need an operating system.', right: 'They depend on it for scheduling, memory, networking and permissions.' },
+        { wrong: 'One badly behaved app can corrupt another.', right: 'Isolation is exactly what the OS provides to prevent that.' }
       ],
       takeaways: [
-        'The OS makes hardware usable for applications.',
-        'It manages CPU, memory, files, devices, users, and permissions.',
-        'Applications run as processes on top of the OS.',
-        'Windows, Linux, macOS, iOS, and Android are all operating systems.'
+        '**Share, isolate, abstract.** Those three jobs explain almost everything an operating system does.',
+        '**System calls are the boundary** between your program and the machine — files, memory, networking all cross it.',
+        '**Permissions are enforced by the OS,** which is why "access denied" is a system answer, not an application opinion.',
+        '**Isolation keeps a crash local.** One process failing does not take down the others, because each has its own memory space.',
+        '**Abstraction is why code is portable.** You open "a file"; the OS knows about this particular disk.',
+        '**Resources are finite and shared.** Most "the app is slow" problems are really "something else got the resource".',
+        '**All the major operating systems do the same jobs.** The interfaces differ; the responsibilities do not.'
       ],
-      reflection: 'What would an application have to do itself if there were no operating system?',
+      reflection: 'If there were no operating system, list three things your application would have to implement itself. Which of the three would you least want to write?',
       checks: [
-        'What does an operating system manage?',
-        'Why can’t every app manage the hardware itself?',
-        'How do applications run on top of the OS?',
-        'Name three operating systems.'
+        'What are the three main jobs of an operating system?',
+        'What is a system call?',
+        'Why can applications not access hardware directly?',
+        'Where are file permissions actually enforced?',
+        'What does isolation between processes protect against?',
+        'What do Windows, Linux and Android have in common?'
       ]
     },
     {
@@ -62,12 +74,18 @@ export default {
       title: 'Processes',
       blurb: 'A running instance of a program, with its own identity and resources.',
       whatIs: {
-        text: 'A process is a running instance of a program. Each process has its own identity and resources — memory, open files, and environment — and the OS tracks it with a process ID.',
+        text: `A **program** is a file on disk. A **process** is that program running: it has its own memory space, its own open files, an environment, and a numeric identity — the process ID (PID) — that the operating system (OS) uses to track it. Open the same application twice and you have two processes that cannot see each other's data.
+
+A process moves between states. It is **running** when it has the central processing unit (CPU), **ready** when it wants the CPU but is waiting its turn, and **blocked** when it is waiting for something external such as disk, network or user input. A frozen application is usually blocked, not dead — the difference matters, because one needs patience or a fix upstream and the other needs restarting.
+
+Processes end in one of three ways: they finish normally with an **exit code** (zero for success), they crash, or they are **killed** by a signal. Killing is not automatically safe — a process stopped mid-write can leave a half-written file or an inconsistent database, which is why a polite termination request comes before a forced one.`,
         ensures: [
-          'A program is a file; a process is that program running.',
-          'Each process is isolated from others by the OS.',
-          'Processes can start, run, wait, crash, or be terminated.',
-          'The OS tracks every process by its process ID (PID).'
+          'Distinguish a program from a process',
+          'Explain the running, ready and blocked states',
+          'Use process IDs and understand what the OS tracks',
+          'Interpret exit codes and the difference between crash and kill',
+          'Tell a frozen process from a dead one',
+          'Know why forcibly killing a process can be unsafe'
         ]
       },
       visual: {
@@ -75,33 +93,33 @@ export default {
         label: 'The life of a process — from launch to termination.',
         loop: false,
         steps: [
-          { icon: 'play', label: 'Start', desc: 'The program is launched as a process.', purpose: 'Create a running instance with its own resources.', question: 'What program is starting?' },
-          { icon: 'gears', label: 'Run', desc: 'It executes, using CPU and memory.', purpose: 'Do the program’s actual work.', question: 'What is it doing?' },
-          { icon: 'hourglass-half', label: 'Wait', desc: 'It pauses for input, disk, or network.', purpose: 'Yield the CPU while waiting for something.', question: 'What is it waiting for?' },
-          { icon: 'flag-checkered', label: 'Terminate', desc: 'It finishes, crashes, or is killed.', purpose: 'Release resources back to the system.', question: 'Why did it end?' }
+          { icon: 'play', label: 'Start', desc: 'Launched as a new process.', purpose: 'Create a running instance with its own memory and a PID.', question: 'What is starting, and under whose identity?' },
+          { icon: 'gears', label: 'Run', desc: 'Executes using CPU and memory.', purpose: 'Do the program\'s work while it holds the processor.', question: 'What is it actually doing?' },
+          { icon: 'hourglass-half', label: 'Wait (blocked)', desc: 'Pauses for disk, network or input.', purpose: 'Give up the CPU while waiting for something external.', question: 'What is it waiting for?' },
+          { icon: 'flag-checkered', label: 'Terminate', desc: 'Finishes, crashes or is killed.', purpose: 'Release memory, files and other resources.', question: 'Did it exit cleanly, and with what code?' }
         ]
       },
       example: {
         title: 'A file download',
         items: [
-          'You launch the downloader — a new process starts.',
-          'It runs, using CPU to manage the transfer.',
-          'It waits on the network for each chunk of data.',
-          'When the file is complete, the process exits.'
+          'Launching the downloader creates a process with its own PID.',
+          'It runs, using CPU to manage the transfer and write chunks.',
+          'It blocks repeatedly, waiting for the network to deliver data.',
+          'When the file completes it exits with code 0 and its memory is freed.'
         ]
       },
       io: {
         inputs: [
-          ['Program file', 'Launch request'],
+          ['Program file', 'Launch request', 'User identity'],
           ['CPU time', 'Allocated memory'],
-          ['Pending I/O request'],
-          ['Exit code or signal']
+          ['A pending disk or network request'],
+          ['Normal exit, crash, or signal']
         ],
         outputs: [
-          ['A process with a PID'],
+          ['A process with a PID and its own memory'],
           ['Work performed', 'Updated state'],
-          ['Released CPU while blocked'],
-          ['Freed memory and files']
+          ['CPU released to other processes'],
+          ['Freed memory and closed files', 'An exit code']
         ]
       },
       who: [
@@ -111,60 +129,72 @@ export default {
         'Operating system'
       ],
       misconceptions: [
-        { wrong: 'A program and a process are the same thing.', right: 'A program is a file; a process is that program running.' },
-        { wrong: 'A frozen app is doing nothing.', right: 'It may be stuck waiting on I/O or a lock.' },
-        { wrong: 'Killing a process is always safe.', right: 'It can leave files or data in an inconsistent state.' }
+        { wrong: 'A program and a process are the same thing.', right: 'A program is a file; a process is one running instance of it.' },
+        { wrong: 'A frozen app is doing nothing.', right: 'It is usually blocked — waiting on I/O, a lock or a remote call.' },
+        { wrong: 'Killing a process is always safe.', right: 'It can leave files, databases or locks in an inconsistent state.' },
+        { wrong: 'Processes can read each other\'s memory.', right: 'The OS isolates them; sharing requires an explicit mechanism.' }
       ],
       takeaways: [
-        'A process is a running instance of a program.',
-        'Each has its own memory, files, and identity (PID).',
-        'Processes start, run, wait, crash, or are terminated.',
-        'The OS isolates and tracks every process.'
+        '**A program is a file; a process is that file running.** Two copies of the same program are two independent processes.',
+        '**Every process has its own memory space,** which is why one crashing rarely affects another.',
+        '**Blocked is not dead.** Most freezes are a process waiting on something slow or absent — check what it is waiting for before killing it.',
+        '**Exit codes carry the result.** Zero means success; anything else is a failure a script or pipeline can act on.',
+        '**Prefer a polite termination first.** A graceful signal lets a process close files and finish writes; forcing it does not.',
+        '**High CPU and blocked are opposite symptoms.** One is doing too much work, the other is doing none at all.',
+        '**Zombie and orphan processes exist** when parents do not clean up after children — usually harmless, but a sign of a bug.'
       ],
-      reflection: 'When an app "freezes", is the process gone — or stuck? How would you tell?',
+      reflection: 'An application stops responding. How would you tell whether it is busy, blocked or dead — and what would you check before killing it?',
       checks: [
-        'What is a process?',
-        'How is a process different from a program?',
-        'What states can a process be in?',
-        'How does the OS identify a process?'
+        'What is the difference between a program and a process?',
+        'What are the running, ready and blocked states?',
+        'What does the operating system track for each process?',
+        'What does an exit code tell you?',
+        'Why can killing a process be unsafe?',
+        'Why can one process not read another\'s memory?'
       ]
     },
     {
       id: 'os-thread',
-      title: 'Threads',
-      blurb: 'Units of execution within a process that allow concurrent work.',
+      title: 'Threads & Concurrency',
+      blurb: 'Units of execution within a process that allow concurrent work — and the bugs that come with sharing.',
       whatIs: {
-        text: 'A thread is a unit of execution within a process. A process can have one or many threads, letting a program do several pieces of work concurrently.',
+        text: `A **thread** is a line of execution inside a process. One process can have many, and unlike separate processes they **share the same memory**. That sharing is the point — threads can cooperate on the same data cheaply — and it is also the danger.
+
+The everyday reason to use threads is responsiveness. A photo editor keeps one thread handling the interface while another applies a filter, so the window still responds. Servers use a thread per request (or an event loop that achieves the same effect) so one slow request does not block everyone else.
+
+The cost is that shared data can be read and written at the same time. If two threads increment the same counter, both may read the old value and write the same new one, losing an update — a **race condition**. The fixes are locks and other coordination, which bring their own problem: a **deadlock**, where two threads each hold what the other needs and neither can proceed. These bugs are intermittent, depend on timing, and often vanish under a debugger — which is why the safest approach is to share as little mutable state as possible.`,
         ensures: [
-          'Threads live inside a process and share its resources.',
-          'Multiple threads allow concurrent work.',
-          'Shared state means bugs appear when it is not managed carefully.',
-          'Threads are lighter-weight than separate processes.'
+          'Explain what a thread is and how it differs from a process',
+          'Say why threads are used: responsiveness and parallelism',
+          'Describe a race condition in concrete terms',
+          'Understand what a lock does and how deadlock arises',
+          'Recognise why concurrency bugs are intermittent and hard to reproduce',
+          'Prefer designs that share as little mutable state as possible'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'Why programs use threads — and where the risk is.',
+        label: 'Why programs use threads — and where the risk appears.',
         loop: false,
         steps: [
-          { icon: 'diagram-project', label: 'One process', desc: 'A single running program.', purpose: 'Contain the work in one isolated program.', question: 'What program is running?' },
-          { icon: 'code-branch', label: 'Split into threads', desc: 'Work is divided into concurrent threads.', purpose: 'Do several things at once without new processes.', question: 'What work can happen in parallel?' },
-          { icon: 'boxes-stacked', label: 'Share resources', desc: 'Threads share the process’s memory.', purpose: 'Cooperate on the same data efficiently.', question: 'What state is shared?' },
-          { icon: 'triangle-exclamation', label: 'Coordinate carefully', desc: 'Unmanaged shared state causes bugs.', purpose: 'Prevent race conditions on shared data.', question: 'Who touches this data, and when?' }
+          { icon: 'diagram-project', label: 'One process', desc: 'A single running program.', purpose: 'Hold the work inside one isolated program.', question: 'What program is running?' },
+          { icon: 'code-branch', label: 'Split into threads', desc: 'Work is divided to run concurrently.', purpose: 'Keep the interface responsive, or use several cores.', question: 'What work can genuinely happen at the same time?' },
+          { icon: 'boxes-stacked', label: 'Share memory', desc: 'Threads see the same data.', purpose: 'Cooperate on the same data without copying it.', question: 'What state is shared, and who writes to it?' },
+          { icon: 'triangle-exclamation', label: 'Coordinate', desc: 'Unmanaged sharing corrupts data.', purpose: 'Use locks or safe structures to prevent races.', question: 'Could two threads touch this at once?' }
         ]
       },
       io: {
         inputs: [
           ['A program to run'],
-          ['The process', 'Work to split'],
+          ['The process', 'Divisible work'],
           ['Threads', 'Process memory'],
-          ['Shared state']
+          ['Shared mutable state']
         ],
         outputs: [
           ['One running process'],
           ['Concurrent threads'],
-          ['Shared access to data'],
-          ['Coordinated, safe access']
+          ['Shared access to the same data'],
+          ['Coordinated, correct access — or a race']
         ]
       },
       who: [
@@ -174,31 +204,37 @@ export default {
         'Developer'
       ],
       example: {
-        title: 'A responsive app',
+        title: 'A responsive photo app',
         items: [
-          'A photo app runs as one process.',
-          'One thread keeps the UI responsive while another applies a filter.',
-          'Both threads read the same image data in memory.',
-          'Without coordination, they could corrupt that shared image.'
+          'The photo app runs as one process.',
+          'One thread keeps the interface responsive while another applies a filter.',
+          'Both threads work on the same image data in memory.',
+          'Without coordination, one can overwrite what the other is reading.'
         ]
       },
       misconceptions: [
-        { wrong: 'Threads are the same as processes.', right: 'Threads live inside a process and share its memory.' },
-        { wrong: 'More threads always means faster.', right: 'Coordination overhead and shared state can cancel the gains.' },
-        { wrong: 'Threading bugs are rare and obvious.', right: 'Shared-state bugs are common, intermittent, and hard to find.' }
+        { wrong: 'Threads are just lightweight processes.', right: 'They share memory, which is the whole difference — and the risk.' },
+        { wrong: 'More threads means faster.', right: 'Beyond the number of cores, coordination overhead can make it slower.' },
+        { wrong: 'Concurrency bugs are rare and obvious.', right: 'They are common, intermittent, and often disappear when observed.' },
+        { wrong: 'Locks make code safe.', right: 'They prevent races and introduce deadlocks — used carelessly, both.' }
       ],
       takeaways: [
-        'A thread is a unit of execution inside a process.',
-        'Threads enable concurrent work.',
-        'Threads share process resources.',
-        'Shared state must be managed to avoid bugs.'
+        '**Threads share memory; processes do not.** That is the trade: cheap cooperation in exchange for the possibility of corruption.',
+        '**Responsiveness is the everyday reason to use them** — one thread waiting must not stop the rest of the program.',
+        '**A race condition is two threads touching the same data at once,** with the result depending on timing you do not control.',
+        '**Locks serialise access,** which fixes races and creates the possibility of deadlock when two threads wait on each other.',
+        '**Concurrency bugs are timing-dependent.** They pass a thousand test runs and fail in production on a busy day.',
+        '**More threads is not more speed.** Once you exceed the available cores, you are paying switching costs for no gain.',
+        '**Share less.** Immutable data, message passing and per-thread state remove whole categories of bug by design.'
       ],
-      reflection: 'Why can two threads doing "obviously correct" work still produce a wrong result together?',
+      reflection: 'Two threads each read a counter, add one, and write it back. Explain how the final value can be wrong, and what has to be true about the timing for it to go right.',
       checks: [
-        'What is a thread?',
-        'How is a thread different from a process?',
-        'What do threads share?',
-        'Why can shared state cause bugs?'
+        'What is a thread, and how does it differ from a process?',
+        'Why do programs use threads at all?',
+        'What is a race condition?',
+        'What does a lock do, and what new risk does it create?',
+        'Why are concurrency bugs so hard to reproduce?',
+        'Why does adding threads eventually stop helping?'
       ]
     },
     {
@@ -206,36 +242,42 @@ export default {
       title: 'Scheduling & Memory',
       blurb: 'How the OS shares CPU time and memory so many programs appear to run at once.',
       whatIs: {
-        text: 'The operating system decides which process gets CPU time and manages how memory is allocated, keeping processes isolated. Scheduling creates the illusion that many programs run at the same time.',
+        text: `A processor core does one thing at a time. The appearance of many programs running together comes from the **scheduler** switching between them extremely quickly — each gets a slice of time, then the operating system (OS) saves its state and gives the core to something else. That switch is a **context switch**, and it is cheap but not free.
+
+Schedulers balance two goals: **fairness** (everyone gets a turn) and **responsiveness** (interactive work should not wait behind a long batch job). That is why a process which mostly waits for input tends to be given the central processing unit (CPU) quickly when it is ready — it will not hold it long.
+
+Memory is managed by the same principle of sharing with isolation. Each process gets its own **virtual address space**, so its "address 100" is not the same physical memory as another's. The OS maps those virtual addresses onto physical random-access memory (RAM), which is what makes isolation possible in the first place. When physical memory runs short it **swaps** less-used pages to disk — and because disk is far slower, a machine that swaps heavily feels frozen. Push harder and the OS starts killing processes to recover.`,
         ensures: [
-          'The OS shares the CPU between many processes.',
-          'It allocates memory and keeps processes isolated.',
-          'If a process uses too much memory, the OS may swap or kill processes.',
-          'Rapid switching makes concurrent programs feel simultaneous.'
+          'Explain how time-slicing creates apparent simultaneity',
+          'Describe what happens during a context switch',
+          'Say how schedulers balance fairness and responsiveness',
+          'Explain virtual memory and why it enables isolation',
+          'Understand swapping and why it destroys performance',
+          'Recognise what happens when a system runs out of memory'
         ]
       },
       visual: {
         kind: 'flow',
         label: 'How the OS keeps many programs running together.',
         steps: [
-          { icon: 'list-ol', label: 'Ready processes', desc: 'Many processes want to run.', purpose: 'Track everything that needs CPU time.', question: 'Who needs to run?' },
-          { icon: 'scale-balanced', label: 'Schedule CPU', desc: 'The OS picks who runs next.', purpose: 'Share the CPU fairly and responsively.', question: 'Who runs now, and for how long?' },
-          { icon: 'memory', label: 'Allocate memory', desc: 'Each process gets isolated memory.', purpose: 'Give processes space without stepping on each other.', question: 'How much memory does each need?' },
-          { icon: 'right-left', label: 'Switch & repeat', desc: 'The OS rapidly switches between them.', purpose: 'Create the illusion of simultaneous execution.', question: 'Whose turn is next?' }
+          { icon: 'list-ol', label: 'Ready processes', desc: 'Many want to run.', purpose: 'Track everything that is ready for the CPU.', question: 'Who needs the processor right now?' },
+          { icon: 'scale-balanced', label: 'Schedule', desc: 'Pick who runs next.', purpose: 'Balance fairness against responsiveness.', question: 'Who runs now, and for how long?' },
+          { icon: 'memory', label: 'Map memory', desc: 'Each gets its own address space.', purpose: 'Give every process isolated virtual memory.', question: 'Where does this process\'s memory actually live?' },
+          { icon: 'right-left', label: 'Switch & repeat', desc: 'Save state, hand over the core.', purpose: 'Context-switch fast enough to feel simultaneous.', question: 'Whose turn is next?' }
         ]
       },
       io: {
         inputs: [
           ['Runnable processes'],
-          ['Ready queue', 'Scheduling policy'],
-          ['Process needs', 'Free memory'],
-          ['Time-slice end']
+          ['Ready queue', 'Scheduling policy', 'Priorities'],
+          ['Process memory requests', 'Physical RAM'],
+          ['End of time slice, or a block']
         ],
         outputs: [
           ['A ready queue'],
           ['The next process to run'],
-          ['Isolated memory'],
-          ['A context switch']
+          ['Isolated virtual address spaces'],
+          ['A context switch', 'The illusion of simultaneity']
         ]
       },
       who: [
@@ -247,29 +289,35 @@ export default {
       example: {
         title: 'Music while you type',
         items: [
-          'Your editor and music player are both ready to run.',
-          'The OS gives each tiny slices of CPU time.',
-          'Each has its own isolated memory.',
-          'Switching happens so fast the music never stutters.'
+          'Your editor and the music player are both ready to run.',
+          'The scheduler gives each millisecond-scale slices of a core.',
+          'Each has its own virtual memory, so neither sees the other\'s data.',
+          'Switching is fast enough that typing feels instant and audio never breaks.'
         ]
       },
       misconceptions: [
-        { wrong: 'The CPU truly runs everything at once.', right: 'A core runs one thing at a time; the OS switches rapidly.' },
-        { wrong: 'The OS never kills your programs.', right: 'Under memory pressure it may swap or terminate processes.' },
-        { wrong: 'Memory isolation is automatic and perfect.', right: 'The OS works to isolate processes, but limits are real.' }
+        { wrong: 'A core truly runs several programs at once.', right: 'It runs one at a time; the OS switches between them rapidly.' },
+        { wrong: 'Context switching is free.', right: 'It costs time and cache warmth — too much switching wastes real work.' },
+        { wrong: 'Each process gets its own physical memory chip.', right: 'It gets a virtual address space mapped onto shared physical RAM.' },
+        { wrong: 'The OS never kills your programs.', right: 'Under memory pressure it terminates processes to save the system.' }
       ],
       takeaways: [
-        'The OS decides which process gets the CPU.',
-        'It allocates memory and isolates processes.',
-        'Under pressure it may swap or kill processes.',
-        'Fast switching gives the illusion of running at once.'
+        '**Time-slicing creates the illusion of simultaneity.** One core, many programs, switched fast enough that people cannot tell.',
+        '**Context switches cost something.** Saving and restoring state, plus a cold cache, is why excessive threads slow a machine down.',
+        '**Schedulers favour work that yields quickly.** Interactive processes stay responsive because they do not hold the CPU long.',
+        '**Virtual memory is what makes isolation possible.** Each process addresses its own space; the OS maps it onto physical RAM.',
+        '**Swapping is the performance cliff.** Using disk as slow memory can make a healthy machine feel completely stuck.',
+        '**Out-of-memory kills look like unexplained disappearances** — the process vanishes with no application error.',
+        '**Priorities exist and can be adjusted,** but a badly behaved process can still starve others of resources.'
       ],
-      reflection: 'On a single-core machine, how can ten apps appear to run simultaneously?',
+      reflection: 'On a single-core machine, ten applications appear to run at once. Explain how — and then explain why running a hundred CPU-hungry processes makes everything slower than running four.',
       checks: [
-        'What does the scheduler decide?',
-        'How does the OS keep processes isolated?',
-        'What can happen when memory runs low?',
-        'Why does concurrency feel simultaneous?'
+        'How does one core appear to run many programs?',
+        'What happens during a context switch, and what does it cost?',
+        'What two goals does a scheduler balance?',
+        'What is virtual memory, and what does it enable?',
+        'What is swapping, and why is it so damaging?',
+        'What does the OS do when memory runs out entirely?'
       ]
     },
     {
@@ -277,47 +325,53 @@ export default {
       title: 'Files & Permissions',
       blurb: 'How the file system organises data and controls who can read, write, or execute it.',
       whatIs: {
-        text: 'A file system organises files and directories on storage, and paths identify where files live. Permissions control who can read, write, or execute each file.',
+        text: `A **file system** organises storage into files and directories, addressed by **paths**. An absolute path (\`/var/log/app.log\`) works from anywhere; a relative path (\`logs/app.log\`) depends on the current working directory — which is exactly why a program can work when you run it by hand and fail when a scheduler runs it from somewhere else.
+
+Every file carries **permissions** describing who may do what: **read** (view the contents), **write** (change it) and **execute** (run it as a program). Those permissions apply to an owner, a group and everyone else. When a program runs, it does so as some user or service account, and the operating system (OS) checks that identity against the file's permissions on every access.
+
+This is why two error messages that feel similar are completely different diagnoses. "No such file or directory" means the path is wrong — check the path and the working directory. "Permission denied" means the file is there but this identity may not touch it — check who the process runs as. And the tempting fix of running everything as administrator makes the error disappear while widening the blast radius of every future mistake.`,
         ensures: [
-          'Paths tell the system exactly where a file is.',
-          '**Read** lets you view a file’s contents.',
-          '**Write** lets you change it.',
-          '**Execute** lets you run it as a program.'
+          'Read absolute and relative paths and know when each applies',
+          'Explain read, write and execute permissions',
+          'Know that a process acts as a user or service account',
+          'Tell "not found" apart from "not allowed"',
+          'Diagnose failures caused by the working directory',
+          'Explain why running as administrator is a poor default fix'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'File permissions — why "access denied" errors happen.',
+        label: 'What actually happens on "access denied".',
         loop: false,
         steps: [
-          { icon: 'user', label: 'User or service', desc: 'Someone requests access to a file.', purpose: 'Identify who is asking.', question: 'Who is making the request?' },
-          { icon: 'file', label: 'The file', desc: 'The target on the file system.', purpose: 'Locate the file by its path.', question: 'Which file, and where?' },
-          { icon: 'eye', label: 'Read permission', desc: 'May they view the contents?', purpose: 'Decide whether reading is allowed.', question: 'Can they read it?' },
-          { icon: 'pen', label: 'Write permission', desc: 'May they change it?', purpose: 'Decide whether modifying is allowed.', question: 'Can they change it?' },
-          { icon: 'play', label: 'Execute permission', desc: 'May they run it?', purpose: 'Decide whether running is allowed.', question: 'Can they run it?' }
+          { icon: 'user', label: 'An identity asks', desc: 'A user or service account.', purpose: 'Establish who the process is running as.', question: 'Which account is making this request?' },
+          { icon: 'file', label: 'A path is resolved', desc: 'Absolute, or relative to somewhere.', purpose: 'Locate the file — or fail with "not found".', question: 'Which file, and relative to what directory?' },
+          { icon: 'eye', label: 'Read?', desc: 'May they view the contents?', purpose: 'Check the read permission for this identity.', question: 'Can this account read it?' },
+          { icon: 'pen', label: 'Write?', desc: 'May they change it?', purpose: 'Check the write permission — including on the directory.', question: 'Can this account modify or create it?' },
+          { icon: 'play', label: 'Execute?', desc: 'May they run it?', purpose: 'Check the execute permission for programs and scripts.', question: 'Can this account run it?' }
         ]
       },
       example: {
-        title: 'App can’t write a log file',
+        title: 'The app cannot write its log file',
         items: [
-          'The service account tries to write to a log file.',
-          'The log file lives at a specific path on disk.',
-          'The account can read the folder…',
-          '…but lacks write permission, so the write fails.',
-          'Fix the permission (or path) and the log appears.'
+          'The service runs as the account `svc-app`, not as you.',
+          'It writes to `logs/app.log` — relative to wherever it was started.',
+          'It can read the directory, so listing works fine.',
+          'It has no write permission there, so every log write fails silently.',
+          'Granting write on that directory (not administrator rights) fixes it.'
         ]
       },
       io: {
         inputs: [
-          ['User / service identity'],
-          ['File path'],
-          ['Read request', 'File’s read setting'],
-          ['Write request', 'File’s write setting'],
-          ['Execute request', 'File’s execute setting']
+          ['User or service identity'],
+          ['A path', 'The working directory'],
+          ['Read request', 'File permissions'],
+          ['Write request', 'File and directory permissions'],
+          ['Execute request', 'File permissions']
         ],
         outputs: [
-          ['Identity to check against'],
-          ['Located file'],
+          ['The identity to check against'],
+          ['A resolved file — or "not found"'],
           ['View allowed or denied'],
           ['Change allowed or denied'],
           ['Run allowed or denied']
@@ -331,35 +385,47 @@ export default {
         'Operating system'
       ],
       misconceptions: [
-        { wrong: 'Permissions only matter for security teams.', right: 'They cause everyday "access denied" and failed-write bugs.' },
-        { wrong: 'A wrong path and a permission error are the same.', right: 'One means "not found", the other means "not allowed".' },
-        { wrong: 'Running as admin is a fine default fix.', right: 'It hides the real problem and widens the blast radius.' }
+        { wrong: 'Permissions are a security-team concern.', right: 'They cause everyday failed writes, missing logs and broken jobs.' },
+        { wrong: '"Not found" and "denied" mean the same thing.', right: 'One is a path problem, the other an identity problem.' },
+        { wrong: 'Running as administrator is a reasonable fix.', right: 'It hides the real problem and widens the damage of any mistake.' },
+        { wrong: 'A relative path always means the same place.', right: 'It depends on the working directory, which differs between launches.' }
       ],
       takeaways: [
-        'The file system organises files by path.',
-        'Permissions govern read, write, and execute.',
-        'Many app failures are missing files, wrong paths, or permissions.',
-        '"Access denied" is a permission problem, not a missing file.'
+        '**Absolute paths work anywhere; relative paths depend on where the process started.** That difference explains a lot of "works when I run it".',
+        '**Read, write, execute — for owner, group and others.** Nearly every access error is one of those six cells.',
+        '**A process acts as an account,** and it is often not your account. Checking "who is this running as?" resolves many failures.',
+        '**"No such file" is a path problem; "permission denied" is an identity problem.** They need completely different fixes.',
+        '**Writing a file needs permission on the directory too,** which is why creating a new file can fail where editing an existing one succeeds.',
+        '**Do not fix permissions with administrator rights.** Grant the specific access needed; the broad fix removes every other safeguard.',
+        '**Failed writes can be silent.** An application that cannot write its log often continues, with no log to tell you why it later broke.'
       ],
-      reflection: 'An app worked in testing but can’t write its log in production. Where do you look first?',
+      reflection: 'A job works when you run it manually and fails when the scheduler runs it. List three explanations involving paths, identity or permissions — and how you would check each in under a minute.',
       checks: [
-        'What does a file system organise?',
-        'What do read, write, and execute permissions allow?',
-        'Why do "access denied" errors happen?',
-        'How is a wrong path different from a permission error?'
+        'What is the difference between an absolute and a relative path?',
+        'What do read, write and execute each permit?',
+        'As whom does a program run, and why does that matter?',
+        'How do you tell "not found" from "not allowed"?',
+        'Why can creating a file fail when editing one succeeds?',
+        'Why is running as administrator a bad fix?'
       ]
     },
     {
       id: 'os-env',
-      title: 'Environment Variables',
+      title: 'Environment & Configuration',
       blurb: 'Configuration values handed to processes — and a classic source of "works on my machine".',
       whatIs: {
-        text: 'Environment variables are configuration values made available to a process when it runs. Many application issues come from missing files, wrong paths, permissions, or environment variables.',
+        text: `**Environment variables** are named values handed to a process when it starts: where the database is, which region to use, whether a feature is on. They let the same build behave differently in different places, which is exactly what you need when one artefact is promoted from development to production.
+
+The critical detail is **when** they are read. A process inherits the environment it was started with; changing a variable afterwards does not affect anything already running, and a child process inherits from its parent. That is why a variable set in your shell is invisible to a service started by the system, and why "I set it, but it still fails" usually means "the process was started before you set it".
+
+Environment differences are the classic cause of "works on my machine". Locally you have variables set months ago and forgotten; the server has only what its deployment configuration provides. When the same code behaves differently in two places, configuration is the first thing to compare — and secrets, while often passed this way, are better held in a proper secret store, because environments get logged and dumped more often than people expect.`,
         ensures: [
-          'They configure a process without changing its code.',
-          'Common uses: paths, credentials, feature flags, service URLs.',
-          'A process only sees the environment it was started with.',
-          'Different environments (local vs service) often differ here.'
+          'Explain what environment variables are and what they configure',
+          'Know when a process receives its environment and what inherits it',
+          'Diagnose "works locally, fails deployed" as a configuration difference',
+          'Keep configuration out of the build artefact',
+          'Handle secrets more carefully than ordinary configuration',
+          'Compare environments systematically rather than guessing'
         ]
       },
       visual: {
@@ -367,58 +433,64 @@ export default {
         label: 'How environment differences cause "works locally, fails as a service".',
         loop: false,
         steps: [
-          { icon: 'sliders', label: 'Define variables', desc: 'Config is set in the environment.', purpose: 'Provide settings the app will need at run time.', question: 'What does the app need configured?' },
-          { icon: 'play', label: 'Process starts', desc: 'The process inherits that environment.', purpose: 'Hand the settings to the running process.', question: 'What environment did it start with?' },
-          { icon: 'gears', label: 'App reads config', desc: 'It uses the variables to run.', purpose: 'Behave according to the provided configuration.', question: 'Which values did it read?' },
-          { icon: 'triangle-exclamation', label: 'Mismatch fails', desc: 'A missing or wrong value breaks it.', purpose: 'Explain why the same code behaves differently.', question: 'What differs between environments?' }
+          { icon: 'sliders', label: 'Define configuration', desc: 'Values set per environment.', purpose: 'Provide the settings this deployment needs.', question: 'What differs between here and production?' },
+          { icon: 'play', label: 'Process starts', desc: 'It inherits that environment.', purpose: 'Hand the settings to the process as it launches.', question: 'What environment did it actually start with?' },
+          { icon: 'gears', label: 'Application reads it', desc: 'Config drives behaviour.', purpose: 'Connect to the right database, region or feature set.', question: 'Which values did it read, and when?' },
+          { icon: 'triangle-exclamation', label: 'Mismatch fails', desc: 'Missing or wrong value.', purpose: 'Explain why identical code behaves differently.', question: 'Which variable is missing or different?' }
         ]
       },
       io: {
         inputs: [
-          ['Config values'],
-          ['Environment', 'Launch'],
+          ['Deployment config', 'Secrets store'],
+          ['The environment', 'A launch request'],
           ['Environment variables'],
           ['A missing or wrong value']
         ],
         outputs: [
           ['A defined environment'],
-          ['A process with that environment'],
+          ['A process holding that environment'],
           ['Applied configuration'],
-          ['A configuration failure']
+          ['A configuration failure', 'A confusing error']
         ]
       },
       who: [
-        'Operator, Deployment config',
+        'Operator, Deployment pipeline',
         'Operating system',
         'Application',
         'Application, Engineer'
       ],
       example: {
-        title: 'Works locally, not as a service',
+        title: 'Works locally, fails as a service',
         items: [
-          'On your laptop, a DATABASE_URL variable is set.',
-          'The app process starts and reads it.',
-          'It connects to the database and runs fine.',
-          'Run as a service, that variable is missing — so it fails to connect.'
+          'On your laptop `DATABASE_URL` was exported months ago.',
+          'Started from your shell, the app inherits it and connects fine.',
+          'Run as a system service, it inherits a much smaller environment.',
+          '`DATABASE_URL` is absent, so it fails at startup with a connection error.'
         ]
       },
       misconceptions: [
-        { wrong: 'Environment variables are advanced and irrelevant.', right: 'They cause many everyday configuration failures.' },
-        { wrong: '"Works on my machine" means it will work anywhere.', right: 'Environments differ in config, paths, and variables.' },
-        { wrong: 'Secrets belong in environment variables forever.', right: 'They are better held in approved secret stores.' }
+        { wrong: 'Environment variables are an advanced topic.', right: 'They cause a large share of everyday deployment failures.' },
+        { wrong: 'Setting a variable affects running processes.', right: 'A process keeps the environment it started with.' },
+        { wrong: '"Works on my machine" means the code is right.', right: 'It means the code plus your configuration is right.' },
+        { wrong: 'Environment variables are a fine home for secrets.', right: 'They leak into logs and crash dumps; use a secret store.' }
       ],
       takeaways: [
-        'Environment variables configure a process at run time.',
-        'A process sees only the environment it started with.',
-        'Environment differences explain many failures.',
-        'Check config before blaming the code.'
+        '**Configuration belongs outside the build.** One artefact, different settings per environment — that is what makes promotion trustworthy.',
+        '**A process inherits its environment at start.** Changing a variable later affects only things started afterwards.',
+        '**Child processes inherit from their parent,** which is why a variable set in your shell reaches what you launch and nothing else.',
+        '**"Works on my machine" is usually a configuration difference,** not a code difference. Compare the two environments first.',
+        '**Missing configuration should fail loudly at startup.** Silently defaulting to something wrong is far more expensive to diagnose.',
+        '**Secrets deserve better than environment variables.** They end up in logs, crash dumps and process listings.',
+        '**Keep a list of what a service needs to run.** A documented set of variables turns a two-hour mystery into a two-minute check.'
       ],
-      reflection: 'When "it works on my machine", what environment differences could explain the failure elsewhere?',
+      reflection: 'A service starts fine on your machine and crashes immediately when deployed. Write the first three things you would compare between the two environments — and how the application could have made the problem obvious in its first log line.',
       checks: [
-        'What is an environment variable?',
+        'What are environment variables for?',
         'When does a process receive its environment?',
-        'Why might an app work locally but fail as a service?',
-        'What common issues come from environment differences?'
+        'Why can a service see fewer variables than your shell?',
+        'Why should configuration live outside the build artefact?',
+        'Why are environment variables a poor place for secrets?',
+        'How should an application behave when required configuration is missing?'
       ]
     }
   ]

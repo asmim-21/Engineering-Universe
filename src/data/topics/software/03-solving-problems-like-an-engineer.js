@@ -10,46 +10,52 @@ export default {
       title: 'Problem Breakdown Loop',
       blurb: 'Turning big or vague work into smaller, understandable tasks.',
       whatIs: {
-        text: 'Large tasks get manageable when you split them by outcome, data, UI, API, tests, and docs.',
+        text: `A large task is intimidating mainly because it is undefined. Breaking it down converts one vague thing into several small things you can estimate, start, review and finish — which is why breakdown is a skill rather than admin.
+
+Split by **outcome**, not by file. "Users can RSVP to an event" cuts across the data model, the application programming interface (API), the screen and the tests; "edit the controller" does not. Each slice should be something you could ship on its own and describe to a non-engineer.
+
+The useful pass through a feature is always the same: outcome, behaviour, data, API, interface, tests, release, documentation. Working through that list surfaces the parts people forget — the data migration, the error states, the thing that has to be told to support. It also exposes what you are **assuming**, which is exactly what to check before writing code.`,
         ensures: [
-          'Start from the user outcome',
-          'Split into investigation and implementation',
-          'Separate must-haves from nice-to-haves',
-          'Ship a small, reviewable first version'
+          'Split a large feature by user outcome rather than by file',
+          'Cover data, API, interface, tests, release and documentation',
+          'Separate must-haves from nice-to-haves explicitly',
+          'Define the smallest version worth shipping first',
+          'Write down assumptions and open questions as you go',
+          'Produce slices small enough to review in one sitting'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'Task breakdown model — a concrete way to break up a large feature.',
+        label: 'A pass through the parts of any feature.',
         loop: false,
         steps: [
-          { icon: 'bullseye', label: 'User outcome', desc: 'Start from the result users need.', purpose: 'Anchor the work in the result users need.', question: 'What outcome do users need?' },
-          { icon: 'gears', label: 'Functional behaviour', desc: 'What the system must do.', purpose: 'Define what the system must do.', question: 'What must it do?' },
-          { icon: 'database', label: 'Data changes', desc: 'New or changed data.', purpose: 'Identify new or changed data.', question: 'What data changes?' },
-          { icon: 'plug', label: 'API changes', desc: 'New or changed endpoints.', purpose: 'Identify new or changed endpoints.', question: 'What endpoints change?' },
-          { icon: 'window-maximize', label: 'UI changes', desc: 'Screens and interactions.', purpose: 'Define the screens and interactions.', question: 'What does the user see?' },
-          { icon: 'flask', label: 'Testing', desc: "How you'll prove it works.", purpose: 'Decide how to prove it works.', question: 'How will we prove it works?' },
-          { icon: 'rocket', label: 'Deployment and monitoring', desc: 'Ship it and watch it.', purpose: 'Ship it safely and watch it.', question: 'How do we ship and watch it?' },
-          { icon: 'file-lines', label: 'Documentation', desc: 'Leave notes for the next person.', purpose: 'Leave notes for the next person.', question: 'What should we write down?' }
+          { icon: 'bullseye', label: 'User outcome', desc: 'Start from the result users need.', purpose: 'Anchor everything in a change someone actually wants.', question: 'What can a user do afterwards that they cannot now?' },
+          { icon: 'gears', label: 'Behaviour', desc: 'What the system must do.', purpose: 'List the rules and the error cases, not just the happy path.', question: 'What must it do — and what must it refuse?' },
+          { icon: 'database', label: 'Data changes', desc: 'New or changed data.', purpose: 'Decide the schema changes and how existing data migrates.', question: 'What is stored, and what happens to old rows?' },
+          { icon: 'plug', label: 'API changes', desc: 'New or changed endpoints.', purpose: 'Define the contract, including failure responses.', question: 'What endpoints change, and does anything break?' },
+          { icon: 'window-maximize', label: 'Interface changes', desc: 'Screens and interactions.', purpose: 'Design the screens, empty states and errors.', question: 'What does the user see, including when it fails?' },
+          { icon: 'flask', label: 'Testing', desc: 'How you will prove it works.', purpose: 'Choose the checks that would catch a real regression.', question: 'What proof would convince a sceptical reviewer?' },
+          { icon: 'rocket', label: 'Release & monitoring', desc: 'Ship it and watch it.', purpose: 'Plan the rollout, the flag and the way back.', question: 'How do we ship this safely and see it working?' },
+          { icon: 'file-lines', label: 'Documentation', desc: 'Leave notes for the next person.', purpose: 'Record decisions, the API and what support needs to know.', question: 'What will the next person need to know?' }
         ]
       },
       io: {
         inputs: [
           ['Feature goal', 'User need'],
           ['Outcome'],
-          ['Behaviour', 'Data model'],
-          ['Behaviour', 'Contracts'],
+          ['Behaviour', 'Existing schema'],
+          ['Behaviour', 'Existing contracts'],
           ['Behaviour', 'Designs'],
           ['Behaviour', 'Risks'],
-          ['Built feature', 'Feature flags'],
-          ['What was built']
+          ['Built feature', 'Feature flag'],
+          ['Decisions', 'What was built']
         ],
         outputs: [
           ['A clear outcome'],
-          ['A behaviour list'],
-          ['Schema changes'],
-          ['Endpoint changes'],
-          ['Screen changes'],
+          ['Rules and error cases'],
+          ['Schema changes', 'Migration plan'],
+          ['Endpoint changes', 'Error responses'],
+          ['Screen changes', 'Empty and error states'],
           ['A test plan'],
           ['A live, watched release'],
           ['Docs', 'Handover notes']
@@ -61,38 +67,47 @@ export default {
         'Engineer',
         'Engineer',
         'Engineer, Designer',
-        'Engineer, QA',
+        'Engineer, quality assurance (QA)',
         'Engineer, DevOps',
         'Engineer'
       ],
       example: {
         title: 'Employees can create social events',
         items: [
-          'Employees can create and share events.',
-          'Create, edit, RSVP, and list events.',
-          'Add Event and RSVP tables.',
-          'Add create, list, and RSVP endpoints.',
-          'Add an event form and a list screen.',
-          'Unit and end-to-end tests for RSVPs.',
-          'Ship behind a flag; watch errors.',
-          'Document the feature and its API.'
+          'Outcome: an employee can create an event others can join.',
+          'Behaviour: create, edit, RSVP, list; only the creator may edit.',
+          'Data: Event and RSVP tables, unique RSVP per person per event.',
+          'API: create, list and RSVP endpoints, with clear 400s and 403s.',
+          'Interface: an event form, a list screen, and an empty state.',
+          'Tests: unit tests for the rules, one end-to-end RSVP journey.',
+          'Release: behind a flag for one team first, errors watched.',
+          'Docs: the endpoints, the rules, and a note for support.'
         ]
       },
       misconceptions: [
-        { wrong: 'Large tasks should be solved in one big step.', right: 'Break them into small, reviewable pieces.' },
-        { wrong: 'Breaking down work is just admin.', right: 'It reduces risk and creates visible progress.' }
+        { wrong: 'Big tasks should be solved in one big push.', right: 'Small reviewable slices reduce risk and show progress.' },
+        { wrong: 'Breaking down work is admin overhead.', right: 'It is where you discover the parts nobody thought about.' },
+        { wrong: 'Split by technical layer.', right: 'Split by outcome; each slice should be shippable and describable.' },
+        { wrong: 'Assumptions can stay in your head.', right: 'Written assumptions get corrected; unwritten ones become bugs.' }
       ],
       takeaways: [
-        'Split by outcome, not by file.',
-        'A smaller first version derisks the rest.',
-        'Track assumptions and open questions.'
+        '**Split by outcome, not by file.** A slice someone can describe in a sentence can also be reviewed, tested and shipped on its own.',
+        '**Walk the same checklist every time:** outcome, behaviour, data, API, interface, tests, release, docs. It catches the work people habitually forget.',
+        '**The smallest shippable version de-risks the rest.** It proves the approach while the cost of being wrong is still low.',
+        '**Error cases are part of the feature.** "What happens when it fails" is where most rework comes from.',
+        '**Data migrations are their own task.** Existing rows do not update themselves, and forgetting them turns a release into an incident.',
+        '**Write assumptions down as you find them.** They are questions in disguise, and cheap to answer now.',
+        '**Must-have versus nice-to-have is a conversation to have early** — with the person who can decide, not in your head at 6pm.',
+        '**If a slice cannot be reviewed in one sitting, it is still too big.** Reviewer attention drops sharply with size, and so does the value of the review.'
       ],
-      reflection: 'Take "Employees should be able to create social events" and split it into tasks: data model, API, UI, validation, tests, documentation.',
+      reflection: 'Take a feature request you know and run it through the eight steps. Which step surfaced work you had not thought about — and what would it have cost to discover that after the code was written?',
       checks: [
-        'How would you split a large feature?',
-        'What is a must-have vs a nice-to-have?',
-        'What is the smallest reviewable version?',
-        'Where do assumptions get tracked?'
+        'Why split by outcome rather than by technical layer?',
+        'What are the parts of the breakdown checklist?',
+        'What makes a slice small enough?',
+        'Why do data migrations need their own task?',
+        'What should you do with an assumption you notice?',
+        'Who decides what is a must-have?'
       ]
     },
     {
@@ -100,53 +115,59 @@ export default {
       title: 'Research & Investigation',
       blurb: 'Using docs, code, logs, tickets, previous work, official sources, and validated AI support.',
       whatIs: {
-        text: 'Strong juniors do not know everything — they know how to search trusted sources first.',
+        text: `Strong engineers are not people who know everything. They are people who know **where to look, in what order**, and how much to trust what they find.
+
+The order matters more than the effort. Start inside the system: the code itself, its tests, the logs, past tickets and merged pull requests (PRs) — these tell you what your team actually did and why. Then official documentation for the exact version you are using. Community answers and blog posts come next, and are often outdated. Artificial intelligence (AI) assistants are excellent for orientation and terrible as a final authority: they will produce confident, plausible, non-existent functions.
+
+Whatever the source, the test is the same: **verify against something that runs**. Read the code, check the version, try it in a safe place. A quoted answer that works in your codebase is knowledge; one that merely sounds right is a guess with better grammar.`,
         ensures: [
-          'Check docs, code, tickets, and past PRs',
-          'Read logs and error messages carefully',
-          'Prefer official docs over random blogs',
-          'Use AI to explore, then verify'
+          'Search the codebase, tests, logs and past tickets before anything else',
+          'Prefer official docs for the version you are actually using',
+          'Treat blogs and AI output as leads, never as authority',
+          'Read error messages fully and take them literally',
+          'Verify every answer against something that runs',
+          'Know when research has stopped paying and it is time to ask'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'Independent learning loop.',
+        label: 'The independent learning loop.',
         steps: [
-          { icon: 'magnifying-glass', label: 'Identify what is unknown', desc: 'Define the question you need to answer.', purpose: 'Define the question to answer.', question: "What don't we know yet?" },
-          { icon: 'book', label: 'Research using trusted sources', desc: 'Gather from credible, relevant sources.', purpose: 'Gather from credible sources.', question: 'Where is the reliable answer?' },
-          { icon: 'flask', label: 'Experiment safely', desc: 'Try ideas in a non-production space.', purpose: 'Try ideas where nothing breaks.', question: 'What can we test safely?' },
-          { icon: 'lightbulb', label: 'Form a hypothesis', desc: 'Make an educated guess.', purpose: 'Make an educated guess.', question: 'What do we think is true?' },
-          { icon: 'clipboard-check', label: 'Validate or adjust', desc: 'Check the result; refine if needed.', purpose: 'Check the result and refine.', question: 'Does it hold up?' },
-          { icon: 'rocket', label: 'Apply the learning', desc: 'Use what you learned for real.', purpose: 'Use what you learned for real.', question: 'How do we apply it?' }
+          { icon: 'magnifying-glass', label: 'Name the unknown', desc: 'Define the question you need answered.', purpose: 'Turn a vague feeling of being stuck into one precise question.', question: 'What exactly do I not know?' },
+          { icon: 'book', label: 'Search trusted sources', desc: 'Code, tests, logs, tickets, official docs.', purpose: 'Start inside the system, then go to official documentation.', question: 'Has someone here already solved this?' },
+          { icon: 'flask', label: 'Experiment safely', desc: 'Try it where nothing can break.', purpose: 'Test the idea locally or in a scratch branch.', question: 'What can I try without risk?' },
+          { icon: 'lightbulb', label: 'Form a hypothesis', desc: 'State what you think is true.', purpose: 'Commit to an explanation you can actually test.', question: 'What do I believe, and how would I know?' },
+          { icon: 'clipboard-check', label: 'Validate', desc: 'Check the result; refine if wrong.', purpose: 'Confirm against running code, not against a memory.', question: 'Does the evidence support it?' },
+          { icon: 'rocket', label: 'Apply and record', desc: 'Use it, and leave a note behind.', purpose: 'Apply the learning and make it findable for the next person.', question: 'Where should this be written down?' }
         ]
       },
       example: {
         title: 'Learning an unfamiliar library',
         items: [
-          'Pin down what the library actually does.',
-          'Read its official docs and existing usage in the repo.',
-          'Try it in a throwaway branch.',
-          'Guess how to wire it into the feature.',
-          'Run it and confirm the behaviour.',
-          'Use it in the real change with confidence.'
+          'Question: how does this library handle retries on timeout?',
+          'Search the repo for existing usage; read its official docs for our version.',
+          'Try it in a throwaway branch with a deliberately slow endpoint.',
+          'Hypothesis: it retries twice, then throws.',
+          'Confirm by watching the logs; it actually retries three times.',
+          'Use it in the real change and note the behaviour in the PR.'
         ]
       },
       io: {
         inputs: [
           ['A task', 'A knowledge gap'],
-          ['Question', 'Docs, code, tickets'],
+          ['Question', 'Code, docs, tickets'],
           ['Information', 'A safe space'],
           ['Observations'],
           ['Hypothesis', 'A test'],
           ['A validated answer']
         ],
         outputs: [
-          ['A clear question'],
-          ['Gathered information'],
-          ['Observations'],
-          ['A hypothesis'],
-          ['A confirmed or refined answer'],
-          ['Applied learning']
+          ['One precise question'],
+          ['Gathered evidence'],
+          ['Observed behaviour'],
+          ['A testable hypothesis'],
+          ['A confirmed or corrected answer'],
+          ['Applied learning', 'A note for others']
         ]
       },
       who: [
@@ -158,20 +179,29 @@ export default {
         'Engineer, Team'
       ],
       misconceptions: [
-        { wrong: 'Research means Googling only.', right: 'Docs, code, tickets, logs, and runbooks come first.' },
-        { wrong: 'AI answers can be trusted as-is.', right: 'AI accelerates exploration but must be verified.' }
+        { wrong: 'Research means searching the web.', right: 'The codebase, tests, logs and past tickets come first.' },
+        { wrong: 'AI answers can be used as they are.', right: 'They are a starting point; verify against docs and running code.' },
+        { wrong: 'Any documentation will do.', right: 'Version matters — answers for v2 can be wrong for v5.' },
+        { wrong: 'Researching longer is always better.', right: 'After a fixed timebox, asking is the cheaper option.' }
       ],
       takeaways: [
-        'Know where to look before escalating.',
-        'Source quality matters.',
-        'Verify AI against trusted sources.'
+        '**Start inside the system.** The code, its tests and past pull requests tell you what your team actually decided, which no external source can.',
+        '**Read the error message properly.** It usually names the file, the line and the cause; skimming it is the most common self-inflicted delay.',
+        '**Check the version.** A confident answer for a different major version is worse than no answer at all.',
+        '**AI is a fast orientation tool and an unreliable authority.** Use it to get the vocabulary and the shape, then verify every specific.',
+        '**Verify against something that runs.** If you cannot demonstrate it, you do not know it yet.',
+        '**Timebox research.** Thirty to sixty minutes without progress is a signal to ask, not a test of character.',
+        '**Leave a trail.** A comment, a note in the ticket or a line in the README saves the next person the same hour.',
+        '**Knowing where to look is the transferable skill.** The specific answers expire; the habit of finding them does not.'
       ],
-      reflection: 'Given an unfamiliar repository: what does the system do, where might the feature live, and what questions remain?',
+      reflection: 'Think of the last thing you were stuck on. Which source finally resolved it, and where did you look before that? What would have got you there twenty minutes sooner?',
       checks: [
-        'Where do you look before asking for help?',
-        'Which sources are most reliable?',
-        'How should you use AI here?',
-        'What questions remain after research?'
+        'Where do you look first, and why there?',
+        'Why does the version of the documentation matter?',
+        'How should AI output be treated?',
+        'What does it mean to verify an answer?',
+        'How long should you research before asking?',
+        'What should you leave behind once you have the answer?'
       ]
     },
     {
@@ -179,53 +209,68 @@ export default {
       title: 'Safe Experimentation',
       blurb: 'Learning by trying things in local or non-production spaces without creating unnecessary risk.',
       whatIs: {
-        text: 'Exploration is part of engineering — do it in safe places so mistakes cannot hurt real users.',
+        text: `Trying things is how engineers learn a system. The skill is doing it where a mistake costs nothing: your own machine, a scratch branch, a development environment, fake data.
+
+Actions differ enormously in **blast radius**. Reading is nearly always safe. Writing to a local database affects only you. Writing to a shared environment affects your team. Anything touching production data, customer records or money can affect people who never agreed to be part of your experiment. Before acting, ask what happens if this is wrong, who notices, and how you would undo it.
+
+That last question is the practical filter. **Reversible** actions can be tried; **irreversible** ones deserve a second opinion first. Being cautious is not the same as being passive — the point is to keep exploring freely by choosing places where being wrong is free.`,
         ensures: [
-          'Use local and dev environments',
-          'Work with dummy data and feature branches',
-          'Prefer read-only or reversible changes',
-          'If impact is unclear, ask before acting'
+          'Judge the blast radius of an action before taking it',
+          'Prefer local and development environments for exploration',
+          'Use dummy data instead of real customer records',
+          'Start with read-only investigation before changing anything',
+          'Choose reversible steps, and know how to reverse them',
+          'Ask first when the impact is unclear or irreversible'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'Safety boundary.',
+        label: 'Safety boundary — from zero risk outwards.',
         loop: false,
         steps: [
-          { icon: 'laptop', label: 'Local environment', desc: 'Your own machine, nothing shared.', purpose: 'Explore on your own machine, nothing shared.', question: 'Can I try this locally first?' },
-          { icon: 'laptop-code', label: 'Development environment', desc: 'A shared but safe space.', purpose: 'Confirm it in a shared but safe space.', question: 'Does it hold in a shared env?' },
-          { icon: 'table', label: 'Dummy data', desc: 'Fake data, no real impact.', purpose: 'Use fake data so no real user is affected.', question: 'Is this data safe to touch?' },
-          { icon: 'code-branch', label: 'Feature branch', desc: 'Isolated from the main line.', purpose: 'Stay isolated from the main line.', question: 'Is my work isolated?' },
-          { icon: 'magnifying-glass', label: 'Read-only query', desc: 'Look without changing anything.', purpose: 'Look without changing anything.', question: 'Can I just observe first?' },
-          { icon: 'rotate-left', label: 'Small reversible change', desc: 'Easy to undo if wrong.', purpose: 'Prefer changes that are easy to undo.', question: 'Can I undo this easily?' }
+          { icon: 'laptop', label: 'Local environment', desc: 'Your own machine, nothing shared.', purpose: 'Explore with zero blast radius.', question: 'Can I reproduce this locally first?' },
+          { icon: 'laptop-code', label: 'Development environment', desc: 'Shared, but safe to break.', purpose: 'Confirm it behaves the same when integrated.', question: 'Does it still hold with everyone else\'s changes?' },
+          { icon: 'table', label: 'Dummy data', desc: 'Fake records, no real people.', purpose: 'Test realistically without touching anyone\'s data.', question: 'Is this data safe to change or expose?' },
+          { icon: 'code-branch', label: 'Feature branch', desc: 'Isolated from the main line.', purpose: 'Keep experiments out of everyone else\'s way.', question: 'Is my work isolated and easy to discard?' },
+          { icon: 'magnifying-glass', label: 'Read-only first', desc: 'Look before you touch.', purpose: 'Gather evidence without changing state.', question: 'Can I answer this by observing instead?' },
+          { icon: 'rotate-left', label: 'Small reversible change', desc: 'Easy to undo if wrong.', purpose: 'Make one change you know how to reverse.', question: 'If this is wrong, how do I undo it — and how fast?' }
         ]
       },
       example: {
-        title: 'Exploring a bug safely',
+        title: 'Investigating a bug safely',
         items: [
           'Reproduce it on your own machine first.',
           'Confirm it in the shared dev environment.',
-          'Use dummy data so no real user is affected.',
-          'Work on a feature branch, off the main line.',
-          'Start with read-only queries to look around.',
-          'Make one small, reversible change to test a fix.'
+          'Use seeded dummy accounts, never a real customer record.',
+          'Work on a feature branch so nothing lands by accident.',
+          'Run read-only queries to see the data before touching it.',
+          'Make one small change behind a flag, with a known way back.'
         ]
       },
       misconceptions: [
-        { wrong: 'Experimenting is always dangerous.', right: 'Safe spaces make experimenting low-risk.' },
-        { wrong: 'Taking initiative means working alone forever.', right: 'Initiative includes asking when impact is unclear.' }
+        { wrong: 'Experimenting is inherently risky.', right: 'In the right environment the risk is close to zero.' },
+        { wrong: 'Taking initiative means never checking with anyone.', right: 'Initiative includes asking before irreversible actions.' },
+        { wrong: 'A quick query against production is harmless.', right: 'Heavy queries can slow or lock a live system.' },
+        { wrong: 'Test data can be a copy of real data.', right: 'Copied customer data carries the same privacy obligations.' }
       ],
       takeaways: [
-        'Cautious does not mean passive.',
-        'Never experiment on production data.',
-        'Reversible beats irreversible.'
+        '**Ask what the blast radius is** — just me, my team, or real customers? That single question sorts most actions correctly.',
+        '**Reversible beats irreversible.** Prefer the version you can undo, and know the undo procedure before you start.',
+        '**Read before you write.** Most investigations are answered by looking, and looking cannot break anything.',
+        '**Never experiment on production data.** Even a read can be dangerous if it is heavy enough to slow the live system.',
+        '**Dummy data is not just convenient, it is a privacy requirement.** Real records in test environments create obligations you do not want.',
+        '**Branches make experiments free.** If it goes nowhere, delete it; nothing was risked.',
+        '**Being cautious is not being passive.** The point of a safe space is that you can try more things, not fewer.',
+        '**When you cannot judge the impact, that is the signal to ask.** Uncertainty about consequences is exactly what a two-minute question resolves.'
       ],
-      reflection: 'Sort a list of actions into safe and risky. Which ones would you ask about first?',
+      reflection: 'List three things you could do to investigate a bug: one certainly safe, one you are not sure about, one you should not do alone. What makes the middle one uncertain, and who would you ask?',
       checks: [
-        'What makes an experiment safe?',
-        'What is a risky action to avoid?',
-        'When should you ask first?',
-        'Sort three actions into safe and risky.'
+        'What does "blast radius" mean?',
+        'Why start with read-only investigation?',
+        'Why not use copies of real customer data?',
+        'What makes an action reversible?',
+        'When should you ask before acting?',
+        'Why does a safe environment mean you can experiment more?'
       ]
     },
     {
@@ -233,50 +278,56 @@ export default {
       title: 'Escalation Ladder',
       blurb: 'Thinking, experimenting, researching, forming a hypothesis, then asking for help with evidence.',
       whatIs: {
-        text: 'Climb the ladder before asking — so when you do ask, the question is easy to answer.',
+        text: `Asking for help is a skill with a shape. Climb a few rungs first — think, try, research, form a hypothesis — and then ask. By that point your question is specific, and specific questions get answered in minutes.
+
+The rungs are not about proving independence. They exist because each one either solves the problem or produces **evidence** that makes someone else's help far more effective. "It fails" invites twenty questions; "it fails with this error, only on staging, after this change, and I think the config differs" invites an answer.
+
+The important exception is **urgency**. When production is broken, customers are affected, or you are about to do something irreversible, escalate immediately. The ladder optimises for learning; incidents optimise for stopping the damage. Knowing which situation you are in is part of the judgement.`,
         ensures: [
-          'Think it through first',
-          'Experiment safely',
-          'Research docs, code, and tickets',
-          'Ask with context, evidence, and a specific question'
+          'Work through the rungs before escalating a routine problem',
+          'Collect evidence at each step rather than just trying harder',
+          'Form a hypothesis you can state in one sentence',
+          'Escalate immediately when the situation is urgent or irreversible',
+          'Timebox each rung so you do not get stuck being stubborn',
+          'Ask in a way that makes helping quick'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'Escalation ladder — shows what good initiative looks like before escalation.',
+        label: 'Escalation ladder — each rung either solves it or produces evidence.',
         loop: false,
         steps: [
-          { icon: 'brain', label: 'Think', desc: 'Reason about the problem first.', purpose: 'Reason about the problem first.', question: 'What do I already understand?' },
-          { icon: 'flask', label: 'Experiment safely', desc: 'Try something in a safe space.', purpose: 'Try something in a safe space.', question: 'What can I test safely?' },
-          { icon: 'magnifying-glass', label: 'Research', desc: 'Search docs, code, and tickets.', purpose: 'Search docs, code, and tickets.', question: 'Where might the answer be?' },
-          { icon: 'lightbulb', label: 'Form a hypothesis', desc: 'Decide what you think is happening.', purpose: 'Decide what you think is happening.', question: 'What do I think is wrong?' },
-          { icon: 'comments', label: 'Ask for help with evidence', desc: 'Escalate with context and specifics.', purpose: 'Escalate with context and specifics.', question: 'What exactly do I need?' }
+          { icon: 'brain', label: 'Think', desc: 'Reason about the problem first.', purpose: 'Establish what you already know and what is actually being asked.', question: 'What do I understand, and what is the real question?' },
+          { icon: 'flask', label: 'Experiment safely', desc: 'Try something in a safe space.', purpose: 'Reproduce it and narrow down where it happens.', question: 'Can I reproduce it, and where exactly does it break?' },
+          { icon: 'magnifying-glass', label: 'Research', desc: 'Search code, docs, logs and tickets.', purpose: 'Find out whether this is already known or solved.', question: 'Has anyone here hit this before?' },
+          { icon: 'lightbulb', label: 'Form a hypothesis', desc: 'Decide what you think is happening.', purpose: 'Turn scattered observations into one testable claim.', question: 'What is my best explanation?' },
+          { icon: 'comments', label: 'Ask with evidence', desc: 'Escalate with context and specifics.', purpose: 'Make it fast and easy for someone to help.', question: 'What exactly do I need from them?' }
         ]
       },
       example: {
         title: 'Stuck on a failing test',
         items: [
-          'Think through what the test actually asserts.',
-          'Try tweaks in a safe branch.',
-          'Search the docs and past PRs for the pattern.',
-          'Hypothesise the fixture data is stale.',
-          'Ask with the error, your attempts, and your guess.'
+          'Read the assertion carefully: it expects two rows, gets none.',
+          'Reproduce locally; it passes locally but fails in the pipeline.',
+          'Search past pull requests (PRs); two others changed the same fixture recently.',
+          'Hypothesis: the shared fixture data is not being reset between runs.',
+          'Ask, with the failure output, the difference, and the hypothesis.'
         ]
       },
       io: {
         inputs: [
           ['The problem'],
           ['Understanding', 'A safe space'],
-          ['Question', 'Docs & code'],
+          ['Question', 'Code, docs, history'],
           ['Findings'],
-          ['Context', 'Evidence']
+          ['Context', 'Evidence', 'Hypothesis']
         ],
         outputs: [
-          ['Initial understanding'],
-          ['Observations'],
-          ['Findings'],
-          ['A hypothesis'],
-          ['A clear, evidenced question']
+          ['A defined question'],
+          ['A reproduction', 'Observations'],
+          ['Findings or prior art'],
+          ['A testable hypothesis'],
+          ['A clear, evidenced request']
         ]
       },
       who: [
@@ -287,20 +338,29 @@ export default {
         'You, Teammate / Senior'
       ],
       misconceptions: [
-        { wrong: 'Asking questions is bad.', right: 'Good questions, backed by evidence, are valued.' },
-        { wrong: 'Taking initiative means never asking.', right: 'Initiative is climbing the rungs, then asking well.' }
+        { wrong: 'Asking questions makes you look weak.', right: 'A well-formed question shows you can think and communicate.' },
+        { wrong: 'Initiative means never asking.', right: 'Initiative is climbing the rungs, then asking well.' },
+        { wrong: 'You should always exhaust every option first.', right: 'When production is down, escalate immediately.' },
+        { wrong: 'Struggling longer proves commitment.', right: 'It mostly proves the value of a timebox.' }
       ],
       takeaways: [
-        'Effort before escalation makes help easy to give.',
-        'Bring evidence, not just "it broke".',
-        'Ask sooner if production is down.'
+        '**Each rung produces evidence even when it fails.** That evidence is what turns an unanswerable question into an answerable one.',
+        '**Timebox each rung.** Thirty minutes without progress means move up, not try the same thing more slowly.',
+        '**A hypothesis makes help specific.** "I think the fixture is stale" can be confirmed or dismissed in seconds; "it does not work" cannot.',
+        '**Urgency overrides the ladder.** Production down, data at risk, or an irreversible action pending: escalate now and explain later.',
+        '**Reproducing the problem is often most of the fix.** Half of "I cannot work out why" is really "I have not pinned down when".',
+        '**Say what you have already tried.** It saves the helper from suggesting it and shows the shape of the problem.',
+        '**Being stuck is normal and expected.** Being stuck silently for two days is what people actually mind.',
+        '**Note the answer somewhere.** The next person hitting this — possibly you — should find it without repeating the climb.'
       ],
-      reflection: 'How far up the ladder should you climb before asking? Does the answer change if production is down?',
+      reflection: 'How far up the ladder would you climb before asking? Now change the scenario: production is down and customers are affected. What changes, and why is that the right call?',
       checks: [
-        'How far up the ladder before asking?',
-        'Does the answer change if production is down?',
-        'What should a good question include?',
-        'What are the rungs of the ladder?'
+        'What are the rungs, in order?',
+        'What does each rung produce even when it does not solve the problem?',
+        'When should you skip the ladder entirely?',
+        'How long should you spend on a rung?',
+        'Why is a hypothesis worth forming before asking?',
+        'What should you do after you get the answer?'
       ]
     },
     {
@@ -308,50 +368,56 @@ export default {
       title: 'Asking Better Questions',
       blurb: 'Using context, attempts, evidence, hypothesis, and a specific question.',
       whatIs: {
-        text: 'Good questions are easy to answer and show initiative: context, attempts, evidence, hypothesis, ask.',
+        text: `A good question is easy to answer. That is the whole standard, and it is achieved by supplying five things: **context** (what you are doing), **attempts** (what you tried), **evidence** (what you observed, exactly), **hypothesis** (what you think is happening) and the **ask** (the specific thing you need).
+
+Compare the two versions. "The application programming interface (API) is broken, can you help?" forces the helper to run their own investigation before they can even understand the problem. "Saving a booking returns 500 on staging but works locally; the logs show a null user id; I think the session middleware is not attaching the user; where should that be set on this route?" can be answered in a sentence by anyone who knows the codebase.
+
+Exact evidence matters most. Paste the real error, name the environment, quote the id, say what you expected. Paraphrased symptoms send people looking for the wrong thing — which costs their time as well as yours.`,
         ensures: [
-          'State the context',
-          'Say what you tried',
-          'Share what you found',
-          'Give your hypothesis and a specific question'
+          'Include context, attempts, evidence, hypothesis and a specific ask',
+          'Quote exact errors, ids and environments rather than paraphrasing',
+          'State what you expected as well as what happened',
+          'Ask a question that can be answered in one reply',
+          'Choose the right channel and give the helper enough to reproduce',
+          'Close the loop by sharing what the answer turned out to be'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'Effective escalation format — a reusable help-seeking template.',
+        label: 'A reusable template for asking well.',
         loop: false,
         steps: [
-          { icon: 'circle-info', label: 'Context', desc: "What you're working on.", purpose: 'Set the scene.', question: 'What am I working on?' },
-          { icon: 'list-check', label: 'What I tried', desc: 'The attempts you made.', purpose: 'List your attempts.', question: 'What have I already tried?' },
-          { icon: 'magnifying-glass', label: 'What I found', desc: 'The evidence you gathered.', purpose: 'Share the evidence.', question: 'What did I observe?' },
-          { icon: 'lightbulb', label: 'My hypothesis', desc: 'What you think is going on.', purpose: 'State your best guess.', question: 'What do I think is happening?' },
-          { icon: 'circle-question', label: 'Specific question', desc: 'The exact help you need.', purpose: 'Ask the exact thing.', question: 'What exactly do I need?' }
+          { icon: 'circle-info', label: 'Context', desc: 'What you are working on.', purpose: 'Set the scene: the task, the branch, the environment.', question: 'What am I working on, and where?' },
+          { icon: 'list-check', label: 'What I tried', desc: 'The attempts you made.', purpose: 'Stop the helper suggesting what you already ruled out.', question: 'What have I already eliminated?' },
+          { icon: 'magnifying-glass', label: 'What I found', desc: 'Exact errors and observations.', purpose: 'Give the raw evidence, not a summary of it.', question: 'What does the system actually say?' },
+          { icon: 'lightbulb', label: 'My hypothesis', desc: 'What you think is going on.', purpose: 'Show your reasoning so it can be corrected.', question: 'What do I think is happening, and why?' },
+          { icon: 'circle-question', label: 'Specific ask', desc: 'The exact help you need.', purpose: 'Make the reply short and possible.', question: 'What single thing do I need from them?' }
         ]
       },
       example: {
         title: 'Turning "it broke" into a good question',
         items: [
-          'Context: the booking API returns 500 on save.',
-          'Tried: retried, checked inputs, read the logs.',
-          'Found: a null user id in the failing request.',
-          'Hypothesis: the session is not attaching the user.',
-          'Question: where should the user id be set on this route?'
+          'Context: saving a booking on the staging environment, branch `feat/booking-edit`.',
+          'Tried: retried, checked the payload, compared with a working local run.',
+          'Found: 500 response; the log shows `user_id = null` on that route.',
+          'Hypothesis: the session middleware is not applied to this endpoint.',
+          'Ask: where is the user id meant to be attached for routes under `/bookings`?'
         ]
       },
       io: {
         inputs: [
-          ['Your task'],
+          ['Your task', 'Environment'],
           ['Attempts'],
-          ['Logs', 'Evidence'],
+          ['Logs', 'Errors', 'Ids'],
           ['Observations'],
           ['Everything above']
         ],
         outputs: [
           ['Shared context'],
-          ['A list of what was tried'],
-          ['Observations'],
-          ['A hypothesis'],
-          ['A precise ask']
+          ['What is already ruled out'],
+          ['Concrete evidence'],
+          ['A reasoned hypothesis'],
+          ['A question answerable in one reply']
         ]
       },
       who: [
@@ -362,20 +428,29 @@ export default {
         'You, Helper'
       ],
       misconceptions: [
-        { wrong: 'Asking questions is bad.', right: 'A precise, evidenced question saves everyone time.' },
-        { wrong: '"It does not work" is enough.', right: 'Say what you expected, observed, and checked.' }
+        { wrong: 'Asking questions is a sign of weakness.', right: 'A precise question saves everyone time and shows judgement.' },
+        { wrong: '"It does not work" is enough to start with.', right: 'It forces the helper to run the investigation you already ran.' },
+        { wrong: 'Long questions are better questions.', right: 'Specific ones are; detail helps only when it is evidence.' },
+        { wrong: 'Once you have the answer, you are done.', right: 'Say what fixed it — that is how the answer becomes findable.' }
       ],
       takeaways: [
-        'Structure turns a vague ask into a clear one.',
-        'Evidence makes help fast.',
-        'A specific question gets a specific answer.'
+        '**Five parts: context, attempts, evidence, hypothesis, ask.** Missing any of them makes the helper reconstruct it themselves.',
+        '**Paste the exact error.** Paraphrasing loses the detail that usually identifies the problem outright.',
+        '**Say what you expected.** Half of all "bugs" turn out to be a misunderstanding of intended behaviour, which the expectation reveals immediately.',
+        '**Ask one specific thing.** An open-ended "any ideas?" gets an open-ended answer, or none at all.',
+        '**Name the environment and the branch.** Works-locally-fails-elsewhere is a whole category of problem, and this is the fastest way to spot it.',
+        '**Writing the question often answers it.** Explaining it in five parts forces the reasoning that finds the gap.',
+        '**Make it reproducible.** A link, a request id, a failing test — anything that lets the helper see it themselves.',
+        '**Close the loop.** Post what the fix was; the thread becomes documentation for the next person.'
       ],
-      reflection: 'Rewrite "It does not work" as: I expected X, observed Y, checked A and B, and think C may be the cause. Can you help me confirm D?',
+      reflection: 'Rewrite a question you have actually asked using the five parts. How much of the answer becomes obvious to you while you are writing it?',
       checks: [
-        'What makes a weak question weak?',
-        'What five parts make a strong one?',
-        'Rewrite "it does not work" well.',
-        'Why include what you already tried?'
+        'What are the five parts of a good question?',
+        'Why paste the exact error rather than describe it?',
+        'Why state what you expected to happen?',
+        'What makes an ask "specific"?',
+        'Why does writing the question often solve the problem?',
+        'What should you do once you have the answer?'
       ]
     },
     {
@@ -383,83 +458,98 @@ export default {
       title: 'Ambiguity Framework',
       blurb: 'Working through unclear requirements by identifying goals, constraints, assumptions, and unknowns.',
       whatIs: {
-        text: 'Professionals pause first to understand the goal, constraints, unknowns, and smallest useful outcome.',
+        text: `Real work arrives unclear. "Improve onboarding", "make it faster", "add reporting" are directions, not requirements — and the instinct to start coding is exactly what produces the wrong thing, competently built.
+
+The first move is to **restate the problem in your own words** and check that with whoever asked. Then separate what you **know** from what you **assume** from what you genuinely **do not know**, because those three need different treatment: knowns get used, assumptions get confirmed, unknowns get investigated.
+
+Then reduce scope deliberately. Ask what the **smallest useful version** is — often a measurement rather than a fix. "Improve onboarding" becomes "add tracking to find where people drop out", which is small, valuable, and turns the vague brief into a specific one with data behind it.`,
         ensures: [
-          'Restate the problem in your own words',
-          'List knowns and unknowns',
-          'Identify systems, data, and people involved',
-          'Define the smallest useful version'
+          'Restate an unclear request in your own words and confirm it',
+          'Separate knowns, assumptions and unknowns',
+          'Identify the systems, data and people involved',
+          'Define the smallest useful version',
+          'Investigate before committing to a solution',
+          'Verify against the original goal, not just the ticket text'
         ]
       },
       visual: {
         kind: 'flow',
-        label: 'Problem-solving loop — a reusable approach to any unfamiliar task.',
+        label: 'A reusable loop for any unfamiliar task.',
         steps: [
-          { icon: 'circle-question', label: 'Understand the problem', desc: 'Restate it in your own words.', purpose: 'Restate it in your own words.', question: 'What are we really solving?' },
-          { icon: 'list-check', label: 'List knowns and unknowns', desc: 'Separate facts from gaps.', purpose: 'Separate facts from gaps.', question: 'What do I know and not know?' },
-          { icon: 'magnifying-glass', label: 'Investigate sources', desc: 'Dig into docs, code, and people.', purpose: 'Dig into docs, code, and people.', question: 'Where are the answers?' },
-          { icon: 'puzzle-piece', label: 'Break down the work', desc: 'Split it into smaller tasks.', purpose: 'Split it into smaller tasks.', question: 'What are the pieces?' },
-          { icon: 'map', label: 'Form a plan', desc: 'Decide the order of attack.', purpose: 'Decide the order of attack.', question: 'What order makes sense?' },
-          { icon: 'person-running', label: 'Execute incrementally', desc: 'Deliver in small steps.', purpose: 'Deliver in small steps.', question: 'What is the next small step?' },
-          { icon: 'clipboard-check', label: 'Verify and adjust', desc: 'Check results and adapt.', purpose: 'Check results and adapt.', question: 'Did it work — and what now?' }
+          { icon: 'circle-question', label: 'Understand', desc: 'Restate it in your own words.', purpose: 'Convert a direction into a problem statement someone can confirm.', question: 'What are we really solving, and for whom?' },
+          { icon: 'list-check', label: 'Knowns & unknowns', desc: 'Separate facts from gaps.', purpose: 'Make the assumptions visible so they can be checked.', question: 'What do I know, assume, and genuinely not know?' },
+          { icon: 'magnifying-glass', label: 'Investigate', desc: 'Dig into data, code and people.', purpose: 'Close the most important unknowns with evidence.', question: 'Which unknown, if wrong, would change everything?' },
+          { icon: 'puzzle-piece', label: 'Break it down', desc: 'Split into smaller tasks.', purpose: 'Turn the problem into pieces that can be delivered.', question: 'What are the pieces, and which is smallest and most useful?' },
+          { icon: 'map', label: 'Plan', desc: 'Decide the order.', purpose: 'Sequence so the riskiest assumption is tested first.', question: 'What order reduces risk fastest?' },
+          { icon: 'person-running', label: 'Deliver incrementally', desc: 'Ship in small steps.', purpose: 'Get something real in front of people early.', question: 'What is the next thing worth shipping?' },
+          { icon: 'clipboard-check', label: 'Verify & adjust', desc: 'Check results against the goal.', purpose: 'Measure whether the original problem actually moved.', question: 'Did this change the outcome we cared about?' }
         ]
       },
       example: {
         title: 'A vague "improve onboarding" ticket',
         items: [
-          'Restate: reduce drop-off during signup.',
-          'Known: the funnel; unknown: where users quit.',
-          'Check analytics, code, and ask the PM.',
-          'Split into: measure, fix the worst step, retest.',
-          'Plan: instrument first, then fix, then verify.',
-          'Ship the tracking, then the top fix.',
-          'Confirm drop-off fell; iterate on the next step.'
+          'Restate: fewer people should abandon signup halfway.',
+          'Known: the five signup steps. Unknown: which one loses people.',
+          'Check analytics, read the code, ask the product manager (PM) what prompted it.',
+          'Split into: add tracking, fix the worst step, re-measure.',
+          'Plan: measure first — fixing blind is guessing.',
+          'Ship the tracking, find step 3 loses 40%, fix step 3.',
+          'Confirm drop-off fell, then look at the next worst step.'
         ]
       },
       io: {
         inputs: [
-          ['A vague ticket'],
-          ['The problem'],
-          ['Unknowns', 'Sources'],
+          ['A vague request'],
+          ['The restated problem'],
+          ['Unknowns', 'Data', 'People'],
           ['Findings'],
-          ['Tasks'],
+          ['Tasks', 'Risks'],
           ['Plan'],
-          ['Deliveries', 'Results']
+          ['Delivered change', 'Metrics']
         ],
         outputs: [
-          ['A clear problem'],
-          ['Knowns & unknowns'],
-          ['Findings'],
+          ['A confirmed problem statement'],
+          ['Knowns, assumptions, unknowns'],
+          ['Evidence'],
           ['A task list'],
-          ['An ordered plan'],
-          ['Small deliveries'],
-          ['Verified progress']
+          ['A risk-ordered plan'],
+          ['Small releases'],
+          ['Verified progress or a new question']
         ]
       },
       who: [
         'You, Product Owner',
         'You',
-        'You, Docs & teammates',
+        'You, Data, Teammates',
         'You',
+        'You, Team',
         'You',
-        'You',
-        'You, Users'
+        'You, Users, Product Owner'
       ],
       misconceptions: [
-        { wrong: 'Start coding immediately to feel productive.', right: 'Understanding first avoids building the wrong thing.' },
-        { wrong: 'Research means Googling only.', right: 'Investigate docs, code, and people too.' }
+        { wrong: 'Start coding immediately to show progress.', right: 'Understanding first avoids building the wrong thing well.' },
+        { wrong: 'Ambiguity means someone did their job badly.', right: 'It usually means the answer is not known yet — including by them.' },
+        { wrong: 'You must resolve every unknown before starting.', right: 'Resolve the ones that would change the approach; timebox the rest.' },
+        { wrong: 'The ticket text is the requirement.', right: 'The outcome someone wants is the requirement.' }
       ],
       takeaways: [
-        'Understand before you build.',
-        'Name what you do not know.',
-        'Define the smallest useful outcome.'
+        '**Restate the problem and get it confirmed.** Two sentences of agreement prevent weeks of confident divergence.',
+        '**Assumptions are the dangerous category.** Knowns are safe and unknowns are visible; assumptions look like facts and are not.',
+        '**Attack the unknown that would change the approach.** Not all uncertainty matters equally — resolve the load-bearing ones first.',
+        '**The smallest useful version is often a measurement.** You cannot improve what you have not located.',
+        '**Sequence by risk, not by comfort.** Do the part that could invalidate the plan first, while changing course is still cheap.',
+        '**Ask what prompted the request.** The story behind a ticket usually contains the real requirement.',
+        '**Verify against the goal, not the ticket.** Shipping exactly what was written and not moving the outcome is a failure with good paperwork.',
+        '**Writing it down is the work.** A page of problem statement, assumptions and unknowns is the most valuable thing you can produce on day one.'
       ],
-      reflection: 'What would you do in the first thirty minutes after receiving a vague ticket?',
+      reflection: 'Take a vague request you have received. Write the restated problem, three assumptions and three unknowns. Which unknown, if it turned out differently, would change what you build?',
       checks: [
-        'What would you do in the first 30 minutes?',
-        'What is known vs unknown?',
-        'Who and what systems are involved?',
-        'What is the smallest useful version?'
+        'What is the first move when a request is unclear?',
+        'Why are assumptions more dangerous than unknowns?',
+        'Which unknowns should you investigate first?',
+        'Why is the smallest useful version often a measurement?',
+        'What does sequencing by risk mean?',
+        'What should you verify at the end — the ticket or the outcome?'
       ]
     }
   ]
