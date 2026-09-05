@@ -1344,6 +1344,17 @@ code {
     grid-template-columns: 1fr;
   }
 
+  /* Dissolve the two columns so every topic card is a direct grid item, then
+     let each card's own number drive the order — otherwise the stacked
+     columns would read 1, 3, 5, 2, 4, 6. */
+  .map-col {
+    display: contents;
+  }
+
+  .map .topic-card {
+    order: var(--order);
+  }
+
   .core-card {
     order: -1;
   }

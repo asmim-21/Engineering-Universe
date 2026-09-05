@@ -1,10 +1,12 @@
 import { navigate } from '../router.js'
 
+// `--order` lets the stacked mobile layout put the cards back in 1..n order
+// after the desktop two-column split has interleaved them.
 export default function TopicCard({ topic }) {
   return (
     <button
       className="topic-card"
-      style={{ '--tone': `var(--${topic.tone})` }}
+      style={{ '--tone': `var(--${topic.tone})`, '--order': topic.num }}
       onClick={() => navigate(`/topic/${topic.id}`)}
     >
       <div className="topic-card-head">
